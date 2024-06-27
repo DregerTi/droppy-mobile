@@ -1,0 +1,33 @@
+import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
+
+import '../../../../core/constants/constants.dart';
+import '../../models/user.dart';
+
+part 'user_api_service.g.dart';
+
+@RestApi(baseUrl:baseUrl)
+abstract class UserApiService {
+  factory UserApiService(Dio dio) = _UserApiService;
+
+  @GET("/users")
+  Future<HttpResponse<List<UserModel>>> getUsers({
+    @Query("page") int ? page,
+  });
+
+  @GET("/users/{id}")
+  Future<HttpResponse<UserModel>> getUser({
+    @Path("id") required int id,
+  });
+
+  @POST("/users")
+  Future<HttpResponse<UserModel>> postUser(
+    @Body() Map<String, dynamic> user,
+  );
+
+  @PATCH("/users/{id}")
+  Future<HttpResponse<UserModel>> patchUser({
+    @Path("id") required int id,
+    @Body() required Map<String, dynamic> user,
+  });
+}

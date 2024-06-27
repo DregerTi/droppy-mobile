@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653021085122",
+    "project_id": "droppy-420013",
+    "storage_bucket": "droppy-420013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653021085122:android:8cc6c03e46abdc2551aa5b",
+        "android_client_info": {
+          "package_name": "com.example.droppy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFV_sd1xsHa9ubRD_u3ouT7su15w1B8B8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
