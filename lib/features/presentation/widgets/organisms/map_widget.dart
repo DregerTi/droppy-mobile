@@ -20,7 +20,7 @@ class MapWidget extends StatelessWidget {
   final Function? onMapReady;
   final Stream<double?>? alignPositionStreamController;
   final AlignOnUpdate? alignPositionOnUpdate;
-  final Function(MapPosition, bool)? onPositionChanged;
+  final Function(MapCamera, bool)? onPositionChanged;
 
   MapWidget({
     Key ? key,
@@ -54,7 +54,9 @@ class MapWidget extends StatelessWidget {
                 initialZoom: initialZoom,
                 maxZoom: 25,
                 minZoom: 2,
-                interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                  interactionOptions: const InteractionOptions(
+                    rotationThreshold: 0.0,
+                  ),
                 onMapReady: () {
                   mapController.mapEventStream.listen((evt) {
                     if (onMapReady != null) {
@@ -62,7 +64,7 @@ class MapWidget extends StatelessWidget {
                     }
                   });
                 },
-                onPositionChanged: (MapPosition position, bool hasGesture){
+                onPositionChanged: (MapCamera position, bool hasGesture){
                   onPositionChanged!(position, hasGesture);
                 }
               ),
