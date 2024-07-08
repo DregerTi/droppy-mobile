@@ -44,6 +44,7 @@ import 'features/domain/usecases/user/post_user.dart';
 import 'features/presentation/bloc/auth/auth_bloc.dart';
 import 'features/presentation/bloc/comment/remote/comment_bloc.dart';
 import 'features/presentation/bloc/drop/drop_bloc.dart';
+import 'features/presentation/bloc/lang/lang_bloc.dart';
 import 'features/presentation/bloc/like/like_bloc.dart';
 import 'features/presentation/bloc/oauth/oauth_bloc.dart';
 import 'features/presentation/bloc/place_search/place_search_bloc.dart';
@@ -57,6 +58,10 @@ Future<void> initializeDependencies() async {
   final localHttpOverrides = LocalHttpOverrides();
   final dio = await localHttpOverrides.withAuthInterceptor();
   sl.registerSingleton<Dio>(dio);
+
+  sl.registerFactory<LangBloc>(
+        () => LangBloc(),
+  );
 
   sl.registerSingleton<DropApiService>(DropApiService(sl()));
   sl.registerSingleton<DropRepository>(DropRepositoryImpl(sl()));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../../../config/theme/widgets/text.dart';
 import 'cached_image_widget.dart';
 
@@ -8,6 +9,7 @@ class TileItemWidget extends StatelessWidget {
   final Widget? leadingIcon;
   final String? leadingImageUrl;
   final Function? onTap;
+  final bool? avatar;
 
   const TileItemWidget({
     Key? key,
@@ -16,41 +18,51 @@ class TileItemWidget extends StatelessWidget {
     this.leadingImageUrl,
     this.onTap,
     this.leadingIcon,
+    this.avatar = false
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (onTap != null) {
-          _onPressedHandler(context, onTap!);
-        }
-      },
-      child: Row(
-        children: [
-          if (leadingIcon != null) leadingIcon as Widget,
-          if (leadingImageUrl != null) CachedImageWidget(
-            imageUrl: leadingImageUrl!,
-            width: 26,
-            height: 26,
-            borderRadius: BorderRadius.circular(26),
-          ),
-          if (leadingIcon != null || leadingImageUrl != null) const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: textTheme.bodyMedium,
+        onTap: () {
+          if (onTap != null) {
+            _onPressedHandler(context, onTap!);
+          }
+        },
+        child: Row(
+          children: [
+            if (leadingIcon != null) leadingIcon as Widget,
+            if (leadingImageUrl != null) CachedImageWidget(
+              imageUrl: leadingImageUrl!,
+              width: 26,
+              height: 26,
+              borderRadius: BorderRadius.circular(26),
+            ),
+            if (leadingImageUrl == null && avatar == true) ClipRRect(
+              borderRadius: BorderRadius.circular(26),
+              child: SvgPicture.asset(
+                'lib/assets/images/avatar.svg',
+                height: 26,
+                width: 26,
+                fit: BoxFit.fitWidth,
               ),
-              if (subtitle != null) Text(
-                subtitle!,
-                style: textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ],
-      )
+            ),
+            if (leadingIcon != null || leadingImageUrl != null || avatar == true) const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: textTheme.bodyMedium,
+                ),
+                if (subtitle != null) Text(
+                  subtitle!,
+                  style: textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ],
+        )
     );
   }
 }

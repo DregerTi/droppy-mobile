@@ -9,6 +9,7 @@ import '../../features/data/models/user.dart';
 import '../../features/presentation/bloc/auth/auth_bloc.dart';
 import '../../features/presentation/bloc/auth/auth_state.dart';
 import '../../features/presentation/pages/account_view.dart';
+import '../../features/presentation/pages/auth/language_settings.dart';
 import '../../features/presentation/pages/comments/add_comment_report.dart';
 import '../../features/presentation/pages/comments/add_comment_view.dart';
 import '../../features/presentation/pages/animated_splash_screen_view.dart';
@@ -216,6 +217,15 @@ class AppRoutes{
                                   },
                                 ),
                               ]
+                          ),
+                          GoRoute(
+                            path: 'language',
+                            name: 'language',
+                            builder: (context, state) {
+                              final Map<String, dynamic>? extras = state.extra as Map<String, dynamic>?;
+                              final UserModel user = extras?['user'];
+                              return LanguageSettings(user: user);
+                            },
                           ),
                           GoRoute(
                             path: 'cgus',

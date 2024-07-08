@@ -5,6 +5,7 @@ import '../../../../../config/theme/widgets/text.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -37,8 +38,8 @@ class _SignInFormState extends State<SignInForm> {
                 children: [
                   const SizedBox(height: 20),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Email',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.email,
                       helperText: '',
                     ),
                     controller: emailController,
@@ -48,7 +49,7 @@ class _SignInFormState extends State<SignInForm> {
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       helperText: '',
                       errorText: (state is AuthError) ? 'Identifiant ou mot de passe incorrect' : null,
                     ),
@@ -70,21 +71,23 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.goNamed('forgot-password');
+                      context.goNamed('forget-password');
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Tu as oublie ton mot de passe ?',
-                          style: textTheme.bodySmall,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                            'Trouves de l\'aide ici',
-                            style: textTheme.titleSmall
-                        ),
-                      ],
+                    child: Flexible(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.forgotPassword,
+                            style: textTheme.bodySmall,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                              AppLocalizations.of(context)!.findHelpHere,
+                              style: textTheme.titleSmall
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

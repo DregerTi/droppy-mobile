@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../bloc/user/user_bloc.dart';
@@ -89,8 +89,8 @@ class _SignInFormState extends State<SignUpForm> {
                       TextFormField(
                         controller: firstnameController,
                         validator: fistnameError,
-                        decoration: const InputDecoration(
-                          hintText: 'Nom',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.firstName,
                           helperText: '',
                         ),
                       ),
@@ -98,8 +98,8 @@ class _SignInFormState extends State<SignUpForm> {
                       TextFormField(
                         controller: lastnameController,
                         validator: lastnameError,
-                        decoration: const InputDecoration(
-                          hintText: 'Prénom',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.lastName,
                           helperText: '',
                         ),
                       ),
@@ -107,8 +107,8 @@ class _SignInFormState extends State<SignUpForm> {
                       TextFormField(
                         controller: emailController,
                         validator: validateEmail,
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.email,
                           helperText: '',
                         ),
                       ),
@@ -117,8 +117,8 @@ class _SignInFormState extends State<SignUpForm> {
                         controller: passwordController,
                         validator: passwordError,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: 'Password',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.password,
                           helperText: '',
                         ),
                       ),
@@ -132,8 +132,8 @@ class _SignInFormState extends State<SignUpForm> {
                           return null;
                         },
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: 'Confirm password',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.confirmPassword,
                           helperText: '',
                         ),
                       ),
@@ -160,7 +160,7 @@ class _SignInFormState extends State<SignUpForm> {
                                   ),
                                 }
                               },
-                              child: (state is PostUserLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : const Text('S\'inscrire'),
+                              child: (state is PostUserLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : Text(AppLocalizations.of(context)!.signup),
                             );
                           },
                         )

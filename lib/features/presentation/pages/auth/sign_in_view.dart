@@ -12,7 +12,7 @@ import '../../bloc/oauth/oauth_bloc.dart';
 import '../../bloc/oauth/oauth_event.dart';
 import '../../bloc/oauth/oauth_state.dart';
 import '../../widgets/forms/sign_in_form.dart';
-import '../../widgets/molecules/app_bar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({Key? key}) : super(key: key);
@@ -47,9 +47,9 @@ Widget _buildBody(context) {
                   const SignInForm(),
                   Center(
                     child: Text(
-                      'ou',
-                      style: textTheme.headlineMedium?.copyWith(
-                        color: surfaceColor,
+                      AppLocalizations.of(context)!.or,
+                      style: textTheme.headlineSmall?.copyWith(
+                        color: secondaryTextColor,
                       )
                     ),
                   ),
@@ -117,12 +117,12 @@ Widget _buildBottom(context) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Pas encore de compte ?',
+          AppLocalizations.of(context)!.noAccount,
           style: textTheme.bodyMedium,
         ),
         const SizedBox(width: 8),
         Text(
-          'Inscris-toi !',
+          AppLocalizations.of(context)!.createOne,
           style: textTheme.titleMedium,
         ),
       ],

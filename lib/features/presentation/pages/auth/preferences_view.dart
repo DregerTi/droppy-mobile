@@ -11,6 +11,7 @@ import '../../bloc/user/user_state.dart';
 import '../../widgets/atoms/list_items_widget.dart';
 import '../../widgets/atoms/tile_item_widget.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PreferencesView extends StatelessWidget {
   final UserModel user;
@@ -25,9 +26,9 @@ class PreferencesView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-           const AppBarWidget(
-            leadingIcon: Icon(Icons.arrow_back),
-            title: 'Réglages',
+          AppBarWidget(
+            leadingIcon: const Icon(Icons.arrow_back),
+            title: AppLocalizations.of(context)!.settings,
           ),
           SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
@@ -39,25 +40,31 @@ class PreferencesView extends StatelessWidget {
                     BlocBuilder<UsersBloc , UsersState>(
                       builder: (context, state) {
                         return ListItemsWidget(
-                          title: 'Préférences',
+                          title: AppLocalizations.of(context)!.preferences,
                           children: [
                             TileItemWidget(
-                              title: 'Mon compte',
-                              leadingImageUrl: user.avatar! ?? '',
+                              title: AppLocalizations.of(context)!.myAccount,
+                              leadingImageUrl: user.avatar,
+                              avatar: true,
                               onTap: () {
                                 context.goNamed(
-                                  'my-account',
-                                  extra: {
-                                    'user': user
-                                  }
+                                    'my-account',
+                                    extra: {
+                                      'user': user
+                                    }
                                 );
                               },
                             ),
                             TileItemWidget(
-                              title: 'Partager mon profil',
-                              leadingIcon: const Icon(Icons.share_rounded),
+                              title: AppLocalizations.of(context)!.preferredLanguages,
+                              leadingIcon: const Icon(Icons.language_rounded),
                               onTap: () {
-
+                                context.goNamed(
+                                    'language',
+                                    extra: {
+                                      'user': user
+                                    }
+                                );
                               },
                             ),
                           ],
@@ -65,27 +72,18 @@ class PreferencesView extends StatelessWidget {
                       },
                     ),
                     ListItemsWidget(
-                      title: 'À propos',
+                      title: AppLocalizations.of(context)!.about,
                       children: [
                         TileItemWidget(
-                          title: 'Partager Droppy',
-                          leadingIcon: const Icon(Icons.share_rounded),
-                          onTap: () {
-
-                          },
-                        ),
-                        TileItemWidget(
-                          title: 'Noter Droppy',
-                          leadingIcon: const Icon(Icons.star_rate_rounded),
-                          onTap: () {
-
-                          },
-                        ),
-                        TileItemWidget(
-                          title: 'Conditions Générales d\'Utilisation',
+                          title: 'CGU',
                           leadingIcon: const Icon(Icons.document_scanner),
                           onTap: () {
-
+                            context.goNamed(
+                                'cgu',
+                                extra: {
+                                  'user': user
+                                }
+                            );
                           },
                         ),
                       ],
@@ -103,7 +101,7 @@ class PreferencesView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Se déconnecter',
+                              AppLocalizations.of(context)!.logout,
                               style: textTheme.bodyMedium?.copyWith(
                                   color: errorColor
                               ),
@@ -118,93 +116,6 @@ class PreferencesView extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(BlocProvider.of<UsersBloc>(context).state.me?.avatar ?? 'jkjjkj'),
-            BlocBuilder<UsersBloc , UsersState>(
-              builder: (context, state) {
-                return ListItemsWidget(
-                  title: 'Préférences',
-                  children: [
-                    TileItemWidget(
-                      title: 'Mon compte ${state is MeDone ? BlocProvider.of<UsersBloc>(context).state.me?.firstname : 'fdp'}',
-                      leadingImageUrl: BlocProvider.of<UsersBloc>(context).state.me?.avatar,
-                      onTap: () {
-
-                          context.goNamed('my-account');
-                      },
-                    ),
-                    TileItemWidget(
-                      title: 'Partager mon profil',
-                      leadingIcon: const Icon(Icons.share_rounded),
-                      onTap: () {
-
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-            ListItemsWidget(
-              title: 'À propos',
-              children: [
-                TileItemWidget(
-                  title: 'Partager Droppy',
-                  leadingIcon: const Icon(Icons.share_rounded),
-                  onTap: () {
-
-                  },
-                ),
-                TileItemWidget(
-                  title: 'Noter Droppy',
-                  leadingIcon: const Icon(Icons.star_rate_rounded),
-                  onTap: () {
-
-                  },
-                ),
-                TileItemWidget(
-                  title: 'Conditions Générales d\'Utilisation',
-                  leadingIcon: const Icon(Icons.document_scanner),
-                  onTap: () {
-
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 28),
-            GestureDetector(
-              onTap: () => _signOut(context),
-              child: Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: surfaceColor,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Se déconnecter',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: errorColor
-                        ),
-                      ),
-                    ],
-                  ),
-              ),
-            ),
-          ],
-        ),
-      )
     );
   }
 }

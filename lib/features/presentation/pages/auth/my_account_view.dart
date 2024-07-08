@@ -38,7 +38,7 @@ class MyAccountView extends StatelessWidget {
                       title: 'Mes informations',
                       children: [
                         TileItemWidget(
-                          title: '${user.firstname} ${user.lastname}',
+                          title: '${user.username}',
                           leadingImageUrl: user.avatar ?? '',
                         ),
                         TileItemWidget(

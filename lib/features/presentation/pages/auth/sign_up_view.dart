@@ -9,7 +9,7 @@ import '../../bloc/oauth/oauth_bloc.dart';
 import '../../bloc/oauth/oauth_event.dart';
 import '../../bloc/oauth/oauth_state.dart';
 import '../../widgets/forms/sign_up_form.dart';
-import '../../widgets/molecules/app_bar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -39,41 +39,17 @@ Widget _buildBody(context) {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top:40, left: 20, right: 20),
+              padding: const EdgeInsets.only(top:20, left: 20, right: 20),
               child: Column(
                 children: [
-                  SvgPicture.asset(
-                    'lib/assets/images/logo.svg',
-                    height: 45,
-                  ),
-                  const SizedBox(height: 20),
                   const SignUpForm(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Expanded(
-                        child: Divider(
-                          color: secondaryTextColor,
-                          height: 3,
-                          indent: 24,
-                          endIndent: 10,
-                        ),
-                      ),
-                      Text(
-                        'ou',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: secondaryTextColor,
-                        )
-                      ),
-                      const Expanded(
-                        child: Divider(
-                          color: secondaryTextColor,
-                          height: 3,
-                          indent: 10,
-                          endIndent: 24,
-                        ),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.or,
+                      style: textTheme.headlineSmall?.copyWith(
+                        color: secondaryTextColor,
                       )
-                    ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40, bottom: 0, left: 40, right: 40),

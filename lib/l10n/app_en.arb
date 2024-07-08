@@ -1,0 +1,270 @@
+{
+    "helloWorld": "Hello World",
+    "@helloWorld": {
+        "description": "A simple hello world message."
+    },
+    "fr": "French",
+    "@fr": {
+        "description": "Fr language"
+    },
+    "en": "English",
+    "@en": {
+        "description": "En language"
+    },
+    "es": "Spanish",
+    "@es": {
+        "description": "Es language"
+    },
+    "de": "German",
+    "@de": {
+        "description": "De language"
+    },
+    "it": "Italian",
+    "@it": {
+        "description": "It language"
+    },
+    "pt": "Portuguese",
+    "@pt": {
+        "description": "Pt language"
+    },
+    "ar": "Arabic",
+    "@ar": {
+        "description": "Ar language"
+    },
+    "hi": "Hindi",
+    "@hi": {
+        "description": "Hi language"
+    },
+    "zh": "Chinese",
+    "@zh": {
+        "description": "Zh language"
+    },
+    "searchPlaceholder": "Where are you?",
+    "@searchPlaceholder": {
+        "description": "Placeholder text for search input field."
+    },
+    "chooseYourLanguage": "Choose your language",
+    "@chooseYourLanguage": {
+        "description": "Prompt for selecting a language."
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Button text for saving changes."
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Button text for cancelling an action."
+    },
+    "useMyLocation": "Use my location",
+    "@useMyLocation": {
+        "description": "Button text for using the user's current location."
+    },
+    "addPicture": "Add picture",
+    "@addPicture": {
+        "description": "Button text for adding a picture."
+    },
+    "title": "Title",
+    "@title": {
+        "description": "Label for the title input field."
+    },
+    "description": "Description",
+    "@description": {
+        "description": "Label for the description input field."
+    },
+    "address": "Address",
+    "@address": {
+        "description": "Label for the address input field."
+    },
+    "setDescriptionTitle": "Any additional information to add?",
+    "@setDescriptionTitle": {
+        "description": "Prompt for adding additional information."
+    },
+    "setDescriptionPlaceholder": "Add a description...",
+    "@setDescriptionPlaceholder": {
+        "description": "Placeholder text for description input field."
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Label for the settings section."
+    },
+    "share": "Share",
+    "@share": {
+        "description": "Button text for sharing."
+    },
+    "myAccount": "My Account",
+    "@myAccount": {
+        "description": "Label for the my account section."
+    },
+    "preferredLanguages": "Language",
+    "@preferredLanguages": {
+        "description": "Label for selecting preferred languages."
+    },
+    "logout": "Logout",
+    "@logout": {
+        "description": "Button text for logging out."
+    },
+    "preferences": "Preferences",
+    "@preferences": {
+        "description": "Label for the preferences section."
+    },
+    "about": "About",
+    "@about": {
+        "description": "Label for the about section."
+    },
+    "myInformations": "My Information",
+    "@myInformations": {
+        "description": "Label for the my information section."
+    },
+    "email": "Email",
+    "@email": {
+        "description": "Label for the email input field."
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Label for the password input field."
+    },
+    "confirmPassword": "Confirm Password",
+    "@confirmPassword": {
+        "description": "Label for the confirm password input field."
+    },
+    "login": "Login",
+    "@login": {
+        "description": "Button text for login."
+    },
+    "signup": "Sign Up",
+    "@signup": {
+        "description": "Button text for sign up."
+    },
+    "or": "or",
+    "@or": {
+        "description": "Text indicating 'or'."
+    },
+    "forgotPassword": "Forgot your password?",
+    "@forgotPassword": {
+        "description": "Link text for forgot password."
+    },
+    "findHelpHere": "Find help here",
+    "@findHelpHere": {
+        "description": "Text indicating finding help."
+    },
+    "noAccount": "No account?",
+    "@noAccount": {
+        "description": "Text indicating no account."
+    },
+    "createOne": "Create one",
+    "@createOne": {
+        "description": "Button text for creating an account."
+    },
+    "alreadyHaveAnAccount": "Already have an account?",
+    "@alreadyHaveAnAccount": {
+        "description": "Text indicating already having an account."
+    },
+    "signIn": "Sign in",
+    "@signIn": {
+        "description": "Button text for signing in."
+    },
+    "linkedAccounts": "Linked Accounts",
+    "@linkedAccounts": {
+        "description": "Label for the linked accounts section."
+    },
+    "updateMyInformations": "Update Information",
+    "@updateMyInformations": {
+        "description": "Button text for updating information."
+    },
+    "deleteMyAccount": "Delete my account",
+    "@deleteMyAccount": {
+        "description": "Button text for deleting account."
+    },
+    "memberSince": "Member since",
+    "@memberSince": {
+        "description": "Label for member since information."
+    },
+    "firstName": "First Name",
+    "@firstName": {
+        "description": "Label for the first name input field."
+    },
+    "lastName": "Last Name",
+    "@lastName": {
+        "description": "Label for the last name input field."
+    },
+    "titleMustBeBetween5And140Characters": "The title must be between 5 and 140 characters",
+    "@titleMustBeBetween5And140Characters": {
+        "description": "Validation message for the title length."
+    },
+    "requiredField": "Required field",
+    "@requiredField": {
+        "description": "Validation message for a required field."
+    },
+    "descriptionMustBeBetween5And600CharactersOrEmpty": "The description must be between 5 and 600 characters or empty",
+    "@descriptionMustBeBetween5And600CharactersOrEmpty": {
+        "description": "Validation message for the description length."
+    },
+    "photos": "Photos",
+    "@photos": {
+        "description": "Label for the photos section."
+    },
+    "addComment": "Add comment",
+    "@addComment": {
+        "description": "Button text for adding a comment."
+    },
+    "commentMustBeBetween3And250CharactersOrEmpty": "The comment must be between 3 and 250 characters or empty",
+    "@commentMustBeBetween3And250CharactersOrEmpty": {
+        "description": "Validation message for the comment length."
+    },
+    "reportComment": "Report comment",
+    "@reportComment": {
+        "description": "Button text for reporting a comment."
+    },
+    "yourMessage": "Your message...",
+    "@yourMessage": {
+        "description": "Placeholder text for user message input."
+    },
+    "anErrorOccurredPleaseRetry": "An error occurred, please retry",
+    "@anErrorOccurredPleaseRetry": {
+        "description": "Message indicating an error occurred and prompting to retry."
+    },
+    "retry": "Retry",
+    "@retry": {
+        "description": "Button text for retrying an action."
+    },
+    "commentAddError": "Error adding comment",
+    "@commentAddError": {
+        "description": "An error occurred while adding a comment."
+    },
+    "loadingError": "Error loading",
+    "@loadingError": {
+        "description": "An error occurred while loading."
+    },
+    "reportingError": "Error reporting",
+    "@reportingError": {
+        "description": "An error occurred while reporting."
+    },
+    "issueReportingError": "Error reporting issue",
+    "@issueReportingError": {
+        "description": "An error occurred while reporting the issue."
+    },
+    "passwordResetRequestError": "Error requesting password reset",
+    "@passwordResetRequestError": {
+        "description": "An error occurred while requesting password reset."
+    },
+    "accountUpdateError": "Error updating your account",
+    "@accountUpdateError": {
+        "description": "An error occurred while updating your account."
+    },
+    "signupError": "Error signing up",
+    "@signupError": {
+        "description": "An error occurred during sign up."
+    },
+    "signupSuccess": "Sign up successful",
+    "@signupSuccess": {
+        "description": "Successful sign up message."
+    },
+    "confirmationEmailSent": "A confirmation email has been sent to the following address:",
+    "@confirmationEmailSent": {
+        "description": "Notification that a confirmation email has been sent."
+    },
+    "issueReportedSuccessfully": "The issue has been reported successfully. Thank you!",
+    "@issueReportedSuccessfully": {
+        "description": "Confirmation message that the issue has been successfully reported."
+    }
+}
