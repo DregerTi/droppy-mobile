@@ -54,7 +54,7 @@ class _AccountViewState extends State<AccountView> {
                           return
                             ItemHeader(
                               imageUrl: widget.userId != null ? state.user!.avatar : state.me?.avatar,
-                              title: widget.userId != null ? '${state.user?.firstname} ${state.user?.lastname}' : '${state.me?.firstname} ${state.me?.lastname}',
+                              title: widget.userId != null ? '${state.user?.username}' : '${state.me?.username}',
                             );
                         }
                         return Column(

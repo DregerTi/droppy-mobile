@@ -42,10 +42,12 @@ void snackBarWidget({
                 color: Colors.white,
               ),
             if (isIcon != null) const SizedBox(width: 10),
-            Text(
-              message,
-              style: textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
+            Expanded(
+              child: Text(
+                message,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

@@ -60,9 +60,6 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final httpResponse = await _authApiService.authOAuthToken(params);
 
-
-      print(httpResponse.response.statusCode == HttpStatus.ok);
-
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {

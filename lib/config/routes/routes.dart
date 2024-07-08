@@ -39,6 +39,21 @@ class AppRoutes{
         name: 'animated-splash-screen',
         builder: (context, state) => const AnimatedSplashScreenView()
       ),
+      GoRoute(
+        path: '/sign-in',
+        name: 'sign-in',
+        builder: (context, state) => const SignInView(),
+      ),
+      GoRoute(
+        path: '/sign-up',
+        name: 'sign-up',
+        builder: (context, state) => const SignUpView(),
+      ),
+      GoRoute(
+        path: '/forget-password',
+        name: 'forget-password',
+        builder: (context, state) => const SignInView(),
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) => Scaffold(
@@ -92,7 +107,6 @@ class AppRoutes{
                 name: 'feed-drop-report',
                 builder: (context, state) => AddDropReportView(dropId: state.pathParameters['dropId'] ?? ''),
               ),
-
               GoRoute(
                   redirect: (context, state) {
                     if(BlocProvider.of<AuthBloc>(context).state is !AuthDone){
@@ -180,11 +194,6 @@ class AppRoutes{
                   ]
               ),
               GoRoute(
-                  redirect: (context, state) {
-                    if(BlocProvider.of<AuthBloc>(context).state is !AuthDone){
-                      return '/sign-in';
-                    }
-                  },
                   path: 'account',
                   name: 'account',
                   builder: (context, state) => const AccountView(),
@@ -236,25 +245,6 @@ class AppRoutes{
                     ),
                   ]
               ),
-
-              GoRoute(
-                parentNavigatorKey: _rootNavigatorKey,
-                path: 'sign-in',
-                name: 'sign-in',
-                builder: (context, state) => const SignInView(),
-              ),
-              GoRoute(
-                parentNavigatorKey: _rootNavigatorKey,
-                path: 'sign-up',
-                name: 'sign-up',
-                builder: (context, state) => const SignUpView(),
-              ),
-              GoRoute(
-                parentNavigatorKey: _rootNavigatorKey,
-                path: 'forgot-password',
-                name: 'forgot-password',
-                builder: (context, state) => const SignInView(),
-              )
             ]
           ),
         ]

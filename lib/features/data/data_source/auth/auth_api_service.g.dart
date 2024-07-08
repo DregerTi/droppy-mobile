@@ -104,11 +104,8 @@ class _AuthApiService implements AuthApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    print(_result.data!);
     final value = AuthModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
-    print(value);
-    print(httpResponse);
     return httpResponse;
   }
 

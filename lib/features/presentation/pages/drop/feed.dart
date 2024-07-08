@@ -1,7 +1,5 @@
 import 'package:droppy/config/theme/color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +23,7 @@ class Feed extends HookWidget {
         picturePath: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         user: UserModel(
           id: 1,
-          firstname: 'John',
+          username: 'John',
           avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         ),
       ),
@@ -35,7 +33,7 @@ class Feed extends HookWidget {
         picturePath: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         user: UserModel(
           id: 2,
-          firstname: 'Jane',
+          username: 'Jane',
           avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         ),
       ),
@@ -45,7 +43,7 @@ class Feed extends HookWidget {
         picturePath: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         user: UserModel(
           id: 3,
-          firstname: 'Jack',
+          username: 'Jack',
           avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
         )
       ),

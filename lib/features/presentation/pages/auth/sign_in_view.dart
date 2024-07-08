@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -61,8 +60,6 @@ Widget _buildBody(context) {
                         BlocConsumer<OAuthBloc, OAuthState>(
                           listener: (context, state) {
                             if (state is OAuthDone) {
-                              print(state.auth!);
-                              print('OAuthDone');
                               context.read<AuthBloc>().add(
                                 OAuthAuthenticate(state.auth!),
                               );
@@ -84,7 +81,7 @@ Widget _buildBody(context) {
                             );
                           },
                         ),
-                        const SizedBox(width: 16),
+                        if (Theme.of(context).platform == TargetPlatform.iOS) const SizedBox(width: 16),
                         IconButton(
                           padding: const EdgeInsets.all(12),
                           icon: SvgPicture.asset(

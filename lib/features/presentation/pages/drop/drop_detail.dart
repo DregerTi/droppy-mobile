@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../injection_container.dart';
 import '../../../../config/theme/color.dart';
-import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/drop/drop_bloc.dart';
 import '../../bloc/drop/drop_event.dart';
 import '../../bloc/drop/drop_state.dart';
@@ -134,7 +131,7 @@ class DropDetailsView extends HookWidget {
               children: [
                 Comment(
                   profilePicture: BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.avatar ?? '',
-                  username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.firstname} ${BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.lastname}',
+                  username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.username}',
                   message: BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.content ?? '',
                 ),
               ],
@@ -160,7 +157,7 @@ class DropDetailsView extends HookWidget {
                 }
               },
               profilePicture: BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.avatar ?? '',
-              username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.firstname} ${BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.lastname}',
+              username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.username}',
               message: BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].content ?? '',
             );
           },

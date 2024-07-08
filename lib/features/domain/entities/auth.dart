@@ -4,14 +4,14 @@ class AuthEntity extends Equatable {
   final String ? token;
   final String ? refreshToken;
   final int ? id;
-  final List<dynamic> ? roles;
+  final String ? role;
   final String ? username;
 
   const AuthEntity({
     this.token,
     this.refreshToken,
     this.id,
-    this.roles,
+    this.role,
     this.username
   });
 
@@ -21,7 +21,7 @@ class AuthEntity extends Equatable {
       token,
       refreshToken,
       id,
-      roles,
+      role,
       username
     ];
   }

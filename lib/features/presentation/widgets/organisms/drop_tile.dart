@@ -18,7 +18,7 @@ class DropTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
       child: Stack(
         children: [
@@ -28,42 +28,38 @@ class DropTileWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
           ),
-          Positioned(
-            top: 0,
-            height: 0,
+          Container(
+            height: 50,
             width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: backgroundColor.withOpacity(0.5),
+                  spreadRadius: 60,
+                  blurRadius: 60,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
             child: Container(
-              height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
-              child: Column(
-                children: [
-                  Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: errorColor.withOpacity(0.6),
-                          spreadRadius: 60,
-                          blurRadius: 40,
-                        ),
-                      ],
-                    ),
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: backgroundColor.withOpacity(0.5),
+                    spreadRadius: 60,
+                    blurRadius: 60,
                   ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: backgroundColor,
-                    ),
-                  ),
-                  Text('jkjkkj'),
                 ],
               ),
             ),
           ),
           Positioned(
             top: 0,
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +81,7 @@ class DropTileWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        drop!.user!.firstname ?? '',
+                        drop!.user!.username ?? '',
                         style: textTheme.titleMedium,
                       ),
                     ],

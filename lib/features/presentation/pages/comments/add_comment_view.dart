@@ -7,7 +7,7 @@ import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/comment/remote/comment_bloc.dart';
 import '../../bloc/comment/remote/comment_event.dart';
 import '../../bloc/comment/remote/comment_state.dart';
-import '../../widgets/atoms/snackBar.dart';
+import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/molecules/action_bar.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 

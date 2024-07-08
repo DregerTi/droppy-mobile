@@ -6,7 +6,7 @@ import '../../../../../injection_container.dart';
 import '../../bloc/report/report_bloc.dart';
 import '../../bloc/report/report_event.dart';
 import '../../bloc/report/report_state.dart';
-import '../../widgets/atoms/snackBar.dart';
+import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/molecules/action_bar.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 

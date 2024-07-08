@@ -4,8 +4,6 @@ class UserEntity extends Equatable {
   final int ? id;
   final String ? email;
   final String ? avatar;
-  final String ? firstname;
-  final String ? lastname;
   final List ? roles;
   final String ? username;
   final String ? provider;
@@ -16,8 +14,6 @@ class UserEntity extends Equatable {
     this.id,
     this.email,
     this.avatar,
-    this.firstname,
-    this.lastname,
     this.roles,
     this.username,
     this.provider,
@@ -31,8 +27,6 @@ class UserEntity extends Equatable {
       id,
       email,
       avatar,
-      firstname,
-      lastname,
       roles,
       username,
       provider,

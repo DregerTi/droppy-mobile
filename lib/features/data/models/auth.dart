@@ -7,13 +7,13 @@ class AuthModel extends AuthEntity {
     String ? token,
     String ? refreshToken,
     int ? id,
-    List<dynamic> ? roles,
+    String ? role,
     String ? username
   }) : super(
     token: token,
     refreshToken: refreshToken,
     id: id,
-    roles: roles,
+    role: role,
     username: username
   );
 
@@ -29,7 +29,7 @@ class AuthModel extends AuthEntity {
       token: map['jwtToken'] ?? "",
       refreshToken: map['refreshToken'] ?? "",
       id: decodedToken['ID'] ?? 0,
-      roles: decodedToken['roles'] ?? "",
+      role: decodedToken['role'] ?? "",
       username: decodedToken['username'] ?? "",
     );
   }
@@ -39,7 +39,7 @@ class AuthModel extends AuthEntity {
       token: entity.token,
       refreshToken: entity.refreshToken,
       id: entity.id,
-      roles: entity.roles,
+      role: entity.role,
       username: entity.username
     );
   }

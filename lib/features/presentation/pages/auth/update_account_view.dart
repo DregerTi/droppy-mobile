@@ -25,27 +25,18 @@ class UpdateAccountView extends StatefulWidget {
 
 class _UpdateAccountViewState extends State<UpdateAccountView> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController firstnameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   String activeElement = 'main';
 
   @override
   initState() {
-    firstnameController.text = widget.user.firstname!;
-    lastnameController.text = widget.user.lastname!;
+    usernameController.text = widget.user.username!;
     super.initState();
   }
 
-  String? fistnameError(String? value) {
+  String? usernameError(String? value) {
     if (value!.length < 2 || value.length > 50) {
-      return 'Le prénom doit être compris entre 2 et 50 caractères';
-    }
-    return null;
-  }
-
-  String? lastnameError(String? value) {
-    if (value!.length < 2 || value.length > 50) {
-      return 'Le nom doit être compris entre 2 et 50 caractères';
+      return 'Le username doit être compris entre 2 et 50 caractères';
     }
     return null;
   }
@@ -96,19 +87,10 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormField(
-                              controller: firstnameController,
-                              validator: fistnameError,
+                              controller: usernameController,
+                              validator: usernameError,
                               decoration: const InputDecoration(
-                                hintText: 'Nom',
-                                helperText: '',
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            TextFormField(
-                              controller: lastnameController,
-                              validator: lastnameError,
-                              decoration: const InputDecoration(
-                                hintText: 'Prénom',
+                                hintText: 'Username',
                                 helperText: '',
                               ),
                             ),
@@ -156,8 +138,7 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                             {
                               'id': widget.user.id,
                               "user" : {
-                                'firstname': firstnameController.text,
-                                'lastname': lastnameController.text,
+                                'username': usernameController.text,
                               }
                             }
                           )

@@ -42,18 +42,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await prefs.setString('jwtToken', dataState.data!.token ?? '');
       await prefs.setString('refreshToken', dataState.data!.refreshToken ?? '');
       await prefs.setInt('id', decodedToken['sub'] ?? 1);
-      await prefs.setStringList('roles',decodedToken['roles'] != null ? List<String>.from(decodedToken['roles']) : []);
+      await prefs.setString('role',decodedToken['role'] ?? '');
       await prefs.setString('username', decodedToken['username'] ?? '');
 
       AuthEntity auth = AuthEntity(
           token: dataState.data!.token ?? '',
           refreshToken: dataState.data!.refreshToken ?? '',
           id: decodedToken['sub'] ?? 1,
-          roles: decodedToken['roles'] != null ? List<String>.from(decodedToken['roles']) : [],
+          role: decodedToken['role'] ?? '',
           username: decodedToken['username'] ?? ''
       );
-
-
 
       emit(
           AuthDone(auth)
@@ -77,20 +75,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       decodedToken = JwtDecoder.decode(event.auth.token ?? '');
     }
 
-    print( decodedToken['sub']);
-
     await prefs.setString('jwtToken', event.auth.token ?? '');
     await prefs.setString('refreshToken', event.auth.refreshToken ?? '');
     await prefs.setInt('id', decodedToken['sub'] ?? 0);
-    await prefs.setStringList('roles',decodedToken['roles'] != null ? List<String>.from(decodedToken['roles']) : []);
+    await prefs.setString('role',decodedToken['role'] ?? '');
     await prefs.setString('username', decodedToken['username'] ?? '');
 
-    AuthEntity auth = AuthEntity(
+    final auth = AuthEntity(
         token: event.auth.token ?? '',
         refreshToken: event.auth.refreshToken ?? '',
-        id: decodedToken['sub'] ?? 1,
-        roles: decodedToken['roles'] != null ? List<String>.from(decodedToken['roles']) : [],
-        username: decodedToken['username'] ?? ''
+        id: decodedToken['sub'] ?? 0,
+        role: decodedToken['role'] ?? '',
     );
 
     emit(
@@ -115,7 +110,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await prefs.setString('jwtToken', dataState.data!.token ?? '');
       await prefs.setString('refreshToken', dataState.data!.refreshToken ?? '');
       await prefs.setInt('id', decodedToken['sub'] ?? 0);
-      await prefs.setStringList('roles',decodedToken['roles'] != null ? List<String>.from(decodedToken['roles']) : []);
+      await prefs.setString('role',decodedToken['role'] ?? '');
       await prefs.setString('username', decodedToken['username'] ?? '');
 
       emit(
