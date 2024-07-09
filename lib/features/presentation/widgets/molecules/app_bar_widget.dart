@@ -45,7 +45,7 @@ class AppBarWidget extends StatelessWidget {
                     style: iconButtonThemeData.style?.copyWith(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80),
+                          borderRadius: BorderRadius.circular(14),
                         ),
                       ),
                     ),
@@ -65,7 +65,7 @@ class AppBarWidget extends StatelessWidget {
                       style: iconButtonThemeData.style?.copyWith(
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                       ),
@@ -77,7 +77,7 @@ class AppBarWidget extends StatelessWidget {
                       style: iconButtonThemeData.style?.copyWith(
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                       ),

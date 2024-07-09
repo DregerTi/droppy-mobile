@@ -23,7 +23,7 @@ class LangBloc extends Bloc<LangEvent, LangState> {
 
     await prefs.setString('lang', lang);
 
-    if (!AppLocalizations.supportedLocales.contains(Locale(lang!))){
+    if (!AppLocalizations.supportedLocales.contains(Locale(lang))){
       lang = 'en';
     }
 

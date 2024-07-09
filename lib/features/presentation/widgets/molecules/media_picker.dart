@@ -62,7 +62,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
     return mediaEntities?.map((media) {
       return MediaPickerItemEntity(
         assetEntity: AssetEntity(
-          id: media ?? '',
+          id: media,
           typeInt: 1,
           width: 100,
           height: 100,

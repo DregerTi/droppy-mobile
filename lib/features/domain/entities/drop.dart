@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:droppy/features/data/models/user.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/models/content_type.dart';

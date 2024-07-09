@@ -15,6 +15,6 @@ final SnackBarThemeData snackBarThemeData = SnackBarThemeData(
   elevation: 0,
   behavior: SnackBarBehavior.floating,
   shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(8),
+    borderRadius: BorderRadius.circular(16),
   ),
 );

@@ -19,7 +19,7 @@ final ChipThemeData chipThemeData = ChipThemeData(
     side: const BorderSide(
       style: BorderStyle.none,
     ),
-    borderRadius: BorderRadius.circular(8),
+    borderRadius: BorderRadius.circular(16),
   ),
   brightness: Brightness.light,
   elevation: 0,

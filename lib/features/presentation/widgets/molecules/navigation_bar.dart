@@ -47,9 +47,9 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
           selectedIcon: Icon(Icons.home_rounded, color: primaryColor, size: 30,),
         ),
         NavigationDestination(
-          icon: Icon(Icons.map_rounded, size: 28,),
+          icon: Icon(Icons.explore_rounded, size: 28,),
           label: '',
-          selectedIcon: Icon(Icons.map_rounded, color: primaryColor, size: 30,),
+          selectedIcon: Icon(Icons.explore_rounded, color: primaryColor, size: 30,),
         ),
         NavigationDestination(
           icon: Icon(Icons.group_rounded, size: 28,),

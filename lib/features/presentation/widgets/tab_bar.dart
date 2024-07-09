@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({
-    Key? key,
+    super.key,
     required this.tabs,
-  }) : super(key: key);
+  });
 
   final List<Tab> tabs;
 

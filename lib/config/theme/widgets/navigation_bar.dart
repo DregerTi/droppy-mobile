@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../color.dart';
 
 final NavigationBarThemeData navigationBarThemeData = NavigationBarThemeData(
-  indicatorColor: Colors.white.withOpacity(0),
-  shadowColor: Colors.white.withOpacity(0),
+  indicatorColor: backgroundColor.withOpacity(0),
+  shadowColor: backgroundColor.withOpacity(0.8),
   height: 50,
-  backgroundColor: backgroundColor,
+  backgroundColor: backgroundColor.withOpacity(0),
   elevation: 0,
   iconTheme: const MaterialStatePropertyAll(
     IconThemeData(

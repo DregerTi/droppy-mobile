@@ -58,7 +58,7 @@ class Comment extends StatelessWidget {
                 imageUrl: profilePicture ?? '',
                 width: 40,
                 height: 40,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(16),
                 fit: BoxFit.fitWidth,
               ),
               const SizedBox(width: 10),

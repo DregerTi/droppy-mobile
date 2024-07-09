@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../config/theme/color.dart';
-import '../../../../../injection_container.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../../../domain/entities/form_section_item.dart';
 import '../../../domain/entities/media_picker_item.dart';
@@ -109,7 +108,7 @@ class _AddDropViewState extends State<AddDropView> {
                   child: ActionBar(
                     leadingText: 'Enregistrer',
                     leadingOnPressed: () async {
-                      final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.originFile!)!.path);
+                      final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.originFile)!.path);
 
                       context.read<DropsBloc>().add(PostDrop({
                         'description': descriptionController.text,

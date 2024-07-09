@@ -6,11 +6,11 @@ const InputDecorationTheme inputDecorationThemeData = InputDecorationTheme(
   fillColor: surfaceColor,
   filled: true,
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
     borderSide: BorderSide.none,
   ),
   floatingLabelBehavior: FloatingLabelBehavior.never,
-  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
   labelStyle: TextStyle(
     color: textColor,
     fontSize: 14,

@@ -12,14 +12,14 @@ class TileItemWidget extends StatelessWidget {
   final bool? avatar;
 
   const TileItemWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.leadingImageUrl,
     this.onTap,
     this.leadingIcon,
     this.avatar = false
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,10 @@ class TileItemWidget extends StatelessWidget {
               imageUrl: leadingImageUrl!,
               width: 26,
               height: 26,
-              borderRadius: BorderRadius.circular(26),
+              borderRadius: BorderRadius.circular(16),
             ),
             if (leadingImageUrl == null && avatar == true) ClipRRect(
-              borderRadius: BorderRadius.circular(26),
+              borderRadius: BorderRadius.circular(16),
               child: SvgPicture.asset(
                 'lib/assets/images/avatar.svg',
                 height: 26,

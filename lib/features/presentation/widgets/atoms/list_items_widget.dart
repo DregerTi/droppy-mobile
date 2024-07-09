@@ -8,10 +8,10 @@ class ListItemsWidget extends StatelessWidget {
   final String? title;
 
   const ListItemsWidget({
-    Key? key,
+    super.key,
     this.title,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ListItemsWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
             color: surfaceColor,
           ),
           child: ListView.separated(

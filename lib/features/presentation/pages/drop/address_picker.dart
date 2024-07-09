@@ -45,6 +45,7 @@ class _AddressPickerState extends State<AddressPicker> {
 
   @override
   void dispose() {
+    super.dispose();
     mapController.dispose();
     alignPositionStreamController.close();
     debounce?.cancel();

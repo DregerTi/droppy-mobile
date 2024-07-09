@@ -14,12 +14,12 @@ InputDecoration inputDecoration(
       filled: true,
       suffixIcon: suffixIcon,
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: 10,
+        horizontal: 16,
         vertical: 10,
       ),
       border: OutlineInputBorder(
         borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
       ),
       errorBorder: const OutlineInputBorder(
         borderSide: BorderSide(

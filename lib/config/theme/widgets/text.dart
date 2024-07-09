@@ -61,7 +61,7 @@ const TextTheme textTheme = TextTheme(
   titleSmall: TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.bold,
-    color: onSurfaceColor,
+    color: textColor,
   ),
   labelLarge: TextStyle
   (
@@ -75,9 +75,9 @@ const TextTheme textTheme = TextTheme(
     color: secondaryTextColor,
   ),
   labelSmall: TextStyle(
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: FontWeight.bold,
-    color: secondaryTextColor,
+    color: textColor,
   ),
   
 );
