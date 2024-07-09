@@ -7,9 +7,12 @@ import '../../../domain/entities/media_picker_item.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_event.dart';
 import '../../bloc/user/user_state.dart';
+import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/molecules/action_bar.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/molecules/media_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateAccountView extends StatefulWidget {
   final UserModel user;
@@ -28,15 +31,24 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
   TextEditingController usernameController = TextEditingController();
   String activeElement = 'main';
 
+  List<MediaPickerItemEntity> selectedMedias = [];
+
   @override
   initState() {
     usernameController.text = widget.user.username!;
     super.initState();
   }
 
-  String? usernameError(String? value) {
+  String? fistnameError(String? value) {
     if (value!.length < 2 || value.length > 50) {
-      return 'Le username doit être compris entre 2 et 50 caractères';
+      return 'Le prénom doit être compris entre 2 et 50 caractères';
+    }
+    return null;
+  }
+
+  String? lastnameError(String? value) {
+    if (value!.length < 2 || value.length > 50) {
+      return 'Le nom doit être compris entre 2 et 50 caractères';
     }
     return null;
   }
@@ -53,103 +65,128 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const AppBarWidget(
-                      leadingIcon: Icon(Icons.arrow_back),
-                      title: 'Mon compte',
+                    Visibility(
+                      visible: activeElement == 'main',
+                      child: AppBarWidget(
+                        leadingIcon: const Icon(Icons.arrow_back),
+                        title: AppLocalizations.of(context)!.myAccount,
+                      ),
                     ),
-                    const SizedBox(height: 32),
+                    Visibility(
+                        visible: activeElement == 'main',
+                        child: const SizedBox(height: 32)
+                    ),
                     MediaPickerWidget(
                       setSelectedMedias: (value) {
-                        /*setState(() {
+                        setState(() {
                           selectedMedias = value;
-                        });*/
+                        });
                       },
                       maxMedias: 1,
                       activeElement: activeElement,
-                      selectedMedias: [
-                        MediaPickerItemEntity(
-                          widget: Image.network(widget.user.avatar! ?? ''),
-                        )
-                      ],
+                      selectedMedias: selectedMedias,
+                      initialMediaEntities: widget.user.avatar != null ? [widget.user.avatar!] : null,
                       setActiveElement: (value) {
                         setState(() {
                           activeElement = value;
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
-                      child: Form(
-                        key: formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextFormField(
-                              controller: usernameController,
-                              validator: usernameError,
-                              decoration: const InputDecoration(
-                                hintText: 'Username',
-                                helperText: '',
+                    if (activeElement == 'main') const SizedBox(height: 20),
+                    if (activeElement == 'main') Padding(
+                        padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                        child: Form(
+                          key: formKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextFormField(
+                                controller: usernameController,
+                                validator: fistnameError,
+                                decoration: InputDecoration(
+                                  hintText: AppLocalizations.of(context)!.lastName,
+                                  helperText: '',
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                          ],
-                        ),
-                      )
+                              const SizedBox(height: 4),
+                            ],
+                          ),
+                        )
                     ),
                   ],
                 ),
               )
           ),
-          Positioned(
+          if (activeElement == 'main')  Positioned(
             bottom: 0,
             right: 0,
             left: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: backgroundColor,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10,
-                    spreadRadius: 10,
+                    color: textColor.withOpacity(0.1),
+                    blurRadius: 20,
+                    spreadRadius: 1,
                   ),
                 ],
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(26),
                   topRight: Radius.circular(26),
                 ),
               ),
               child: BlocConsumer<UsersBloc, UsersState>(
                 builder: (context, state) {
-                  if(state is PatchUserDone) {
-                    context.goNamed('my-account');
-                  }
                   return ActionBar(
-                    leadingText: (state is PatchUserLoading) ? null : 'Enregistrer',
-                    leadingWidget: (state is PatchUserLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : null,
-                    leadingOnPressed: () {
-                      if(formKey.currentState!.validate()){
-                        context.read<UsersBloc>().add(
-                          PatchUser(
-                            {
+                      leadingText: (state is PatchUserLoading) ? null : AppLocalizations.of(context)!.save,
+                      leadingWidget: (state is PatchUserLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : null,
+                      leadingOnPressed: () async {
+                        if(formKey.currentState!.validate()){
+
+                          var data = {
+                            "patchUser": {
                               'id': widget.user.id,
                               "user" : {
                                 'username': usernameController.text,
                               }
                             }
-                          )
-                        );
+                          };
+
+                          MultipartFile? updatePicture;
+                          if(selectedMedias != [] && selectedMedias.isNotEmpty){
+                            updatePicture = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file)!.path);
+                            data['updatePicture'] = {
+                              'id': widget.user.id,
+                              'user': {
+                                'updatePicture': updatePicture
+                              }
+                            };
+                          }
+
+                          context.read<UsersBloc>().add(
+                              PatchUser(data)
+                          );
+                        }
                       }
-                    }
                   );
                 },
                 listener: (BuildContext context, UsersState state) {
                   if(state is PatchUserDone) {
-                    context.goNamed('my-account');
+                    snackBarWidget(
+                      message: 'Votre compte a été mis à jour',
+                      context: context,
+                    );
+                    context.goNamed('account');
+                  }
+                  if(state is PatchUserError) {
+                    snackBarWidget(
+                      message: AppLocalizations.of(context)!.accountUpdateError,
+                      context: context,
+                      type: 'error',
+                    );
                   }
                 },
               ),
@@ -159,9 +196,4 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
       ),
     );
   }
-}
-
-
-void _signOut(BuildContext context) {
-  context.go('/');
 }
