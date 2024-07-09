@@ -12,6 +12,7 @@ class UserModel extends UserEntity {
     String ? provider,
     String ? phoneNumber,
     String ? bio,
+    List<dynamic> ? origin
   }) : super(
     id: id,
     email: email,
@@ -20,19 +21,21 @@ class UserModel extends UserEntity {
     username: username,
     provider: provider,
     phoneNumber: phoneNumber,
-    bio: bio
+    bio: bio,
+    origin: origin
   );
   
   factory UserModel.fromJson(Map<String, dynamic >map) {
     return UserModel(
       id: map['ID'] ?? "",
       email: map['Email'] ?? "",
-      avatar: map['Avatar'] ?? "",
+      avatar: map['Avatar'],
       roles: map['roles'] ?? [],
       username: map['Username'] ?? "",
       provider: map['Provider'] ?? "",
       phoneNumber: map['PhoneNumber'] ?? "",
       bio: map['Bio'] ?? "",
+      origin: map['origin'] ?? []
     );
   }
 
@@ -45,7 +48,8 @@ class UserModel extends UserEntity {
       username: entity.username,
       provider: entity.provider,
       phoneNumber: entity.phoneNumber,
-      bio: entity.bio
+      bio: entity.bio,
+      origin: entity.origin
     );
   }
 }

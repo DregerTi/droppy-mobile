@@ -1,13 +1,14 @@
+import 'package:droppy/features/presentation/widgets/atoms/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../injection_container.dart';
+import '../../../config/theme/color.dart';
+import '../../../config/theme/widgets/text.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/user/user_bloc.dart';
 import '../bloc/user/user_event.dart';
 import '../bloc/user/user_state.dart';
 import '../widgets/atoms/item_header.dart';
-import '../widgets/molecules/app_bar_widget.dart';
 
 class AccountView extends StatefulWidget {
   final String? userId;
@@ -32,88 +33,210 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<UsersBloc>(
-          create: (context) => sl()..add(
-              widget.userId != null ? GetUser({
-                'id':int.parse(widget.userId ?? '')
-              })
-              : GetMe({
-                'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
-              }
-            )
-          ),
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    BlocBuilder<UsersBloc , UsersState>(
-                      builder: (context, state) {
-                        if (state is UserDone || state is MeDone) {
-                          return
-                            ItemHeader(
-                              imageUrl: widget.userId != null ? state.user!.avatar : state.me?.avatar,
-                              title: widget.userId != null ? '${state.user?.username}' : '${state.me?.username}',
-                            );
-                        }
-                        return Column(
-                          children: [
-                            const ItemHeader(
-                              imageUrl: '',
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(60),
-                              child: const CircularProgressIndicator(),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    BlocBuilder<UsersBloc, UsersState>(
-                      builder: (context, state) {
-                        return AppBarWidget(
-                          leadingIcon: widget.userId != null ? const Icon(Icons.arrow_back) : null,
-                          leadingOnPressed: () {
-                            context.pop();
-                          },
-                          mainActionIcon: widget.userId == null ? const Icon(Icons.settings) : null,
-                          mainActionOnPressed: () {
-                            if(state is MeDone) {
-                              context.goNamed(
-                                'preferences',
-                                extra: {
-                                  'user': state.me,
-                                },
-                              );
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                BlocBuilder<UsersBloc , UsersState>(
-                  builder: (context, state) {
-                    if (state is UserDone || state is MeDone) {
-                      return _buildBody(context);
-                    }
-                    return const SizedBox();
-                  },
-                ),
-              ],
+      body: SafeArea(
+        child: BlocProvider<UsersBloc>(
+            create: (context) => sl()..add(
+                widget.userId != null ? GetUser({
+                  'id':int.parse(widget.userId ?? '')
+                })
+                : GetMe({
+                  'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
+                }
+              )
             ),
-          )
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BlocBuilder<UsersBloc , UsersState>(
+                    builder: (context, state) {
+                      if (state is UserDone || state is MeDone ) {
+                        return
+                          ItemHeader(
+                            user: state is UserDone ? state.user : state.me,
+                            isMe: state is MeDone,
+                          );
+                      }
+                      return Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(60),
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  BlocBuilder<UsersBloc , UsersState>(
+                    builder: (context, state) {
+                      if (state is UserDone || state is MeDone) {
+                        return _buildBody(context);
+                      }
+                      return const SizedBox();
+                    },
+                  ),
+                ],
+              ),
+            )
+        ),
       ),
     );
   }
 
    Widget _buildBody(context) {
-    return const SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
+    return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 42),
+            child: Stack(
+              children: [
+                CachedImageWidget(
+                  borderRadius: BorderRadius.circular(16),
+                  imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                  height: 160,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                Container(
+                  height: 160,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        backgroundColor.withOpacity(1),
+                        backgroundColor.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 160,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'DROP DU JOUR',
+                        style: textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: Text(
+                          'wsh laissez moi chier trql nn 4 personnes wsh laissez moi chier trql nn 4 personnes',
+                          maxLines : 2,
+                          overflow : TextOverflow.ellipsis,
+                          style: textTheme.bodySmall,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CachedImageWidget(
+                            width: 56,
+                            height: 56,
+                            borderRadius: BorderRadius.circular(16),
+                            imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Musique',
+                                style: textTheme.titleMedium,
+                              ),
+                              Text(
+                                'Goody ahh sound effect - 2h',
+                                style: textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 8),
+            child: Text(
+                'Pins',
+                style: textTheme.titleMedium
+            )
+          ),
+          SizedBox(
+            height: 180,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(width: 16);
+              },
+              itemCount: 6,
+              itemBuilder: (BuildContext context, int index) {
+                if(index == 0 || index == 5){
+                  return const SizedBox(width: 8);
+                }
+                return SizedBox(
+                  width: (MediaQuery.of(context).size.width - 10) / 3,
+                  child: Stack(
+                    children: [
+                      CachedImageWidget(
+                        borderRadius: BorderRadius.circular(16),
+                        imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                        height: 180,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                      Container(
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              backgroundColor.withOpacity(0.9),
+                              backgroundColor.withOpacity(0),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 190,
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Goody ahh sound effect - 2h',
+                              style: textTheme.titleSmall,
+                            ),
+                            const SizedBox(height: 8),
+                            CachedImageWidget(
+                              width: 56,
+                              height: 56,
+                              borderRadius: BorderRadius.circular(16),
+                              imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            ),
+          )
         ],
       ),
     );

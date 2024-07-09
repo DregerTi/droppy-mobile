@@ -9,6 +9,7 @@ class UserEntity extends Equatable {
   final String ? provider;
   final String ? phoneNumber;
   final String ? bio;
+  final List<dynamic> ? origin;
 
   const UserEntity({
     this.id,
@@ -18,7 +19,8 @@ class UserEntity extends Equatable {
     this.username,
     this.provider,
     this.phoneNumber,
-    this.bio
+    this.bio,
+    this.origin
   });
 
   @override
@@ -31,7 +33,8 @@ class UserEntity extends Equatable {
       username,
       provider,
       phoneNumber,
-      bio
+      bio,
+      origin
     ];
   }
 }

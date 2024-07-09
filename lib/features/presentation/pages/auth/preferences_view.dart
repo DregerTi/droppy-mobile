@@ -57,7 +57,10 @@ class PreferencesView extends StatelessWidget {
                             ),
                             TileItemWidget(
                               title: AppLocalizations.of(context)!.preferredLanguages,
-                              leadingIcon: const Icon(Icons.language_rounded),
+                              leadingIcon: const Icon(
+                                Icons.language_rounded,
+                                color: textColor
+                              ),
                               onTap: () {
                                 context.goNamed(
                                     'language',
@@ -76,7 +79,10 @@ class PreferencesView extends StatelessWidget {
                       children: [
                         TileItemWidget(
                           title: 'CGU',
-                          leadingIcon: const Icon(Icons.document_scanner),
+                          leadingIcon: const Icon(
+                            Icons.document_scanner,
+                            color: textColor,
+                          ),
                           onTap: () {
                             context.goNamed(
                                 'cgu',
@@ -94,7 +100,7 @@ class PreferencesView extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(16),
                           color: surfaceColor,
                         ),
                         child: Row(

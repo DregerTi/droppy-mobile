@@ -9,6 +9,7 @@ import '../../bloc/user/user_bloc.dart';
 import '../../widgets/atoms/list_items_widget.dart';
 import '../../widgets/atoms/tile_item_widget.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyAccountView extends StatelessWidget {
   final UserModel user;
@@ -21,47 +22,48 @@ class MyAccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const AppBarWidget(
-            leadingIcon: Icon(Icons.arrow_back),
-            title: 'Mon compte',
-          ),
-          SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Padding(
+      body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              AppBarWidget(
+                leadingIcon: const Icon(Icons.arrow_back),
+                title: AppLocalizations.of(context)!.myAccount,
+              ),
+              Padding(
                 padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListItemsWidget(
-                      title: 'Mes informations',
+                      title: AppLocalizations.of(context)!.myInformations,
                       children: [
                         TileItemWidget(
                           title: '${user.username}',
-                          leadingImageUrl: user.avatar ?? '',
+                          leadingImageUrl: user.avatar,
+                          avatar: true,
                         ),
                         TileItemWidget(
-                          title: 'Email',
+                          title: AppLocalizations.of(context)!.email,
                           subtitle: user.email,
                         ),
                         TileItemWidget(
-                          title: 'Membre depuis le',
+                          title: AppLocalizations.of(context)!.memberSince,
                           subtitle: BlocProvider.of<UsersBloc>(context).state.me?.email ?? '12/12/2021',
                         ),
                       ],
                     ),
-                    ListItemsWidget(
-                      title: 'Compte lié',
+                    if(user.origin!.contains('Google') || user.origin!.contains('Apple'))ListItemsWidget(
+                      title: AppLocalizations.of(context)!.linkedAccounts,
                       children: [
-                        TileItemWidget(
+                        if(user.origin!.contains('Google') )TileItemWidget(
                           title: 'Google',
                           leadingIcon: Image.asset(
                               'lib/assets/images/google.png',
                               width: 20
                           ),
                         ),
-                        TileItemWidget(
+                        if(user.origin!.contains('Apple') )TileItemWidget(
                           title: 'Apple',
                           leadingIcon: SvgPicture.asset(
                               'lib/assets/images/apple.svg',
@@ -88,7 +90,7 @@ class MyAccountView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Modifier mes informations',
+                              AppLocalizations.of(context)!.updateMyInformations,
                               style: textTheme.bodyMedium?.copyWith(
                                   color: primaryColor
                               ),
@@ -110,7 +112,7 @@ class MyAccountView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Supprimer mon compte',
+                              AppLocalizations.of(context)!.deleteMyAccount,
                               style: textTheme.bodyMedium?.copyWith(
                                   color: errorColor
                               ),
@@ -121,9 +123,9 @@ class MyAccountView extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
-          ),
-        ],
+              ),
+            ],
+          )
       ),
     );
   }
