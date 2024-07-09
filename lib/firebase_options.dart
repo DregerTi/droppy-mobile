@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '653021085122',
     projectId: 'droppy-420013',
     storageBucket: 'droppy-420013.appspot.com',
+    iosClientId: '653021085122-s8j5puvhenh1fij3b7pt9j9j6fgj1s2s.apps.googleusercontent.com',
     iosBundleId: 'com.example.droppy',
   );
 
@@ -72,6 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '653021085122',
     projectId: 'droppy-420013',
     storageBucket: 'droppy-420013.appspot.com',
+    iosClientId: '653021085122-s8j5puvhenh1fij3b7pt9j9j6fgj1s2s.apps.googleusercontent.com',
     iosBundleId: 'com.example.droppy',
   );
 
@@ -83,4 +85,5 @@ class DefaultFirebaseOptions {
     authDomain: 'droppy-420013.firebaseapp.com',
     storageBucket: 'droppy-420013.appspot.com',
   );
+
 }
