@@ -8,7 +8,6 @@ import '../../bloc/drop/drop_bloc.dart';
 import '../../bloc/drop/drop_event.dart';
 import '../../bloc/drop/drop_state.dart';
 import '../../bloc/like/like_bloc.dart';
-import '../../widgets/atoms/item_header.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/atoms/comment.dart';
 
@@ -96,9 +95,6 @@ class DropDetailsView extends HookWidget {
             } else {
               return Column(
                 children: [
-                  const ItemHeader(
-                    imageUrl: "",
-                  ),
                   Center(
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 60),
