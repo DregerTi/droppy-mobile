@@ -47,72 +47,75 @@ class MapWidget extends StatelessWidget {
         builder: (context, snapshot){
           if (snapshot.hasData) {
             final dataPath = snapshot.requireData.path;
-            return FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                initialCenter: const LatLng(48.867633949382075, 2.3405098044043435),
-                initialZoom: initialZoom,
-                maxZoom: 25,
-                minZoom: 2,
-                  interactionOptions: const InteractionOptions(
-                    rotationThreshold: 0.0,
-                  ),
-                onMapReady: () {
-                  mapController.mapEventStream.listen((evt) {
-                    if (onMapReady != null) {
-                      onMapReady!(evt);
-                    }
-                  });
-                },
-                onPositionChanged: (MapCamera position, bool hasGesture){
-                  onPositionChanged!(position, hasGesture);
-                }
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://api.mapbox.com/styles/v1/dregert/cldjyyequ000l01o4mr3hypr6/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
-                  additionalOptions: const {
-                    'accessToken': 'pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
-                  },
-                  userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-                  maxZoom: 20,
-                  tileProvider: CachedTileProvider(
-                    dio: dio,
-                    maxStale: const Duration(days: 90),
-                    store: HiveCacheStore(
-                      '$dataPath${Platform.pathSeparator}HivacheStore',
-                      hiveBoxName: 'HivacheStore',
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(46),
+              child: FlutterMap(
+                mapController: mapController,
+                options: MapOptions(
+                  initialCenter: const LatLng(48.867633949382075, 2.3405098044043435),
+                  initialZoom: initialZoom,
+                  maxZoom: 25,
+                  minZoom: 2,
+                    interactionOptions: const InteractionOptions(
+                      rotationThreshold: 0.0,
                     ),
-                  ),
-                ),
-                if(hasSearchBar) BlocListener<PlaceSearchBloc, PlaceSearchState>(
-                  listener: (_,state){
-                    if(state is PlaceDetailsDone){
-                      mapController.move(LatLng(state.placeSearch!.lat, state.placeSearch!.lng), initialZoom);
-                    }
+                  onMapReady: () {
+                    mapController.mapEventStream.listen((evt) {
+                      if (onMapReady != null) {
+                        onMapReady!(evt);
+                      }
+                    });
                   },
-                  child: const SizedBox(),
+                  onPositionChanged: (MapCamera position, bool hasGesture){
+                    onPositionChanged!(position, hasGesture);
+                  }
                 ),
-                if(markers != null) markers!,
-                if(userLocation
-                  && alignPositionStreamController != null
-                  && alignPositionOnUpdate != null) CurrentLocationLayer(
-                  alignDirectionOnUpdate: AlignOnUpdate.never,
-                  alignPositionStream: alignPositionStreamController,
-                  alignPositionOnUpdate: alignPositionOnUpdate,
-                  style: const LocationMarkerStyle(
-                    marker: DefaultLocationMarker(
-                      child: Icon(
-                        Icons.navigation,
-                        color: Colors.white,
-                        size: 14,
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://api.mapbox.com/styles/v1/dregert/clsme7060002801qq9dqph3ub/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
+                    additionalOptions: const {
+                      'accessToken': 'pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
+                    },
+                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                    maxZoom: 20,
+                    tileProvider: CachedTileProvider(
+                      dio: dio,
+                      maxStale: const Duration(days: 90),
+                      store: HiveCacheStore(
+                        '$dataPath${Platform.pathSeparator}HivacheStore',
+                        hiveBoxName: 'HivacheStore',
                       ),
                     ),
-                    markerSize: Size(26, 26),
-                    markerDirection: MarkerDirection.heading,
                   ),
-                ),
-              ]
+                  if(hasSearchBar) BlocListener<PlaceSearchBloc, PlaceSearchState>(
+                    listener: (_,state){
+                      if(state is PlaceDetailsDone){
+                        mapController.move(LatLng(state.placeSearch!.lat, state.placeSearch!.lng), initialZoom);
+                      }
+                    },
+                    child: const SizedBox(),
+                  ),
+                  if(markers != null) markers!,
+                  if(userLocation
+                    && alignPositionStreamController != null
+                    && alignPositionOnUpdate != null) CurrentLocationLayer(
+                    alignDirectionOnUpdate: AlignOnUpdate.never,
+                    alignPositionStream: alignPositionStreamController,
+                    alignPositionOnUpdate: alignPositionOnUpdate,
+                    style: const LocationMarkerStyle(
+                      marker: DefaultLocationMarker(
+                        child: Icon(
+                          Icons.navigation,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                      ),
+                      markerSize: Size(26, 26),
+                      markerDirection: MarkerDirection.heading,
+                    ),
+                  ),
+                ]
+              ),
             );
           }else{
             return const SizedBox();
