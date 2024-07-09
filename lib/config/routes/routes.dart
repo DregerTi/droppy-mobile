@@ -21,6 +21,7 @@ import '../../features/presentation/pages/auth/update_account_view.dart';
 import '../../features/presentation/pages/drop/add_drop.dart';
 import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
+import '../../features/presentation/pages/groups/groups_view.dart';
 import '../../features/presentation/widgets/molecules/navigation_bar.dart';
 
 class AppRoutes{
@@ -151,8 +152,7 @@ class AppRoutes{
                   },
                   path: 'goups',
                   name: 'groups',
-                  builder: (context, state) => const SignUpView(),
-                  //builder: (context, state) => const GroupsView(),
+                  builder: (context, state) => const GroupsView(),
                   routes: [
                     GoRoute(
                       path: 'add-group',
