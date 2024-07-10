@@ -1,7 +1,6 @@
-import 'dart:developer'; // TODO: Remove this line after debugging
 import 'dart:io';
+import 'package:droppy/push_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,7 +20,5 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MainApp()));
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  log("FCMToken $fcmToken");
+  setupFirebaseMessaging();
 }
