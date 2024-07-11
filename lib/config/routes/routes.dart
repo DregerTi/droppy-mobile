@@ -22,6 +22,7 @@ import '../../features/presentation/pages/auth/update_account_view.dart';
 import '../../features/presentation/pages/drop/add_drop.dart';
 import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
+import '../../features/presentation/pages/groups/add_group.dart';
 import '../../features/presentation/pages/groups/groups_view.dart';
 import '../../features/presentation/pages/user/user_followed.dart';
 import '../../features/presentation/pages/user/user_followers.dart';
@@ -182,15 +183,14 @@ class AppRoutes{
                       return '/sign-in';
                     }
                   },
-                  path: 'goups',
+                  path: 'groups',
                   name: 'groups',
                   builder: (context, state) => const GroupsView(),
                   routes: [
                     GoRoute(
                       path: 'add-group',
                       name: 'add-group',
-                      builder: (context, state) => const SignUpView(),
-                      //builder: (context, state) => const AddGroupView(),
+                      builder: (context, state) => const AddGroupView(),
                     ),
                     GoRoute(
                       path: 'group/:groupId/setting',
@@ -199,29 +199,12 @@ class AppRoutes{
                       //builder: (context, state) => const GroupSettingView(),
                     ),
                     GoRoute(
-                        path: 'group/:groupId',
-                        name: 'group',
-                        builder: (context, state) => const SignUpView(),
-                        /*builder: (context, state) {
-                          return GroupView(groupId: state.pathParameters['groupId']);
-                        },*/
-                        routes: [
-                          GoRoute(
-                            path: 'add-comment',
-                            name: 'group-add-comment',
-                            builder: (context, state) => AddCommentView(toiletId: state.pathParameters['toiletId'] ?? ''),
-                          ),
-                          GoRoute(
-                            path: 'comment/:commentId/report',
-                            name: 'group-comment-report',
-                            builder: (context, state) => AddCommentReportView(commentId: state.pathParameters['commentId'] ?? ''),
-                          ),
-                          GoRoute(
-                            path: 'drop/:dropId/report',
-                            name: 'group-drop-report',
-                            builder: (context, state) => AddDropReportView(dropId: state.pathParameters['dropId'] ?? ''),
-                          ),
-                        ]
+                      path: 'group/:groupId',
+                      name: 'group',
+                      builder: (context, state) => const SignUpView(),
+                      /*builder: (context, state) {
+                        return GroupView(groupId: state.pathParameters['groupId']);
+                      },*/
                     ),
                   ]
               ),

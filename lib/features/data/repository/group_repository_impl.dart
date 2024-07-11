@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import '../data_source/drop/drop_api_service.dart';
 import '../../../core/ressources/data_state.dart';
-import '../../domain/repository/drop_repository.dart';
-import '../models/drop.dart';
+import '../../domain/entities/group_member.dart';
+import '../../domain/repository/group_repository.dart';
+import '../data_source/goup/group_api_service.dart';
+import '../models/group.dart';
 
-class DropRepositoryImpl implements DropRepository {
-  final DropApiService _dropApiService;
+class GroupRepositoryImpl implements GroupRepository {
+  final GroupApiService _groupApiService;
 
-  DropRepositoryImpl(this._dropApiService);
+  GroupRepositoryImpl(this._groupApiService);
 
   @override
-  Future<DataState<List<DropModel>>> getDrops(Map<String, dynamic> params) async {
+  Future<DataState<List<GroupModel>>> getGroups(Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _dropApiService.getDrops();
+      final httpResponse = await _groupApiService.getGroups(search: params['search']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
@@ -34,11 +35,10 @@ class DropRepositoryImpl implements DropRepository {
   }
 
   @override
-  Future<DataState<DropModel>> getDrop(Map<String, dynamic> params) async {
-    final httpResponse = await _dropApiService.getDrop(id: params['id']);
-    return DataSuccess(httpResponse.data);
-    /*try {
-      final httpResponse = await _dropApiService.getDrop(id: params['id']);
+  Future<DataState<GroupModel>> getGroup(Map<String, dynamic> params) async {
+    final httpResponse = await _groupApiService.getGroup(id: params['id']);
+    try {
+      final httpResponse = await _groupApiService.getGroup(id: params['id']);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
@@ -54,79 +54,13 @@ class DropRepositoryImpl implements DropRepository {
     } on DioException catch (e) {
 
       return DataFailed(e);
-    }*/
-  }
-
-  @override
-  Future<DataState<List<DropModel>>> getUserDrops(Map<String, dynamic> params) async {
-    try {
-      final httpResponse = await _dropApiService.getUserDrops(id: params['id']);
-
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
-      } else {
-        return DataFailed(
-          DioException(
-            error: httpResponse.response.statusMessage,
-            response: httpResponse.response,
-            type: DioExceptionType.unknown,
-            requestOptions: httpResponse.response.requestOptions,
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return DataFailed(e);
     }
   }
 
   @override
-  Future<DataState<DropModel>> postDrop(Map<String, dynamic> params) async {
+  Future<DataState<GroupModel>> patchGroup(Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _dropApiService.postDrop(params);
-
-      if (httpResponse.response.statusCode == HttpStatus.created) {
-        return DataSuccess(httpResponse.data);
-      } else {
-        return DataFailed(
-          DioException(
-            error: httpResponse.response.statusMessage,
-            response: httpResponse.response,
-            type: DioExceptionType.unknown,
-            requestOptions: httpResponse.response.requestOptions,
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return DataFailed(e);
-    }
-  }
-
-  @override
-  Future<DataState<dynamic>> deleteDrop(Map<String, dynamic> params) async {
-    try {
-      final httpResponse = await _dropApiService.deleteDrop(id: params['id']);
-
-      if (httpResponse.response.statusCode == HttpStatus.noContent) {
-        return DataSuccess(httpResponse.data);
-      } else {
-        return DataFailed(
-          DioException(
-            error: httpResponse.response.statusMessage,
-            response: httpResponse.response,
-            type: DioExceptionType.unknown,
-            requestOptions: httpResponse.response.requestOptions,
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return DataFailed(e);
-    }
-  }
-
-  @override
-  Future<DataState<DropModel>> postLike(Map<String, dynamic> params) async {
-    try {
-      final httpResponse = await _dropApiService.postLike(id: params['id']);
+      final httpResponse = await _groupApiService.patchGroup(id: params['id'], group: params['group']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
@@ -146,11 +80,55 @@ class DropRepositoryImpl implements DropRepository {
   }
 
   @override
-  Future<DataState<dynamic>> deleteLike(Map<String, dynamic> params) async {
+  Future<DataState<GroupMemberEntity>> postGroupJoin(Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _dropApiService.deleteLike(id: params['id']);
+      final httpResponse = await _groupApiService.postGroupJoin(id: params['id']);
 
-      if (httpResponse.response.statusCode == HttpStatus.noContent) {
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupMemberEntity>> leaveGroup(Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.leaveGroup(id: params['id'], memberId: params['memberId']);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupModel>> postGroup(Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.postGroup(params);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(
