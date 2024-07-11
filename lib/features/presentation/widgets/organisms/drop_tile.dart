@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:droppy/config/theme/color.dart';
 import 'package:droppy/features/domain/entities/drop.dart';
+import 'package:droppy/features/presentation/widgets/molecules/comment_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -180,7 +181,7 @@ class DropTileWidget extends StatelessWidget {
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                                 ),
-                                onPressed: _onTap,
+                                onPressed: () => _openCommentSheet(context, drop!.id!, drop!.comments, drop!.totalComments),
                                 icon: const Icon(
                                   Icons.mode_comment,
                                 ),
@@ -215,6 +216,25 @@ class DropTileWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _openCommentSheet(context, dropId, comments, totalComments) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(46),
+          topRight: Radius.circular(46),
+        ),
+      ),
+      context: context,
+      builder: (context) => CommentSheet(
+        dropId: dropId,
+        comments: comments,
+        totalComments: totalComments,
+      )
     );
   }
 

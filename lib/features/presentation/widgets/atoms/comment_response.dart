@@ -1,48 +1,47 @@
-import 'package:droppy/config/theme/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../config/theme/color.dart';
 import '../../../../config/theme/widgets/text.dart';
 import 'cached_image_widget.dart';
-import 'comment_response.dart';
 
-class Comment extends StatelessWidget {
+class CommentResponse extends StatelessWidget {
   final String? avatar;
   final String? message;
   final String? username;
   final Function? onTap;
-  final int? commentId;
-  final int? dropId;
+  final int? commentResponseId;
 
-  const Comment({
+  const CommentResponse({
     Key? key,
     this.avatar,
     this.message,
     this.username,
     this.onTap,
-    this.commentId,
-    this.dropId,
+    this.commentResponseId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if(avatar != null) CachedImageWidget(
               imageUrl: avatar ?? '',
-              width: 30,
-              height: 30,
-              borderRadius: BorderRadius.circular(12),
+              width: 26,
+              height: 26,
+              borderRadius: BorderRadius.circular(10),
               fit: BoxFit.fitWidth
           ) else ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
             child: SvgPicture.asset(
               'lib/assets/images/avatar.svg',
-              width: 30,
-              height: 30,
+              width: 26,
+              height: 26,
             ),
           ),
           const SizedBox(width: 10),
@@ -81,27 +80,10 @@ class Comment extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - 80,
+                  width: MediaQuery.of(context).size.width - 116,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Reply',
-                            style: textTheme.labelSmall?.copyWith(
-                              fontSize: 11,
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Text(
-                            'Voir 4 réponses',
-                            style: textTheme.labelSmall?.copyWith(
-                              fontSize: 11,
-                            ),
-                          ),
-                        ],
-                      ),
                       GestureDetector(
                         onTap: () {},
                         child: const Icon(
@@ -112,18 +94,7 @@ class Comment extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
-                const SizedBox(height: 18),
-                Column(
-                  children: List.generate(3, (index) {
-                    return const CommentResponse(
-                      avatar: null,
-                      message: 'This is a comment',
-                      username: 'Username',
-                      commentResponseId: 1,
-                    );
-                  }),
-                ),
+                )
               ],
             ),
           ),
