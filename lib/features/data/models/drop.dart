@@ -17,7 +17,9 @@ class DropModel extends DropEntity {
     ContentTypeModel ? contentType,
     UserModel ? user,
     List<CommentModel> ? comments,
-    LikeModel ? currentUserLike,
+    bool ? isCurrentUserLiking,
+    int? totalComments,
+    int? totalLikes
   }) : super(
     iri: iri,
     id: id,
@@ -29,34 +31,38 @@ class DropModel extends DropEntity {
     contentType: contentType,
     user: user,
     comments: comments,
-    currentUserLike: currentUserLike,
+    isCurrentUserLiking: isCurrentUserLiking,
+    totalComments: totalComments,
+    totalLikes: totalLikes
   );
   
   factory DropModel.fromJson(Map<String, dynamic >map) {
     return DropModel(
       iri: map['@id'] ?? "",
-      id: map['id'] ?? "",
-      content: map['content'] ?? "",
-      description: map['description'] ?? "",
-      picturePath: map['picturePath'] ?? "",
-      isPinned: map['isPinned'] ?? false,
-      reports: (map['reports'] != null
-          && map['reports'].length > 0 ?
-        (map['reports'] as List<dynamic>)
+      id: map['ID'] ?? "",
+      content: map['Content'] ?? "",
+      description: map['Description'] ?? "",
+      picturePath: map['PicturePath'] ?? "",
+      isPinned: map['IsPinned'] ?? false,
+      reports: (map['Reports'] != null
+          && map['Reports'].length > 0 ?
+        (map['Reports'] as List<dynamic>)
           .map((report) => ReportModel.fromJson(report))
           .toList()
         : []
       ),
-      contentType: map['contentType'] != null ? ContentTypeModel.fromJson(map['contentType']) : null,
-      user: map['user'] != null ? UserModel.fromJson(map['user']) : null,
-      comments: (map['comments'] != null
-          && map['comments'].length > 0 ?
-        (map['comments'] as List<dynamic>)
+      contentType: map['ContentType'] != null ? ContentTypeModel.fromJson(map['ContentType']) : null,
+      user: map['CreatedBy'] != null ? UserModel.fromJson(map['CreatedBy']) : null,
+      comments: (map['Comments'] != null
+          && map['Comments'].length > 0 ?
+        (map['Comments'] as List<dynamic>)
           .map((comment) => CommentModel.fromJson(comment))
           .toList()
         : []
       ),
-      currentUserLike: map['currentUserLike'] != null ? LikeModel.fromJson(map['currentUserLike']) : null,
+      isCurrentUserLiking: map['IsCurrentUserLiking'] ?? false,
+      totalComments: map['TotalComments'] ?? 0,
+      totalLikes: map['TotalLikes'] ?? 0
     );
   }
 
@@ -72,7 +78,9 @@ class DropModel extends DropEntity {
       contentType: entity.contentType,
       user: entity.user,
       comments: entity.comments,
-      currentUserLike: entity.currentUserLike
+      isCurrentUserLiking: entity.isCurrentUserLiking,
+      totalComments: entity.totalComments,
+      totalLikes: entity.totalLikes
     );
   }
 }

@@ -13,4 +13,8 @@ abstract class UserRepository {
 
   Future<DataState<UserEntity>> patchUser(Map<String, dynamic> user);
 
+  Future<DataState<List<UserEntity?>?>> getUserFollowers(Map<String, dynamic> params);
+
+  Future<DataState<List<UserEntity?>?>> getUserFollowed(Map<String, dynamic> params);
+
 }

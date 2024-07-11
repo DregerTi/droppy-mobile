@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_channel/io.dart';
 import '../../../../core/ressources/data_state.dart';
 import '../../../data/models/drop.dart';
 import '../../../data/models/like.dart';
@@ -33,6 +37,7 @@ class DropsBloc extends Bloc<DropsEvent, DropsState> {
     on <GetUserDrops> (onGetUserDrops);
     on <PostDrop> (onPostDrop);
     on <UpdateLoadedDropsCurrentUserLike> (onUpdateLoadedDropsCurrentUserLike);
+    on <FeedDrops> (onFeedDrops);
   }
   
   void onGetDrops(GetDrops event, Emitter<DropsState> emit) async {
@@ -147,4 +152,35 @@ class DropsBloc extends Bloc<DropsEvent, DropsState> {
       );
     }
   }
+
+  void onFeedDrops(FeedDrops event, Emitter<DropsState> emit) async {
+    emit(
+      const FeedLoading()
+    );
+
+    final channel = IOWebSocketChannel.connect(
+        Uri.parse('ws://localhost:3000/users/my-feed/ws'),headers: {
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA3MDA2NDgsInJvbGUiOiJ1c2VyIiwic3ViIjo0MzF9.X7VIVcDOLnX2mZqVCs4S5Jna3BWgI5ALiqm2ABBWA94'
+    });
+
+
+    channel.stream.listen((message) {
+      final data = jsonDecode(message);
+      print([data]);
+      final List<DropModel> drops = [data].map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
+
+      if (!emit.isDone) {
+        emit(FeedDone(drops));
+      }
+    }, onError: (error) {
+      if (!emit.isDone) {
+        emit(FeedError(DioException(requestOptions: RequestOptions(path: ''), error: error.toString())));
+      }
+    }, onDone: () {
+      print('WebSocket connection closed');
+    }).asFuture();
+
+  }
+
+
 }

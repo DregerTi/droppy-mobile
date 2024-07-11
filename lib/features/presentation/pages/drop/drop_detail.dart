@@ -126,7 +126,7 @@ class DropDetailsView extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Comment(
-                  profilePicture: BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.avatar ?? '',
+                  avatar: BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.avatar ?? '',
                   username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.user!.username}',
                   message: BlocProvider.of<DropsBloc>(context).state.drop!.comments!.first.content ?? '',
                 ),
@@ -152,7 +152,7 @@ class DropDetailsView extends HookWidget {
                   );
                 }
               },
-              profilePicture: BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.avatar ?? '',
+              avatar: BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.avatar ?? '',
               username: '${BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].user!.username}',
               message: BlocProvider.of<DropsBloc>(context).state.drop!.comments![index].content ?? '',
             );

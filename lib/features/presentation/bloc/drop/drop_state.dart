@@ -62,3 +62,13 @@ class PostDropDone extends DropsState {
 class PostDropError extends DropsState {
   const PostDropError(DioException error) : super(error: error);
 }
+
+class FeedLoading extends DropsState {
+  const FeedLoading();
+}
+class FeedDone extends DropsState {
+  const FeedDone(List<DropEntity> drops) : super(drops: drops);
+}
+class FeedError extends DropsState {
+  const FeedError(DioException error) : super(error: error);
+}

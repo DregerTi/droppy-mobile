@@ -89,6 +89,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                 padding: const EdgeInsets.only(top: 24),
                 child: AppBarWidget(
                   leadingIcon: const Icon(Icons.person_add),
+                  leadingOnPressed: () => context.goNamed('users'),
                   mainActionIcon: const Icon(Icons.notifications),
                   mainActionOnPressed: () => context.goNamed('notifications'),
                 ),

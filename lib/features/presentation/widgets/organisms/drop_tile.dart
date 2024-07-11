@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:droppy/config/theme/color.dart';
 import 'package:droppy/features/domain/entities/drop.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../atoms/cached_image_widget.dart';
 
@@ -72,9 +74,19 @@ class DropTileWidget extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                Text(
-                                  drop!.user!.username ?? '',
-                                  style: textTheme.titleMedium,
+                                GestureDetector(
+                                  onTap: () => {
+                                    context.goNamed(
+                                      'user-profile',
+                                      pathParameters: {
+                                        'userId': drop!.user!.id.toString(),
+                                      },
+                                    ),
+                                  },
+                                  child: Text(
+                                    drop!.user!.username ?? '',
+                                    style: textTheme.titleMedium,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
@@ -129,13 +141,30 @@ class DropTileWidget extends StatelessWidget {
                             children: [
                               const SizedBox(height: 10),
                               GestureDetector(
-                                onTap: () => {},
-                                child: CachedImageWidget(
-                                  imageUrl: drop!.user!.avatar ?? '',
-                                  width: 30,
-                                  height: 30,
-                                  borderRadius: BorderRadius.circular(30),
-                                )
+                                onTap: () => {
+                                  context.goNamed(
+                                    'user-profile',
+                                    pathParameters: {
+                                      'userId': drop!.user!.id.toString(),
+                                    },
+                                  ),
+                                },
+                                child: (drop!.user!.avatar != null) ? GestureDetector(
+                                  onTap: () => {},
+                                  child: CachedImageWidget(
+                                    imageUrl: drop!.user!.avatar ?? '',
+                                    width: 30,
+                                    height: 30,
+                                    borderRadius: BorderRadius.circular(11),
+                                  )
+                                ) : ClipRRect(
+                                  borderRadius: BorderRadius.circular(11),
+                                  child: SvgPicture.asset(
+                                    'lib/assets/images/avatar.svg',
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
                               ),
                               const SizedBox(height: 4),
                               IconButton(

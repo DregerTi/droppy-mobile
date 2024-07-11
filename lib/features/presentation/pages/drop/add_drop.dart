@@ -169,7 +169,8 @@ class _AddDropViewState extends State<AddDropView> {
                   leadingOnPressed: () {
                     context.pop();
                   },
-                  title: 'Poster un drop',
+                  mainActionIcon: const Icon(Icons.check_rounded),
+                  title: 'Nouveau groupe',
                 ),
               ),
               MediaPickerWidget(

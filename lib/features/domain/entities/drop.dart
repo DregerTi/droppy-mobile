@@ -17,7 +17,9 @@ class DropEntity extends Equatable {
   final ContentTypeModel ? contentType;
   final UserModel ? user;
   final List<CommentModel> ? comments;
-  final LikeModel ? currentUserLike;
+  final bool ? isCurrentUserLiking;
+  final int ? totalComments;
+  final int ? totalLikes;
 
   const DropEntity({
     this.iri,
@@ -30,7 +32,9 @@ class DropEntity extends Equatable {
     this.contentType,
     this.user,
     this.comments,
-    this.currentUserLike,
+    this.isCurrentUserLiking,
+    this.totalComments,
+    this.totalLikes
   });
 
   @override
@@ -46,7 +50,9 @@ class DropEntity extends Equatable {
       contentType,
       user,
       comments,
-      currentUserLike,
+      isCurrentUserLiking,
+      totalComments,
+      totalLikes
     ];
   }
 }

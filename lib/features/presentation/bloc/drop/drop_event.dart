@@ -31,3 +31,7 @@ class UpdateLoadedDropsCurrentUserLike extends DropsEvent {
 
   const UpdateLoadedDropsCurrentUserLike(this.params);
 }
+
+class FeedDrops extends DropsEvent {
+  const FeedDrops();
+}

@@ -1,10 +1,17 @@
+import 'package:droppy/features/presentation/widgets/atoms/warning_card.dart';
 import 'package:droppy/features/presentation/widgets/organisms/drop_feed.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import '../../../data/models/drop.dart';
-import '../../../data/models/user.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_channel/io.dart';
+import '../../bloc/feed/feed_bloc.dart';
+import '../../bloc/feed/feed_state.dart';
 
-class Feed extends HookWidget {
+final channel = IOWebSocketChannel.connect(
+    Uri.parse('ws://localhost:3000/users/my-feed/ws'),headers: {
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA3MjAyMzUsInJvbGUiOiJ1c2VyIiwic3ViIjo0MzF9.gAvAnW3FlSDwOu-YKAgsdJTBazBWwdheSUBmK_xWW7k'
+});
+
+class Feed extends StatelessWidget {
 
   const Feed({
     super.key,
@@ -12,43 +19,37 @@ class Feed extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<FeedBloc>(
+      create: (context) => FeedBloc(channel),
+      child: BlocConsumer<FeedBloc, FeedState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is WebSocketInitial) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+            );
+          }
 
-    List<DropModel> drops = [
-      const DropModel(
-        id: 1,
-        description: 'wsh laissez moi chier trql nn 4 personnes ',
-        picturePath: 'https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096',
-        user: UserModel(
-          id: 1,
-          username: 'John',
-          avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
-        ),
-      ),
-      const DropModel(
-        id: 2,
-        description: 'Description 2',
-        picturePath: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
-        user: UserModel(
-          id: 2,
-          username: 'Jane',
-          avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
-        ),
-      ),
-      const DropModel(
-        id: 3,
-        description: 'Description 3',
-        picturePath: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
-        user: UserModel(
-          id: 3,
-          username: 'Jack',
-          avatar: 'https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg',
-        )
-      ),
-    ];
+          if(state is WebSocketMessageState) {
+            return DropFeedWidget(drops: state.drops);
+          }
 
-    return DropFeedWidget(
-      drops: drops,
+          if(state is WebSocketDisconnected) {
+            return const WarningCard(
+              message: 'Aucun drop',
+              icon: 'empty'
+            );
+          }
+
+          return const SizedBox();
+        },
+      ),
     );
   }
-
 }
