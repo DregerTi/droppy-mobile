@@ -76,10 +76,10 @@ class LocalHttpOverrides extends HttpOverrides{
               );
               if (response.statusCode == 200) {
                 final Map<String, dynamic> data = response.data;
-                await prefs.setString('jwtToken', data['token']);
-                await prefs.setString('refreshToken', data['refresh_token']);
+                await prefs.setString('jwtToken', data['jwtToken']);
+                await prefs.setString('refreshToken', data['refreshToken']);
                 options.store?.clean();
-                e.requestOptions.headers['Authorization'] = 'Bearer ${data['token']}';
+                e.requestOptions.headers['Authorization'] = 'Bearer ${data['jwtToken']}';
                 return handler.resolve(await dio.fetch(e.requestOptions));
               }
             }
