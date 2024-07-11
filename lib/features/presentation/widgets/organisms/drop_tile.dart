@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../atoms/cached_image_widget.dart';
+import '../atoms/like_btn.dart';
 
 class DropTileWidget extends StatelessWidget {
   final DropEntity ? drop;
@@ -168,14 +169,9 @@ class DropTileWidget extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              IconButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                                ),
-                                onPressed: _onTap,
-                                icon: const Icon(
-                                  Icons.favorite,
-                                ),
+                              LikeBtn(
+                                dropId: drop!.id!,
+                                isLiked: drop!.isCurrentUserLiking ?? false,
                               ),
                               IconButton(
                                 style: ButtonStyle(

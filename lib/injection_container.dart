@@ -119,11 +119,10 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<LikeApiService>(LikeApiService(sl()));
   sl.registerSingleton<LikeRepository>(LikeRepositoryImpl(sl()));
-  sl.registerSingleton<GetUserLikesUseCase>(GetUserLikesUseCase(sl()));
   sl.registerSingleton<PostLikeUseCase>(PostLikeUseCase(sl()));
   sl.registerSingleton<DeleteLikeUseCase>(DeleteLikeUseCase(sl()));
   sl.registerFactory<LikesBloc>(
-    () => LikesBloc(sl(), sl(), sl()),
+    () => LikesBloc(sl(), sl()),
   );
 
   sl.registerSingleton<UserApiService>(UserApiService(sl()));

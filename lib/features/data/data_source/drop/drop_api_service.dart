@@ -27,4 +27,19 @@ abstract class DropApiService {
   Future<HttpResponse<DropModel>> postDrop(
     @Body() Map<String, dynamic> drop,
   );
+
+  @DELETE("/drops/{id}")
+  Future<HttpResponse<dynamic>> deleteDrop({
+    @Path("id") required int id,
+  });
+
+  @POST("/drops/{id}/like")
+  Future<HttpResponse<DropModel>> postLike({
+    @Path("id") required int id,
+  });
+
+  @DELETE("/drops/{id}/like")
+  Future<HttpResponse<dynamic>> deleteLike({
+    @Path("id") required int id,
+  });
 }

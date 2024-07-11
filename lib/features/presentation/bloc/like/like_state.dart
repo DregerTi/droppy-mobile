@@ -1,34 +1,26 @@
 import 'package:dio/dio.dart';
+import 'package:droppy/features/domain/entities/drop.dart';
 import 'package:equatable/equatable.dart';
-import '../../../data/models/like.dart';
-import '../../../domain/entities/like.dart';
 
 abstract class LikesState extends Equatable {
-  final List<LikeModel> ? likes;
-  final LikeEntity ? like;
+  final DropEntity ? drop;
   final DioException ? error;
 
-  const LikesState({this.likes, this.like, this.error});
+  const LikesState({ this.drop, this.error});
 
   @override
-  List<Object?> get props => [likes, error];
+  List<Object?> get props => [ error];
 }
 
-class LikesLoading extends LikesState {
-  const LikesLoading();
-}
-class LikesDone extends LikesState {
-  const LikesDone(List<LikeModel> likes) : super(likes: likes);
-}
-class LikesError extends LikesState {
-  const LikesError(DioException error) : super(error: error);
+class LikesInitial extends LikesState {
+  const LikesInitial();
 }
 
 class PostLikeLoading extends LikesState {
   const PostLikeLoading();
 }
 class PostLikeDone extends LikesState {
-  const PostLikeDone(LikeEntity like) : super(like: like);
+  const PostLikeDone(DropEntity? drop) : super(drop: drop);
 }
 class PostLikeError extends LikesState {
   const PostLikeError(DioException error) : super(error: error);

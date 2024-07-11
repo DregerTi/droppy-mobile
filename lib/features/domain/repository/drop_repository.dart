@@ -11,4 +11,10 @@ abstract class DropRepository {
 
   Future<DataState<DropEntity>> postDrop(Map<String, dynamic> params);
 
+  Future<DataState<dynamic>> deleteDrop(Map<String, dynamic> params);
+
+  Future<DataState<DropEntity>> postLike(Map<String, dynamic> params);
+
+  Future<DataState<dynamic>> deleteLike(Map<String, dynamic> params);
+
 }

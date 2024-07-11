@@ -1,15 +1,15 @@
 import '../../../../core/ressources/data_state.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../../data/models/like.dart';
-import '../../repository/like_repository.dart';
+import '../../entities/drop.dart';
+import '../../repository/drop_repository.dart';
 
-class PostLikeUseCase implements UseCase<DataState<LikeModel>, Map<String, dynamic>> {
-  final LikeRepository _likeRepository;
+class PostLikeUseCase implements UseCase<DataState<DropEntity>, Map<String, dynamic>> {
+  final DropRepository _dropRepository;
 
-  PostLikeUseCase(this._likeRepository);
+  PostLikeUseCase(this._dropRepository);
 
   @override
-  Future<DataState<LikeModel>> call({Map<String, dynamic>? params}) async {
-    return _likeRepository.postLike(params!);
+  Future<DataState<DropEntity>> call({Map<String, dynamic>? params}) async {
+    return _dropRepository.postLike(params!);
   }
 }
