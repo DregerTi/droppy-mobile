@@ -23,6 +23,8 @@ import '../../features/presentation/pages/drop/add_drop.dart';
 import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
 import '../../features/presentation/pages/groups/groups_view.dart';
+import '../../features/presentation/pages/user/user_followed.dart';
+import '../../features/presentation/pages/user/user_followers.dart';
 import '../../features/presentation/widgets/molecules/navigation_bar.dart';
 
 class AppRoutes{
@@ -100,6 +102,28 @@ class AppRoutes{
                 builder: (context, state) {
                   return AccountView(userId: state.pathParameters['userId']);
                 },
+                routes : [
+                  GoRoute(
+                    path: 'followers/:username',
+                    name: 'followers',
+                    builder: (context, state) {
+                      return UserFollowersView(
+                        userId: state.pathParameters['userId'],
+                        username: state.pathParameters['username'],
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'followed/:username',
+                    name: 'followed',
+                    builder: (context, state) {
+                      return UserFollowedView(
+                        userId: state.pathParameters['userId'],
+                        username: state.pathParameters['username'],
+                      );
+                    },
+                  )
+                ],
               ),
               GoRoute(
                 path: 'add-comment',
