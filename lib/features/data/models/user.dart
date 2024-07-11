@@ -1,5 +1,7 @@
 
 
+import 'package:droppy/features/data/models/drop.dart';
+import 'package:droppy/features/data/models/group.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel extends UserEntity {
@@ -12,7 +14,12 @@ class UserModel extends UserEntity {
     String ? provider,
     String ? phoneNumber,
     String ? bio,
-    List<dynamic> ? origin
+    List<dynamic> ? origin,
+    int ? totalFollowers,
+    int ? totalFollowed,
+    DropModel ? lastDrop,
+    List<DropModel> ? pinnedDrops,
+    List<GroupModel> ? groups
   }) : super(
     id: id,
     email: email,
@@ -22,7 +29,12 @@ class UserModel extends UserEntity {
     provider: provider,
     phoneNumber: phoneNumber,
     bio: bio,
-    origin: origin
+    origin: origin,
+    totalFollowers: totalFollowers,
+    totalFollowed: totalFollowed,
+    lastDrop: lastDrop,
+    pinnedDrops: pinnedDrops,
+    groups: groups
   );
   
   factory UserModel.fromJson(Map<String, dynamic >map) {
@@ -35,7 +47,12 @@ class UserModel extends UserEntity {
       provider: map['Provider'] ?? "",
       phoneNumber: map['PhoneNumber'] ?? "",
       bio: map['Bio'] ?? "",
-      origin: map['origin'] ?? []
+      origin: map['origin'] ?? [],
+      totalFollowers: map['TotalFollowers'] ?? 0,
+      totalFollowed: map['TotalFollowed'] ?? 0,
+      lastDrop: map['LastDrop'] != null ? DropModel.fromJson(map['LastDrop']) : null,
+      pinnedDrops: map['PinnedDrops'] != null ? (map['PinnedDrops'] as List).map((e) => DropModel.fromJson(e)).toList() : [],
+      groups: map['Groups'] != null ? (map['Groups'] as List).map((e) => GroupModel.fromJson(e)).toList() : []
     );
   }
 
@@ -49,7 +66,12 @@ class UserModel extends UserEntity {
       provider: entity.provider,
       phoneNumber: entity.phoneNumber,
       bio: entity.bio,
-      origin: entity.origin
+      origin: entity.origin,
+      totalFollowers: entity.totalFollowers,
+      totalFollowed: entity.totalFollowed,
+      lastDrop: entity.lastDrop,
+      pinnedDrops: entity.pinnedDrops,
+      groups: entity.groups
     );
   }
 }

@@ -58,20 +58,21 @@ class _AccountViewState extends State<AccountView> {
                             isMe: state is MeDone,
                           );
                       }
-                      return Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(60),
-                            child: const CircularProgressIndicator(),
-                          ),
-                        ],
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(child: CircularProgressIndicator()),
+                          ],
+                        ),
                       );
                     },
                   ),
                   BlocBuilder<UsersBloc , UsersState>(
                     builder: (context, state) {
                       if (state is UserDone || state is MeDone) {
-                        return _buildBody(context);
+                        return _buildBody(context, state is UserDone ? state.user : state.me);
                       }
                       return const SizedBox();
                     },
@@ -84,19 +85,19 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 
-   Widget _buildBody(context) {
+   Widget _buildBody(context, user) {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
+          if(user.lastDrop != null) Padding(
             padding: const EdgeInsets.only(left: 24, right: 24, top: 42),
             child: Stack(
               children: [
                 CachedImageWidget(
                   borderRadius: BorderRadius.circular(16),
-                  imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                  imageUrl: user.lastDrop?.picturePath ?? '',
                   height: 160,
                   width: MediaQuery.of(context).size.width,
                 ),
@@ -128,7 +129,7 @@ class _AccountViewState extends State<AccountView> {
                       const SizedBox(height: 8),
                       Expanded(
                         child: Text(
-                          'wsh laissez moi chier trql nn 4 personnes wsh laissez moi chier trql nn 4 personnes',
+                          user.lastDrop?.description ?? '',
                           maxLines : 2,
                           overflow : TextOverflow.ellipsis,
                           style: textTheme.bodySmall,
@@ -167,23 +168,23 @@ class _AccountViewState extends State<AccountView> {
               ],
             )
           ),
-          Padding(
+          if (user.pinnedDrops != null) Padding(
             padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 8),
             child: Text(
                 'Pins',
                 style: textTheme.titleMedium
             )
           ),
-          SizedBox(
+          if (user.pinnedDrops != null) SizedBox(
             height: 180,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(width: 16);
               },
-              itemCount: 6,
+              itemCount: user.pinnedDrops!.length + 2,
               itemBuilder: (BuildContext context, int index) {
-                if(index == 0 || index == 5){
+                if(index == 0 || index == user.pinnedDrops!.length + 1){
                   return const SizedBox(width: 8);
                 }
                 return SizedBox(
@@ -192,7 +193,7 @@ class _AccountViewState extends State<AccountView> {
                     children: [
                       CachedImageWidget(
                         borderRadius: BorderRadius.circular(16),
-                        imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                        imageUrl: user.pinnedDrops?[index - 1].picturePath ?? '',
                         height: 180,
                         width: MediaQuery.of(context).size.width,
                       ),

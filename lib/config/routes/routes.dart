@@ -1,6 +1,7 @@
 import 'package:droppy/features/presentation/pages/drop/drop_detail.dart';
 import 'package:droppy/features/presentation/pages/drop/drop_map.dart';
 import 'package:droppy/features/presentation/pages/drop/feed.dart';
+import 'package:droppy/features/presentation/pages/users_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -85,6 +86,13 @@ class AppRoutes{
                     builder: (context, state) => const AddressPicker(),
                   ),
                 ]
+              ),
+              GoRoute(
+                path: 'users',
+                name: 'users',
+                builder: (context, state) {
+                  return const UsersView();
+                },
               ),
               GoRoute(
                 path: 'user-profile/:userId',

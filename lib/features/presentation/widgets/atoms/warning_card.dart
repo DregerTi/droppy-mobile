@@ -22,14 +22,12 @@ class WarningCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if(icon == 'empty') SvgPicture.asset('lib/assets/images/empty-icon.svg', height: 40),
-        if(icon == 'error') SvgPicture.asset('lib/assets/images/error-icon.svg', height: 40),
-        const SizedBox(height: 14),
+        const SizedBox(height: 34),
         Text(
           message ?? '',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: errorColor,
+            color: onSurfaceColor,
           ),
         ),
         const SizedBox(height: 14),

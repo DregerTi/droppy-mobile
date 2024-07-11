@@ -97,7 +97,7 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<UserApiService>(UserApiService(sl()));
   sl.registerSingleton<UserRepository>(UserRepositoryImpl(sl()));
-  sl.registerSingleton<GetUsersUseCase>(GetUsersUseCase(sl()));
+  sl.registerSingleton<GetUsersSearchUseCase>(GetUsersSearchUseCase(sl()));
   sl.registerSingleton<GetUserUseCase>(GetUserUseCase(sl()));
   sl.registerSingleton<PostUserUseCase>(PostUserUseCase(sl()));
   sl.registerSingleton<PatchUserUseCase>(PatchUserUseCase(sl()));

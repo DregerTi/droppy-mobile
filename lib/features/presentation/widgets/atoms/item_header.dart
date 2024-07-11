@@ -115,7 +115,7 @@ class ItemHeader extends StatelessWidget {
                     style: textTheme.headlineSmall?.copyWith(color: backgroundColor),
                   ),
                   Text(
-                    '21-06-2021',
+                    user?.bio ?? '',
                     style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                   ),
                   const SizedBox(height: 10),
@@ -158,34 +158,52 @@ class ItemHeader extends StatelessWidget {
                 ),
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 60) / 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '12',
-                        style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
-                      ),
-                      Text(
-                        'Followers',
-                        style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                      ),
-                    ],
+                  child: GestureDetector(
+                    onTap: () => context.goNamed(
+                      'followers',
+                      pathParameters: {
+                        'userId': user?.id.toString() ?? '',
+                        'username': user?.username ?? 'Incroyable mec',
+                      },
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          user?.totalFollowers.toString() ?? '0',
+                          style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
+                        ),
+                        Text(
+                          'Followers',
+                          style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 60) / 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '12',
-                        style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
-                      ),
-                      Text(
-                        'Following',
-                        style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                      ),
-                    ],
+                  child: GestureDetector(
+                    onTap: () => context.goNamed(
+                      'followed',
+                      pathParameters: {
+                        'userId': user?.id.toString() ?? '',
+                        'username': user?.username ?? 'Incroyable mec',
+                      },
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          user?.totalFollowed.toString() ?? '0',
+                          style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
+                        ),
+                        Text(
+                          'Following',
+                          style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

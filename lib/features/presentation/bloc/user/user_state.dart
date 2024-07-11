@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/user.dart';
 
 abstract class UsersState extends Equatable {
-  final List<UserEntity> ? users;
+  final List<UserEntity?>? users;
   final UserEntity ? user;
   final DioException ? error;
   final UserEntity ? me;
@@ -15,14 +15,18 @@ abstract class UsersState extends Equatable {
   Object? get prop => users;
 }
 
-class UsersLoading extends UsersState {
-  const UsersLoading();
+class UsersInit extends UsersState {
+  const UsersInit();
 }
-class UsersDone extends UsersState {
-  const UsersDone(List<UserEntity> user) : super(users: user);
+
+class UsersSearchLoading extends UsersState {
+  const UsersSearchLoading();
 }
-class UsersError extends UsersState {
-  const UsersError(DioException error) : super(error: error);
+class UsersSearchDone extends UsersState {
+  const UsersSearchDone(List<UserEntity?>? user) : super(users: user);
+}
+class UsersSearchError extends UsersState {
+  const UsersSearchError(DioException error) : super(error: error);
 }
 
 class UserLoading extends UsersState {

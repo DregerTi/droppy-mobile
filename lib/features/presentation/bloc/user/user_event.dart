@@ -2,8 +2,10 @@ abstract class UsersEvent {
   const UsersEvent();
 }
 
-class GetUsers extends UsersEvent {
-  const GetUsers();
+class GetUsersSearch extends UsersEvent {
+  final Map<String, dynamic>? params;
+
+  const GetUsersSearch(this.params);
 }
 
 class GetUser extends UsersEvent {

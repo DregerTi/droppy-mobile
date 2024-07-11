@@ -15,6 +15,11 @@ abstract class UserApiService {
     @Query("page") int ? page,
   });
 
+  @GET("/users/search")
+  Future<HttpResponse<List<UserModel?>?>> getUsersSearch({
+    @Query("search") required String search,
+  });
+
   @GET("/users/{id}")
   Future<HttpResponse<UserModel>> getUser({
     @Path("id") required int id,

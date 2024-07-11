@@ -4,44 +4,46 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/ressources/data_state.dart';
 import '../../../domain/usecases/user/get_user.dart';
 import '../../../domain/usecases/user/get_users.dart';
+import '../../../domain/usecases/user/get_users_search.dart';
 import '../../../domain/usecases/user/patch_user.dart';
 import '../../../domain/usecases/user/post_user.dart';
 
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
-  final GetUsersUseCase _getUsersUseCase;
+  final GetUsersSearchUseCase _getUsersSearchUseCase;
   final GetUserUseCase _getUserUseCase;
   final PostUserUseCase _postUserUseCase;
   final PatchUserUseCase _patchUserUseCase;
 
   UsersBloc(
-    this._getUsersUseCase,
+    this._getUsersSearchUseCase,
     this._getUserUseCase,
     this._postUserUseCase,
     this._patchUserUseCase,
-  ) : super(const UsersLoading()){
-    on <GetUsers> (onGetUsers);
+  ) : super(const UsersInit()){
+    on <GetUsersSearch> (onGetUsersSearch);
     on <GetUser> (onGetUser);
     on <PostUser> (onPostUser);
     on <PatchUser> (onPatchUser);
     on <GetMe> (onGetMe);
   }
 
-  void onGetUsers(GetUsers event, Emitter<UsersState> emit) async {
+  void onGetUsersSearch(GetUsersSearch event, Emitter<UsersState> emit) async {
     emit(
-      const UsersLoading()
+      UsersSearchLoading()
     );
-    final dataState = await _getUsersUseCase();
 
-    if(dataState is DataSuccess && dataState.data!.isNotEmpty){
+    final dataState = await _getUsersSearchUseCase(params: event.params);
+
+    if(dataState is DataSuccess ){
       emit(
-        UsersDone(dataState.data!)
+        UsersSearchDone(dataState.data)
       );
     }
 
     if(dataState is DataFailed){
       emit(
-        UsersError(dataState.error!)
+        UsersSearchError(dataState.error!)
       );
     }
   }
@@ -51,8 +53,6 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
       const UserLoading()
     );
     final dataState = await _getUserUseCase(params: event.params);
-
-    print(dataState.data!);
 
     if(dataState is DataSuccess){
       emit(
@@ -73,9 +73,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     );
     final dataState = await _getUserUseCase(params: event.params);
 
-    print(dataState.data!);
     if(dataState is DataSuccess){
-      print('ok');
       emit(
           MeDone(dataState.data!)
       );
