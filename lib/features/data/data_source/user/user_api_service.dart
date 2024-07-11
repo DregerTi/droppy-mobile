@@ -35,4 +35,14 @@ abstract class UserApiService {
     @Path("id") required int id,
     @Body() required Map<String, dynamic> user,
   });
+
+  @GET("/users/{id}/followers")
+  Future<HttpResponse<List<UserModel?>?>> getUserFollowers({
+    @Path("id") required int id,
+  });
+
+  @GET("/users/{id}/followed")
+  Future<HttpResponse<List<UserModel?>?>> getUserFollowed({
+    @Path("id") required int id,
+  });
 }

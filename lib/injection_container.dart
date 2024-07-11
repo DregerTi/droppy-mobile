@@ -31,19 +31,21 @@ import 'features/domain/usecases/drop/get_drop.dart';
 import 'features/domain/usecases/drop/get_user_drops.dart';
 import 'features/domain/usecases/drop/post_drop.dart';
 import 'features/domain/usecases/like/delete_like.dart';
-import 'features/domain/usecases/like/get_user_like.dart';
 import 'features/domain/usecases/like/post_like.dart';
 import 'features/domain/usecases/place_search/get_place_autocomplete.dart';
 import 'features/domain/usecases/place_search/get_place_details.dart';
 import 'features/domain/usecases/place_search/get_place_reverse_geocoding.dart';
 import 'features/domain/usecases/report/post_report.dart';
 import 'features/domain/usecases/user/get_user.dart';
-import 'features/domain/usecases/user/get_users.dart';
+import 'features/domain/usecases/user/get_users_followed.dart';
+import 'features/domain/usecases/user/get_users_followers.dart';
+import 'features/domain/usecases/user/get_users_search.dart';
 import 'features/domain/usecases/user/patch_user.dart';
 import 'features/domain/usecases/user/post_user.dart';
 import 'features/presentation/bloc/auth/auth_bloc.dart';
 import 'features/presentation/bloc/comment/remote/comment_bloc.dart';
 import 'features/presentation/bloc/drop/drop_bloc.dart';
+import 'features/presentation/bloc/follow/get/follow_get_bloc.dart';
 import 'features/presentation/bloc/lang/lang_bloc.dart';
 import 'features/presentation/bloc/like/like_bloc.dart';
 import 'features/presentation/bloc/oauth/oauth_bloc.dart';
@@ -103,6 +105,12 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<PatchUserUseCase>(PatchUserUseCase(sl()));
   sl.registerFactory<UsersBloc>(
     () => UsersBloc(sl(), sl(), sl(), sl()),
+  );
+
+  sl.registerSingleton<GetUserFollowersUseCase>(GetUserFollowersUseCase(sl()));
+  sl.registerSingleton<GetUserFollowedUseCase>(GetUserFollowedUseCase(sl()));
+  sl.registerFactory<FollowGetBloc>(
+        () => FollowGetBloc(sl(), sl()),
   );
 
   sl.registerSingleton<AuthApiService>(AuthApiService(sl()));
