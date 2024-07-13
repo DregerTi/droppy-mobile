@@ -20,7 +20,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
       this._postGroupUseCase,
       this._patchGroupUseCase
   ) : super(
-      const GroupsLoading()
+      const GroupsInit()
   ){
     on <GetGroups> (onGetGroups);
     on <GetGroup> (onGetGroup);
@@ -35,9 +35,9 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
 
     final dataState = await _getGroupsUseCase(params: event.params);
 
-    if(dataState is DataSuccess && dataState.data!.isNotEmpty){
+    if(dataState is DataSuccess){
       emit(
-        GroupsDone(dataState.data!)
+        GroupsDone(dataState.data)
       );
     }
 

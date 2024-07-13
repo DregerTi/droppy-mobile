@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:droppy/features/data/data_source/goup/group_api_service.dart';
 import 'package:droppy/features/domain/usecases/drop/get_drops.dart';
+import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
 import 'package:get_it/get_it.dart';
@@ -56,6 +57,7 @@ import 'features/presentation/bloc/auth/auth_bloc.dart';
 import 'features/presentation/bloc/comment/remote/comment_bloc.dart';
 import 'features/presentation/bloc/drop/drop_bloc.dart';
 import 'features/presentation/bloc/follow/get/follow_get_bloc.dart';
+import 'features/presentation/bloc/group/feed/goup_feed_bloc.dart';
 import 'features/presentation/bloc/group/goup_bloc.dart';
 import 'features/presentation/bloc/group_member/goup_member_bloc.dart';
 import 'features/presentation/bloc/lang/lang_bloc.dart';
@@ -162,6 +164,11 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetPlaceReverseGeocodingUseCase>(GetPlaceReverseGeocodingUseCase(sl()));
   sl.registerFactory<PlaceSearchBloc>(
     () => PlaceSearchBloc(sl(), sl(), sl())
+  );
+
+  sl.registerSingleton<GetGroupFeedUseCase>(GetGroupFeedUseCase(sl()));
+  sl.registerFactory<GroupFeedBloc>(
+    () => GroupFeedBloc(sl())
   );
 }
 

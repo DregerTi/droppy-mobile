@@ -29,12 +29,12 @@ class GroupModel extends GroupEntity {
     return GroupModel(
       id: map['ID'] ?? "",
       name: map['Name'] ?? "",
-      description: map['Description'] ?? "",
-      picturePath: map['PicturePath'] ?? "",
+      description: map['Description'],
+      picturePath: map['PicturePath'],
       isPrivate: map['IsPrivate'] ?? false,
-      drops: (map['Drops'] != null
-          && map['Drops'].length > 0 ?
-        (map['Drops'] as List<dynamic>)
+      drops: (map['GroupDrops'] != null
+          && map['GroupDrops'].length > 0 ?
+        (map['GroupDrops'] as List<dynamic>)
           .map((drop) => DropModel.fromJson(drop))
           .toList()
         : []

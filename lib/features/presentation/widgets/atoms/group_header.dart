@@ -1,23 +1,24 @@
 import 'package:droppy/config/theme/color.dart';
+import 'package:droppy/features/domain/entities/group.dart';
+import 'package:droppy/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/button.dart';
 import '../../../../config/theme/widgets/text.dart';
-import '../../../domain/entities/user.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_state.dart';
 import '../molecules/app_bar_widget.dart';
 import 'cached_image_widget.dart';
 
-class ItemHeader extends StatelessWidget {
-  final UserEntity? user;
+class GroupHeader extends StatelessWidget {
+  final GroupEntity? group;
   final bool isMe;
 
-  const ItemHeader({
+  const GroupHeader({
     super.key,
-    required this.user,
+    required this.group,
     this.isMe = false,
   });
 
@@ -34,68 +35,71 @@ class ItemHeader extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 12,),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () => context.goNamed('notifications'),
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  onPressed: () => context.pop(),
                   style: iconButtonThemeData.style?.copyWith(
-                    backgroundColor: MaterialStateProperty.all<Color>(onPrimaryColor),
-                    foregroundColor: MaterialStateProperty.all<Color>(onBackgroundColor),
-                    overlayColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.09)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    backgroundColor: WidgetStateProperty.all<Color>(onPrimaryColor),
+                    foregroundColor: WidgetStateProperty.all<Color>(onBackgroundColor),
+                    overlayColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.09)),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
-                if(isMe) IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () => context.goNamed(
-                    'preferences',
-                    extra: {
-                      'user': user,
-                    },
-                  ),
-                  style: iconButtonThemeData.style?.copyWith(
-                    backgroundColor: MaterialStateProperty.all<Color>(onPrimaryColor),
-                    foregroundColor: MaterialStateProperty.all<Color>(onBackgroundColor),
-                    overlayColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.09)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () => context.goNamed('notifications'),
+                      style: iconButtonThemeData.style?.copyWith(
+                        backgroundColor: WidgetStateProperty.all<Color>(onPrimaryColor),
+                        foregroundColor: WidgetStateProperty.all<Color>(onBackgroundColor),
+                        overlayColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.09)),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 6),
+                    if(group?.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) IconButton(
+                      icon: const Icon(Icons.settings),
+                      onPressed: () => context.goNamed(
+                        'group-setting',
+                        extra: {
+                          'groupId': group?.id,
+                        },
+                      ),
+                      style: iconButtonThemeData.style?.copyWith(
+                        backgroundColor: WidgetStateProperty.all<Color>(onPrimaryColor),
+                        foregroundColor: WidgetStateProperty.all<Color>(onBackgroundColor),
+                        overlayColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.09)),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             )
           ),
-          BlocBuilder<UsersBloc, UsersState>(
-            builder: (context, state) {
-              return AppBarWidget(
-                mainActionIcon: user?.id == null ? const Icon(Icons.settings) : null,
-                mainActionOnPressed: () {
-                  if(state is MeDone) {
-                    context.goNamed(
-                      'preferences',
-                      extra: {
-                        'user': state.me,
-                      },
-                    );
-                  }
-                },
-              );
-            },
-          ),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (user?.avatar != null) CachedImageWidget(
-                imageUrl: user?.avatar ?? '',
+              if (group?.picturePath != null) CachedImageWidget(
+                imageUrl: group?.picturePath ?? '',
                 borderRadius: BorderRadius.circular(24),
                 width: (MediaQuery.of(context).size.width - 40) / 3.6,
                 height: (MediaQuery.of(context).size.width - 40) / 3.6,
@@ -113,28 +117,24 @@ class ItemHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    user?.username ?? '',
+                    group?.name ?? '',
                     style: textTheme.headlineSmall?.copyWith(color: backgroundColor),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 159,
-                    child: Text(
-                      user?.bio ?? '',
-                      style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                    ),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
                       onPressed: () => {
-
+                        context.goNamed(
+                          'group-feed',
+                          pathParameters: {
+                            'groupId': group?.id.toString() ?? '',
+                          },
+                        ),
                       },
                       style: elevatedButtonThemeData.style?.copyWith(
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
                       ),
                       child: Text(
-                        'Follow',
+                        'Feed',
                         style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                       ),
                   ),
@@ -148,12 +148,12 @@ class ItemHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
-                  width: (MediaQuery.of(context).size.width - 60) / 3,
+                  width: (MediaQuery.of(context).size.width - 60) / 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        user?.totalDrops.toString() ?? '0',
+                        '12',
                         style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
                       ),
                       Text(
@@ -164,55 +164,24 @@ class ItemHeader extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: (MediaQuery.of(context).size.width - 60) / 3,
+                  width: (MediaQuery.of(context).size.width - 60) / 2,
                   child: GestureDetector(
-                    onTap: () => context.goNamed(
-                      'followers',
-                      pathParameters: {
-                        'userId': user?.id.toString() ?? '',
-                        'username': user?.username ?? 'Incroyable mec',
-                      },
-                    ),
+                    onTap: () => {},
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          user?.totalFollowers.toString() ?? '0',
+                          '0',
                           style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
                         ),
                         Text(
-                          'Followers',
+                          'Membre',
                           style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width - 60) / 3,
-                  child: GestureDetector(
-                    onTap: () => context.goNamed(
-                      'followed',
-                      pathParameters: {
-                        'userId': user?.id.toString() ?? '',
-                        'username': user?.username ?? 'Incroyable mec',
-                      },
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          user?.totalFollowed.toString() ?? '0',
-                          style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
-                        ),
-                        Text(
-                          'Following',
-                          style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
               ],
             ),
           )

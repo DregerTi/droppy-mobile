@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import '../../../core/ressources/data_state.dart';
+import '../../domain/entities/drop.dart';
 import '../../domain/entities/group_member.dart';
 import '../../domain/repository/group_repository.dart';
 import '../data_source/goup/group_api_service.dart';
@@ -13,7 +14,7 @@ class GroupRepositoryImpl implements GroupRepository {
   GroupRepositoryImpl(this._groupApiService);
 
   @override
-  Future<DataState<List<GroupModel>>> getGroups(Map<String, dynamic> params) async {
+  Future<DataState<List<GroupModel?>?>> getGroups(Map<String, dynamic> params) async {
     try {
       final httpResponse = await _groupApiService.getGroups(search: params['search']);
 
@@ -127,6 +128,28 @@ class GroupRepositoryImpl implements GroupRepository {
   Future<DataState<GroupModel>> postGroup(Map<String, dynamic> params) async {
     try {
       final httpResponse = await _groupApiService.postGroup(params);
+
+      if (httpResponse.response.statusCode == HttpStatus.created) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupModel?>> getGroupFeed(Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.getGroupFeed(id: params['id']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);

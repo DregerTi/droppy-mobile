@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/group.dart';
 
 abstract class GroupsState extends Equatable {
-  final List<GroupEntity> ? groups;
+  final List<GroupEntity?> ? groups;
   final GroupEntity ? group;
   final GroupEntity ? newGroup;
   final DioException ? error;
@@ -14,11 +14,15 @@ abstract class GroupsState extends Equatable {
   List<Object?> get props => [groups, error];
 }
 
+class GroupsInit extends GroupsState {
+  const GroupsInit();
+}
+
 class GroupsLoading extends GroupsState {
   const GroupsLoading();
 }
 class GroupsDone extends GroupsState {
-  const GroupsDone(List<GroupEntity> group) : super(groups: group);
+  const GroupsDone(List<GroupEntity?>? group) : super(groups: group);
 }
 class GroupsError extends GroupsState {
   const GroupsError(

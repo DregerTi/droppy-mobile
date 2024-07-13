@@ -1,7 +1,7 @@
 import 'package:droppy/features/presentation/pages/drop/drop_detail.dart';
 import 'package:droppy/features/presentation/pages/drop/drop_map.dart';
 import 'package:droppy/features/presentation/pages/drop/feed.dart';
-import 'package:droppy/features/presentation/pages/users_view.dart';
+import 'package:droppy/features/presentation/pages/user/users_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +23,8 @@ import '../../features/presentation/pages/drop/add_drop.dart';
 import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
 import '../../features/presentation/pages/groups/add_group.dart';
+import '../../features/presentation/pages/groups/group_feed.dart';
+import '../../features/presentation/pages/groups/group_view.dart';
 import '../../features/presentation/pages/groups/groups_view.dart';
 import '../../features/presentation/pages/user/user_followed.dart';
 import '../../features/presentation/pages/user/user_followers.dart';
@@ -105,6 +107,16 @@ class AppRoutes{
                 },
                 routes : [
                   GoRoute(
+                    path: 'drop/:dropId/:username',
+                    name: 'drop-from-profile',
+                    builder: (context, state) {
+                      return DropDetailsView(
+                        dropId: state.pathParameters['dropId'] ?? '',
+                        username: state.pathParameters['username'] ?? '',
+                      );
+                    },
+                  ),
+                  GoRoute(
                     path: 'followers/:username',
                     name: 'followers',
                     builder: (context, state) {
@@ -152,10 +164,13 @@ class AppRoutes{
                   builder: (context, state) => const DropMap(),
                   routes: [
                     GoRoute(
-                        path: 'drop/:dropId',
+                        path: 'drop/:dropId/:username',
                         name: 'drop',
                         builder: (context, state) {
-                          return DropDetailsView(dropId: state.pathParameters['dropId'] ?? '');
+                          return DropDetailsView(
+                            dropId: state.pathParameters['dropId'] ?? '',
+                            username: state.pathParameters['username'] ?? '',
+                          );
                         },
                         routes:[
                           GoRoute(
@@ -199,12 +214,20 @@ class AppRoutes{
                       //builder: (context, state) => const GroupSettingView(),
                     ),
                     GoRoute(
+                      path: 'group/:groupId/feed',
+                      name: 'group-feed',
+                      builder: (context, state) {
+                        return GroupFeed(
+                          groupId: int.parse(state.pathParameters['groupId'] ?? '0'),
+                        );
+                      },
+                    ),
+                    GoRoute(
                       path: 'group/:groupId',
                       name: 'group',
-                      builder: (context, state) => const SignUpView(),
-                      /*builder: (context, state) {
+                      builder: (context, state) {
                         return GroupView(groupId: state.pathParameters['groupId']);
-                      },*/
+                      },
                     ),
                   ]
               ),

@@ -18,6 +18,7 @@ class UserEntity extends Equatable {
   final DropModel ? lastDrop;
   final List<DropModel> ? pinnedDrops;
   final List<GroupModel> ? groups;
+  final int ? totalDrops;
 
   const UserEntity({
     this.id,
@@ -33,7 +34,8 @@ class UserEntity extends Equatable {
     this.totalFollowed,
     this.lastDrop,
     this.pinnedDrops,
-    this.groups
+    this.groups,
+    this.totalDrops,
   });
 
   @override
@@ -52,7 +54,8 @@ class UserEntity extends Equatable {
       totalFollowed,
       lastDrop,
       pinnedDrops,
-      groups
+      groups,
+      totalDrops,
     ];
   }
 }

@@ -8,13 +8,15 @@ import 'package:go_router/go_router.dart';
 import 'drop_tile.dart';
 
 class DropFeedWidget extends StatefulWidget {
-  final List<DropEntity> ? drops;
+  final List<DropEntity?> ? drops;
   final GroupEntity ? group;
+  final String? username;
 
   const DropFeedWidget({
     super.key,
     this.drops,
     this.group,
+    this.username,
   });
 
   @override
@@ -67,9 +69,11 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                   }).toList()
                 ),
               ),
-              if (feed.isEmpty) const WarningCard(
-                message: 'Aucun drop',
-                icon: 'empty'
+              if (feed.isEmpty) const Center(
+                child: WarningCard(
+                  message: 'Aucun drop',
+                  icon: 'empty'
+                ),
               ),
               Container(
                 height: 30,
@@ -88,9 +92,17 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 24),
                 child: AppBarWidget(
-                  leadingIcon: const Icon(Icons.person_add),
-                  leadingOnPressed: () => context.goNamed('users'),
-                  mainActionIcon: const Icon(Icons.notifications),
+                  leadingIcon: Icon(
+                      (widget.group == null) ? Icons.person_add_rounded : Icons.arrow_back_rounded
+                  ),
+                  leadingOnPressed: () => {
+                    if (widget.group == null) {
+                      context.goNamed('users')
+                    } else {
+                      context.pop()
+                    }
+                  },
+                  mainActionIcon: const Icon(Icons.notifications_rounded),
                   mainActionOnPressed: () => context.goNamed('notifications'),
                 ),
               ),
@@ -100,9 +112,30 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.group?.name ?? 'Amis',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 300,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (widget.group != null) {
+                                  context.goNamed(
+                                    'group',
+                                    pathParameters: {
+                                      'groupId': widget.group!.id.toString()
+                                    }
+                                  );
+                                }
+                              },
+                              child: Text(
+                                (widget.group?.name ?? (widget.username ?? 'Amis')),
+                                style: Theme.of(context).textTheme.headlineMedium,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,10 +1,10 @@
 import 'package:droppy/features/presentation/widgets/organisms/search_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../config/theme/color.dart';
-import '../../../injection_container.dart';
-import '../bloc/user/user_bloc.dart';
-import '../widgets/molecules/app_bar_widget.dart';
+import '../../../../config/theme/color.dart';
+import '../../../../injection_container.dart';
+import '../../bloc/user/user_bloc.dart';
+import '../../widgets/molecules/app_bar_widget.dart';
 
 class UsersView extends StatelessWidget {
 

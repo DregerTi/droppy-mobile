@@ -41,7 +41,7 @@ abstract class UserApiService {
     @Path("id") required int id,
   });
 
-  @GET("/users/{id}/followed")
+  @GET("/users/{id}/following")
   Future<HttpResponse<List<UserModel?>?>> getUserFollowed({
     @Path("id") required int id,
   });

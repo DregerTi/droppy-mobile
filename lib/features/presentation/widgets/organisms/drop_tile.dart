@@ -157,10 +157,10 @@ class DropTileWidget extends StatelessWidget {
                                     imageUrl: drop!.user!.avatar ?? '',
                                     width: 30,
                                     height: 30,
-                                    borderRadius: BorderRadius.circular(11),
+                                    borderRadius: BorderRadius.circular(12),
                                   )
                                 ) : ClipRRect(
-                                  borderRadius: BorderRadius.circular(11),
+                                  borderRadius: BorderRadius.circular(12),
                                   child: SvgPicture.asset(
                                     'lib/assets/images/avatar.svg',
                                     width: 30,

@@ -218,7 +218,7 @@ class _UserApiService implements UserApiService {
     )
             .compose(
               _dio.options,
-              '/users/${id}/followed',
+              '/users/${id}/following',
               queryParameters: queryParameters,
               data: _data,
             )

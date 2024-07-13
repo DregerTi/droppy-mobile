@@ -20,8 +20,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
     on<WebSocketMessageReceived>((event, emit) {
       final data = jsonDecode(event.message);
-      print([data]);
-      final List<DropModel> drops = [data].map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
+      print(data);
+      final List<DropModel> drops = data.map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
 
       emit(WebSocketMessageState(drops));
     });

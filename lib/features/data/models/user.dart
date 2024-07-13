@@ -19,7 +19,8 @@ class UserModel extends UserEntity {
     int ? totalFollowed,
     DropModel ? lastDrop,
     List<DropModel> ? pinnedDrops,
-    List<GroupModel> ? groups
+    List<GroupModel> ? groups,
+    int? totalDrops
   }) : super(
     id: id,
     email: email,
@@ -34,7 +35,8 @@ class UserModel extends UserEntity {
     totalFollowed: totalFollowed,
     lastDrop: lastDrop,
     pinnedDrops: pinnedDrops,
-    groups: groups
+    groups: groups,
+    totalDrops: totalDrops
   );
   
   factory UserModel.fromJson(Map<String, dynamic >map) {
@@ -52,7 +54,8 @@ class UserModel extends UserEntity {
       totalFollowed: map['TotalFollowed'] ?? 0,
       lastDrop: map['LastDrop'] != null ? DropModel.fromJson(map['LastDrop']) : null,
       pinnedDrops: map['PinnedDrops'] != null ? (map['PinnedDrops'] as List).map((e) => DropModel.fromJson(e)).toList() : [],
-      groups: map['Groups'] != null ? (map['Groups'] as List).map((e) => GroupModel.fromJson(e)).toList() : []
+      groups: map['Groups'] != null ? (map['Groups'] as List).map((e) => GroupModel.fromJson(e)).toList() : [],
+      totalDrops: map['TotalDrops'] ?? 0,
     );
   }
 
@@ -71,7 +74,8 @@ class UserModel extends UserEntity {
       totalFollowed: entity.totalFollowed,
       lastDrop: entity.lastDrop,
       pinnedDrops: entity.pinnedDrops,
-      groups: entity.groups
+      groups: entity.groups,
+      totalDrops: entity.totalDrops
     );
   }
 }

@@ -8,8 +8,9 @@ import '../../bloc/feed/feed_state.dart';
 
 final channel = IOWebSocketChannel.connect(
     Uri.parse('ws://localhost:3000/users/my-feed/ws'),headers: {
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA3MjAyMzUsInJvbGUiOiJ1c2VyIiwic3ViIjo0MzF9.gAvAnW3FlSDwOu-YKAgsdJTBazBWwdheSUBmK_xWW7k'
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA4NDM2NjksInJvbGUiOiJ1c2VyIiwic3ViIjo0MzF9.2hW_qFnU8lDM8bmXCRNYaXrEPOqN9t0547doQvW6O1g'
 });
+
 
 class Feed extends StatelessWidget {
 
@@ -41,9 +42,11 @@ class Feed extends StatelessWidget {
           }
 
           if(state is WebSocketDisconnected) {
-            return const WarningCard(
-              message: 'Aucun drop',
-              icon: 'empty'
+            return const Center(
+              child: WarningCard(
+                message: 'Aucun drop',
+                icon: 'empty'
+              ),
             );
           }
 

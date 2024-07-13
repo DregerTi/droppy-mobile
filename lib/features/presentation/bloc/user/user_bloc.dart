@@ -30,7 +30,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
   void onGetUsersSearch(GetUsersSearch event, Emitter<UsersState> emit) async {
     emit(
-      UsersSearchLoading()
+      const UsersSearchLoading()
     );
 
     final dataState = await _getUsersSearchUseCase(params: event.params);

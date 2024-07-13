@@ -21,7 +21,7 @@ class _GroupApiService implements GroupApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<GroupModel>>> getGroups({
+  Future<HttpResponse<List<GroupModel?>?>> getGroups({
     required String search,
   }) async {
     final _extra = <String, dynamic>{};
@@ -31,8 +31,8 @@ class _GroupApiService implements GroupApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<List<GroupModel>>>(Options(
+    final _result = await _dio.fetch(
+        _setStreamType(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -48,8 +48,7 @@ class _GroupApiService implements GroupApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    List<GroupModel> value = _result.data![0]
-        .map<GroupModel>((dynamic i) => GroupModel.fromJson(i as Map<String, dynamic>))
+    List<GroupModel?>? value = _result.data?.map<GroupModel>((dynamic i) => GroupModel.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
@@ -197,7 +196,37 @@ class _GroupApiService implements GroupApiService {
     )
             .compose(
               _dio.options,
-              '/groups',
+              '/groups/',
+              queryParameters: queryParameters,
+              data: FormData.fromMap(_data),
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GroupModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<GroupModel?>> getGroupFeed({
+    required int id,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(
+        _setStreamType(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/groups/${id}/feed',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -206,7 +235,7 @@ class _GroupApiService implements GroupApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = GroupModel.fromJson(_result.data!);
+    GroupModel? value = GroupModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

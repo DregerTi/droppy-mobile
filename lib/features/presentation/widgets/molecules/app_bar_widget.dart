@@ -12,9 +12,10 @@ class AppBarWidget extends StatelessWidget {
   final Function? mainActionOnPressed;
   final Icon? secondaryActionIcon;
   final Function? secondaryActionOnPressed;
+  final Widget? actionWidget;
 
   const AppBarWidget({
-    Key? key,
+    super.key,
     this.leadingIcon,
     this.leadingOnPressed,
     this.title,
@@ -22,7 +23,8 @@ class AppBarWidget extends StatelessWidget {
     this.mainActionOnPressed,
     this.secondaryActionIcon,
     this.secondaryActionOnPressed,
-  }) : super(key: key);
+    this.actionWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class AppBarWidget extends StatelessWidget {
                         () {context.pop();}
                     ),
                     style: iconButtonThemeData.style?.copyWith(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -63,7 +65,7 @@ class AppBarWidget extends StatelessWidget {
                       icon: secondaryActionIcon!,
                       onPressed: () => _onPressedHandler(context, secondaryActionOnPressed!()),
                       style: iconButtonThemeData.style?.copyWith(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -75,13 +77,15 @@ class AppBarWidget extends StatelessWidget {
                       icon: mainActionIcon!,
                       onPressed: () => _onPressedHandler(context, mainActionOnPressed!),
                       style: iconButtonThemeData.style?.copyWith(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                       ),
                     ),
+                    if (actionWidget != null) const SizedBox(width: 8),
+                    if (actionWidget != null) actionWidget!,
                   ]
               )
             ],

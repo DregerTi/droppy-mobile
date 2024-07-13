@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:droppy/features/data/models/drop.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -12,7 +13,7 @@ abstract class GroupApiService {
   factory GroupApiService(Dio dio) = _GroupApiService;
 
   @GET("/groups/search")
-  Future<HttpResponse<List<GroupModel>>> getGroups({
+  Future<HttpResponse<List<GroupModel?>?>> getGroups({
     @Query("search") required String search,
   });
 
@@ -42,4 +43,9 @@ abstract class GroupApiService {
   Future<HttpResponse<GroupModel>> postGroup(
     @Body() Map<String, dynamic> group,
   );
+
+  @GET("/groups/{id}/feed")
+  Future<HttpResponse<GroupModel?>> getGroupFeed({
+    @Path("id") required int id,
+  });
 }
