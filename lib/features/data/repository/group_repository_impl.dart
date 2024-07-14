@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import '../../../core/ressources/data_state.dart';
-import '../../domain/entities/drop.dart';
 import '../../domain/entities/group_member.dart';
 import '../../domain/repository/group_repository.dart';
 import '../data_source/goup/group_api_service.dart';
@@ -37,7 +36,6 @@ class GroupRepositoryImpl implements GroupRepository {
 
   @override
   Future<DataState<GroupModel>> getGroup(Map<String, dynamic> params) async {
-    final httpResponse = await _groupApiService.getGroup(id: params['id']);
     try {
       final httpResponse = await _groupApiService.getGroup(id: params['id']);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
@@ -103,11 +101,33 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<DataState<GroupMemberEntity>> leaveGroup(Map<String, dynamic> params) async {
+  Future<DataState<Map<String, dynamic>>> leaveGroup(Map<String, dynamic> params) async {
     try {
       final httpResponse = await _groupApiService.leaveGroup(id: params['id'], memberId: params['memberId']);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.noContent) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupMemberEntity>> postGroupMember(Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.postGroupMember(id: params['id'], memberId: params['memberId']);
+
+      if (httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(

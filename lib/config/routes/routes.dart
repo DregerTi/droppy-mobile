@@ -24,6 +24,7 @@ import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
 import '../../features/presentation/pages/groups/add_group.dart';
 import '../../features/presentation/pages/groups/group_feed.dart';
+import '../../features/presentation/pages/groups/group_members.dart';
 import '../../features/presentation/pages/groups/group_setting.dart';
 import '../../features/presentation/pages/groups/group_view.dart';
 import '../../features/presentation/pages/groups/groups_view.dart';
@@ -231,6 +232,13 @@ class AppRoutes{
                             groupId: int.parse(state.pathParameters['groupId'] ?? '0'),
                           ),
                         ),
+                        GoRoute(
+                          path: 'members-list',
+                          name: 'group-members-list',
+                          builder: (context, state) => GroupMembersView(
+                            groupId: state.pathParameters['groupId'] ?? '0',
+                          ),
+                        )
                       ]
                     ),
                   ]

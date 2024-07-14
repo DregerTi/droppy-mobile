@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/ressources/data_state.dart';
 import '../../../domain/usecases/group_member/leave_group.dart';
 import '../../../domain/usecases/group_member/post_group_join.dart';
+import '../../../domain/usecases/group_member/post_group_member.dart';
 import 'group_member_state.dart';
 import 'group_member_event.dart';
 
@@ -9,15 +10,18 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState> {
   
   final LeaveGroupUseCase _leaveGroupUseCase;
   final PostGroupJoinUseCase _postGroupJoinUseCase;
+  final PostGroupMemberUseCase _postGroupMemberUseCase;
 
   GroupMembersBloc(
       this._leaveGroupUseCase,
-      this._postGroupJoinUseCase
+      this._postGroupJoinUseCase,
+      this._postGroupMemberUseCase
   ) : super(
     const PostGroupJoinLoading()
   ){
     on <LeaveGroup> (onLeaveGroup);
     on <PostGroupJoin> (onPostGroupJoin);
+    on <PostGroupMember> (onPostGroupMember);
   }
 
   void onLeaveGroup(LeaveGroup event, Emitter<GroupMembersState> emit) async {
@@ -28,7 +32,7 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState> {
 
     if(dataState is DataSuccess){
       emit(
-        LeaveGroupDone(dataState.data!)
+        const LeaveGroupDone()
       );
     }
 
@@ -54,6 +58,25 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState> {
     if(dataState is DataFailed){
       emit(
         PostGroupJoinError(dataState.error!)
+      );
+    }
+  }
+
+  void onPostGroupMember(PostGroupMember event, Emitter<GroupMembersState> emit) async {
+    emit(
+      const PostGroupMemberLoading()
+    );
+    final dataState = await _postGroupMemberUseCase(params: event.params);
+
+    if(dataState is DataSuccess){
+      emit(
+        PostGroupMemberDone(dataState.data!)
+      );
+    }
+
+    if(dataState is DataFailed){
+      emit(
+        PostGroupMemberError(dataState.error!)
       );
     }
   }

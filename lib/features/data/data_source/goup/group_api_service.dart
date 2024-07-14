@@ -34,7 +34,13 @@ abstract class GroupApiService {
   });
 
   @DELETE("/groups/members/{id}/{memberId}")
-  Future<HttpResponse<GroupMemberModel>> leaveGroup({
+  Future<HttpResponse<Map<String, dynamic>>> leaveGroup({
+    @Path("id") required int id,
+    @Path("memberId") required int memberId,
+  });
+
+  @POST("/groups/members/{id}/{memberId}")
+  Future<HttpResponse<GroupMemberModel>> postGroupMember({
     @Path("id") required int id,
     @Path("memberId") required int memberId,
   });

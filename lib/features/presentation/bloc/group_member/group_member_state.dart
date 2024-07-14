@@ -17,7 +17,7 @@ class LeaveGroupLoading extends GroupMembersState {
   const LeaveGroupLoading();
 }
 class LeaveGroupDone extends GroupMembersState {
-  const LeaveGroupDone(GroupMemberEntity groupMember) : super(groupMember: groupMember);
+  const LeaveGroupDone() : super();
 }
 class LeaveGroupError extends GroupMembersState {
   const LeaveGroupError(DioException error) : super(error: error);
@@ -32,4 +32,15 @@ class PostGroupJoinDone extends GroupMembersState {
 }
 class PostGroupJoinError extends GroupMembersState {
   const PostGroupJoinError(DioException error) : super(error: error);
+}
+
+
+class PostGroupMemberLoading extends GroupMembersState {
+  const PostGroupMemberLoading();
+}
+class PostGroupMemberDone extends GroupMembersState {
+  const PostGroupMemberDone(GroupMemberEntity groupMember) : super(groupMember: groupMember);
+}
+class PostGroupMemberError extends GroupMembersState {
+  const PostGroupMemberError(DioException error) : super(error: error);
 }

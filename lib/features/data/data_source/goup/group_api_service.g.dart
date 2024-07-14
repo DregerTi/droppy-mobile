@@ -148,7 +148,37 @@ class _GroupApiService implements GroupApiService {
   }
 
   @override
-  Future<HttpResponse<GroupMemberModel>> leaveGroup({
+  Future<HttpResponse<Map<String, dynamic>>> leaveGroup({
+    required int id,
+    required int memberId,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _headers = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<Map<String, dynamic>>>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/groups/members/${id}/${memberId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final httpResponse = HttpResponse({'deleted': true}, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<GroupMemberModel>> postGroupMember({
     required int id,
     required int memberId,
   }) async {
@@ -158,7 +188,7 @@ class _GroupApiService implements GroupApiService {
     final _headers = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GroupMemberModel>>(Options(
-      method: 'DELETE',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

@@ -111,8 +111,9 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<LeaveGroupUseCase>(LeaveGroupUseCase(sl()));
   sl.registerSingleton<PostGroupJoinUseCase>(PostGroupJoinUseCase(sl()));
+  sl.registerSingleton<PostGroupMemberUseCase>(PostGroupMemberUseCase(sl()));
   sl.registerFactory<GroupMembersBloc>(
-    () => GroupMembersBloc(sl(), sl()),
+    () => GroupMembersBloc(sl(), sl(), sl()),
   );
 
   sl.registerSingleton<CommentApiService>(CommentApiService(sl()));

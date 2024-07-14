@@ -7,7 +7,7 @@ class GroupMemberEntity extends Equatable {
   final int ? id;
   final int ? status;
   final String ? role;
-  final UserModel ? user;
+  final UserModel ? member;
   final GroupModel ? group;
   final DateTime ? createdAt;
   final DateTime ? updatedAt;
@@ -16,7 +16,7 @@ class GroupMemberEntity extends Equatable {
     this.id,
     this.status,
     this.role,
-    this.user,
+    this.member,
     this.group,
     this.createdAt,
     this.updatedAt,
@@ -28,7 +28,7 @@ class GroupMemberEntity extends Equatable {
       id,
       status,
       role,
-      user,
+      member,
       group,
       createdAt,
       updatedAt,

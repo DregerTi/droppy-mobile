@@ -13,3 +13,9 @@ class PostGroupJoin extends GroupMembersEvent {
 
   const PostGroupJoin(this.params);
 }
+
+class PostGroupMember extends GroupMembersEvent {
+  final Map<String, dynamic> params;
+
+  const PostGroupMember(this.params);
+}
