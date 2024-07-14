@@ -147,7 +147,9 @@ class _UserApiService implements UserApiService {
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = {
+      'Content-Type': 'application/merge-patch+json',
+    };
     final _data = user;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<UserModel>>(Options(
@@ -159,7 +161,7 @@ class _UserApiService implements UserApiService {
               _dio.options,
               '/users/${id}',
               queryParameters: queryParameters,
-              data: _data,
+              data: FormData.fromMap(_data),
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../config/theme/color.dart';
+import '../../../../config/theme/widgets/button.dart';
 import '../../../data/models/user.dart';
 import '../../../domain/entities/media_picker_item.dart';
 import '../../bloc/user/user_bloc.dart';
@@ -28,27 +29,29 @@ class UpdateAccountView extends StatefulWidget {
 
 class _UpdateAccountViewState extends State<UpdateAccountView> {
   final formKey = GlobalKey<FormState>();
+  final descriptionFormKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   String activeElement = 'main';
-
   List<MediaPickerItemEntity> selectedMedias = [];
 
   @override
   initState() {
     usernameController.text = widget.user.username!;
+    descriptionController.text = widget.user.bio!;
     super.initState();
   }
 
-  String? fistnameError(String? value) {
-    if (value!.length < 2 || value.length > 50) {
-      return 'Le prénom doit être compris entre 2 et 50 caractères';
+  String? usernameError(String? value) {
+    if (value!.length < 2 || value.length > 26) {
+      return 'Entre 2 et 26 caractères';
     }
     return null;
   }
 
-  String? lastnameError(String? value) {
-    if (value!.length < 2 || value.length > 50) {
-      return 'Le nom doit être compris entre 2 et 50 caractères';
+  String? descriptionError(String? value) {
+    if ((value!.length < 5 || value.length > 60) && value.isNotEmpty) {
+      return 'Entre 2 et 60 caractères ou vide';
     }
     return null;
   }
@@ -59,138 +62,150 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
       body: Stack(
         children: [
           SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Visibility(
-                      visible: activeElement == 'main',
-                      child: AppBarWidget(
-                        leadingIcon: const Icon(Icons.arrow_back),
-                        title: AppLocalizations.of(context)!.myAccount,
-                      ),
-                    ),
-                    Visibility(
-                        visible: activeElement == 'main',
-                        child: const SizedBox(height: 32)
-                    ),
-                    MediaPickerWidget(
-                      setSelectedMedias: (value) {
-                        setState(() {
-                          selectedMedias = value;
-                        });
-                      },
-                      maxMedias: 1,
-                      activeElement: activeElement,
-                      selectedMedias: selectedMedias,
-                      initialMediaEntities: widget.user.avatar != null ? [widget.user.avatar!] : null,
-                      setActiveElement: (value) {
-                        setState(() {
-                          activeElement = value;
-                        });
-                      },
-                    ),
-                    if (activeElement == 'main') const SizedBox(height: 20),
-                    if (activeElement == 'main') Padding(
-                        padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                        child: Form(
-                          key: formKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextFormField(
-                                controller: usernameController,
-                                validator: fistnameError,
-                                decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)!.lastName,
-                                  helperText: '',
+            physics: const ClampingScrollPhysics(),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Visibility(
+                    visible: activeElement == 'main',
+                    child: AppBarWidget(
+                      leadingIcon: const Icon(Icons.arrow_back),
+                      title: AppLocalizations.of(context)!.myAccount,
+                      actionWidget: BlocConsumer<UsersBloc, UsersState>(
+                        listener: (context, state) {
+                          if(state is PatchUserError) {
+                            snackBarWidget(
+                              message: AppLocalizations.of(context)!.loadingError,
+                              context: context,
+                              type: 'error',
+                            );
+                          }
+                          if(state is PatchUserDone) {
+                            snackBarWidget(
+                              message: 'Group mis à jour',
+                              context: context,
+                            );
+                            context.pop(true);
+                          }
+                        },
+                        builder: (context, state) {
+                          return IconButton(
+                            icon: (state is PatchUserLoading)
+                                ? const SizedBox(
+                                width: 14,
+                                height: 14,
+                                child: Center(
+                                    child: CircularProgressIndicator()
+                                )
+                            )
+                                : const Icon(Icons.check_rounded),
+                            style: iconButtonThemeData.style?.copyWith(
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                            ],
+                            ),
+                            onPressed: () async {
+                              if(formKey.currentState!.validate() && descriptionFormKey.currentState!.validate()) {
+
+                                var data = {
+                                  'name': usernameController.text,
+                                  'description': descriptionController.text ?? '',
+                                };
+
+                                if (selectedMedias.isNotEmpty) {
+                                  final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file)!.path);
+                                  data['avatar'] = mainMedia as dynamic;
+                                }
+
+                                context.read<UsersBloc>().add(PatchUser({
+                                  'id': widget.user.id,
+                                  'user': data,
+                                }));
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  if (activeElement == 'main') const SizedBox(height: 20),
+                  Padding(
+                    padding: activeElement == 'main' ? const EdgeInsets.only(top: 20, bottom: 0, left: 24, right: 24) : const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: activeElement == 'main' ? 56 : MediaQuery.of(context).size.width,
+                              height: activeElement == 'main' ? 56 : MediaQuery.of(context).size.height,
+                              child: MediaPickerWidget(
+                                lite: true,
+                                maxMedias: 1,
+                                activeElement: activeElement,
+                                setActiveElement: (value) {
+                                  setState(() {
+                                    activeElement = value;
+                                  });
+                                },
+                                setSelectedMedias: (value) {
+                                  setState(() {
+                                    selectedMedias = value;
+                                  });
+                                },
+                                initialMediaEntities: widget.user.avatar != null ? [widget.user.avatar!] : null,
+                                selectedMedias: [],
+                              ),
+                            ),
+                            if (activeElement == 'main') const SizedBox(width: 10),
+                            Flexible(
+                              child: Form(
+                                key: formKey,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormField(
+                                      controller: usernameController,
+                                      validator: usernameError,
+                                      decoration: InputDecoration(
+                                        hintText: AppLocalizations.of(context)!.lastName,
+                                        helperText: '',
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (activeElement == 'main') Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Form(
+                            key: descriptionFormKey,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            child: TextFormField(
+                              controller: descriptionController,
+                              maxLines: 8,
+                              validator: descriptionError,
+                              decoration: const InputDecoration(
+                                hintText: 'Description...',
+                                helperText: '',
+                              ),
+                            ),
                           ),
                         )
-                    ),
-                  ],
-                ),
-              )
-          ),
-          if (activeElement == 'main')  Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: textColor.withOpacity(0.1),
-                    blurRadius: 20,
-                    spreadRadius: 1,
+                      ],
+                    )
                   ),
                 ],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(26),
-                  topRight: Radius.circular(26),
-                ),
               ),
-              child: BlocConsumer<UsersBloc, UsersState>(
-                builder: (context, state) {
-                  return ActionBar(
-                      leadingText: (state is PatchUserLoading) ? null : AppLocalizations.of(context)!.save,
-                      leadingWidget: (state is PatchUserLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : null,
-                      leadingOnPressed: () async {
-                        if(formKey.currentState!.validate()){
-
-                          var data = {
-                            "patchUser": {
-                              'id': widget.user.id,
-                              "user" : {
-                                'username': usernameController.text,
-                              }
-                            }
-                          };
-
-                          MultipartFile? updatePicture;
-                          if(selectedMedias != [] && selectedMedias.isNotEmpty){
-                            updatePicture = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file)!.path);
-                            data['updatePicture'] = {
-                              'id': widget.user.id,
-                              'user': {
-                                'updatePicture': updatePicture
-                              }
-                            };
-                          }
-
-                          context.read<UsersBloc>().add(
-                              PatchUser(data)
-                          );
-                        }
-                      }
-                  );
-                },
-                listener: (BuildContext context, UsersState state) {
-                  if(state is PatchUserDone) {
-                    snackBarWidget(
-                      message: 'Votre compte a été mis à jour',
-                      context: context,
-                    );
-                    context.goNamed('account');
-                  }
-                  if(state is PatchUserError) {
-                    snackBarWidget(
-                      message: AppLocalizations.of(context)!.accountUpdateError,
-                      context: context,
-                      type: 'error',
-                    );
-                  }
-                },
-              ),
-            ),
+            )
           ),
         ],
       ),

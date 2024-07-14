@@ -17,9 +17,9 @@ class PreferencesView extends StatelessWidget {
   final UserModel user;
 
   const PreferencesView({
-    Key? key,
+    super.key,
     required this.user
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

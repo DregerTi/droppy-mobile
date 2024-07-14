@@ -15,9 +15,9 @@ class MyAccountView extends StatelessWidget {
   final UserModel user;
 
   const MyAccountView({
-    Key? key,
+    super.key,
     required this.user
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class MyAccountView extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(14),
                           color: surfaceColor,
                         ),
                         child: Row(
@@ -105,7 +105,7 @@ class MyAccountView extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(14),
                           color: surfaceColor,
                         ),
                         child: Row(
