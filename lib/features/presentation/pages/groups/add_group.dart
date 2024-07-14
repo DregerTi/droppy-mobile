@@ -133,7 +133,7 @@ class _AddGroupViewState extends State<AddGroupView> {
 
                                   var data = {
                                     'name': titleController.text,
-                                    'isPrivate': !isPublic,
+                                    'isPrivate': isPublic ? false : true,
                                     'members': selectedUsers.map((e) => e.id).toList(),
                                   };
 
@@ -195,7 +195,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                               ),
                             ],
                           ),
-                          Padding(
+                          if (activeElement == 'main') Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: GestureDetector(
                               onTap: () {
