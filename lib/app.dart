@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'package:droppy/features/presentation/bloc/auth/auth_state.dart';
+
+import 'features/presentation/bloc/auth/auth_event.dart';
+import 'features/presentation/bloc/feed/feed_bloc.dart';
 import 'l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +37,7 @@ class _MainAppState extends State<MainApp> {
           create: (context) => sl()..add(InitLang(window.locale.languageCode)),
         ),
         BlocProvider<AuthBloc>(
-          create: (context) => sl(),
+          create: (context) => sl()..add(const InitAuth()),
         ),
         BlocProvider<UsersBloc>(
           create: (context) => sl(),
@@ -52,19 +56,22 @@ class _MainAppState extends State<MainApp> {
                 });
               }
             },
-            child: MaterialApp.router(
-              title: 'Droppy',
-              debugShowCheckedModeBanner: false,
-              theme: theme(),
-              routerConfig: AppRoutes.router,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: L10n.all,
-              locale: Locale(BlocProvider.of<LangBloc>(context).state.lang ?? lang.languageCode),
+            child: BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {},
+              child: MaterialApp.router(
+                title: 'Droppy',
+                debugShowCheckedModeBanner: false,
+                theme: theme(),
+                routerConfig: AppRoutes.router,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: L10n.all,
+                locale: Locale(BlocProvider.of<LangBloc>(context).state.lang ?? lang.languageCode),
+              ),
             ),
           );
         },

@@ -10,6 +10,10 @@ class Authenticate extends AuthEvent {
   const Authenticate(this.credentials);
 }
 
+class InitAuth extends AuthEvent {
+  const InitAuth();
+}
+
 class OAuthAuthenticate extends AuthEvent {
   final AuthEntity auth;
 

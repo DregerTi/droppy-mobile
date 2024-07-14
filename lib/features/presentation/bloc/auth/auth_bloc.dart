@@ -23,6 +23,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on <OAuthAuthenticate> (onOAuthAuthenticate);
     on<SignOut>(onSignOut);
     on<RefreshToken>(onRefreshToken);
+    on <InitAuth>(onInitAuth);
+  }
+
+  void onInitAuth(InitAuth event, Emitter<AuthState> emit) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final jwtToken = prefs.getString('jwtToken');
+    final refreshToken = prefs.getString('refreshToken');
+    final id = prefs.getInt('id');
+    final role = prefs.getString('role');
+    final username = prefs.getString('username');
+    if(jwtToken != null && refreshToken != null && id != null && role != null && username != null){
+      final auth = AuthEntity(
+        token: jwtToken,
+        refreshToken: refreshToken,
+        id: id,
+        role: role,
+        username: username
+      );
+
+      emit(
+        AuthDone(auth)
+      );
+    }
   }
 
   void onAuthenticate(Authenticate event, Emitter<AuthState> emit) async {
