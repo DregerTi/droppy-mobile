@@ -22,7 +22,27 @@ class WarningCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(height: 34),
+        if(icon != null && icon == 'lock') const Icon(
+          Icons.lock_rounded,
+          size: 50,
+          color: onSurfaceColor,
+        ),
+        if(icon != null && icon == 'warning') const Icon(
+          Icons.warning_rounded,
+          size: 50,
+          color: onSurfaceColor,
+        ),
+        if(icon != null && icon == 'error') const Icon(
+          Icons.error_rounded,
+          size: 50,
+          color: onSurfaceColor,
+        ),
+        if(icon != null && icon == 'empty') const Icon(
+          Icons.sentiment_dissatisfied_rounded,
+          size: 50,
+          color: onSurfaceColor,
+        ),
+        const SizedBox(height: 28),
         Text(
           message ?? '',
           textAlign: TextAlign.center,
@@ -30,7 +50,7 @@ class WarningCard extends StatelessWidget {
             color: onSurfaceColor,
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 28),
         if(onTap != null) GestureDetector(
           onTap: () => onTap!(),
           child: ElevatedButton(
@@ -38,11 +58,36 @@ class WarningCard extends StatelessWidget {
             style: elevatedButtonThemeData.style?.copyWith(
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
             ),
-            child: Text(
-              AppLocalizations.of(context)!.retry,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: backgroundColor,
-              ),
+            child: Column(
+              children: [
+                if(icon != null && icon == 'lock') const Icon(
+                  Icons.lock_rounded,
+                  size: 50,
+                  color: onSurfaceColor,
+                ),
+                if(icon != null && icon == 'warning') const Icon(
+                  Icons.warning_rounded,
+                  size: 50,
+                  color: onSurfaceColor,
+                ),
+                if(icon != null && icon == 'error') const Icon(
+                  Icons.error_rounded,
+                  size: 50,
+                  color: onSurfaceColor,
+                ),
+                if(icon != null && icon == 'empty') const Icon(
+                  Icons.sentiment_dissatisfied_rounded,
+                  size: 50,
+                  color: onSurfaceColor,
+                ),
+                const SizedBox(height: 28),
+                Text(
+                  AppLocalizations.of(context)!.retry,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: backgroundColor,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
