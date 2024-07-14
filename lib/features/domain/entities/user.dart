@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/drop.dart';
+import '../../data/models/follow.dart';
 import '../../data/models/group.dart';
 
 class UserEntity extends Equatable {
@@ -19,6 +20,8 @@ class UserEntity extends Equatable {
   final List<DropModel> ? pinnedDrops;
   final List<GroupModel> ? groups;
   final int ? totalDrops;
+  final FollowModel ? currentFollow;
+  final bool ? isPrivate;
 
   const UserEntity({
     this.id,
@@ -36,6 +39,8 @@ class UserEntity extends Equatable {
     this.pinnedDrops,
     this.groups,
     this.totalDrops,
+    this.currentFollow,
+    this.isPrivate
   });
 
   @override
@@ -56,6 +61,8 @@ class UserEntity extends Equatable {
       pinnedDrops,
       groups,
       totalDrops,
+      currentFollow,
+      isPrivate
     ];
   }
 }

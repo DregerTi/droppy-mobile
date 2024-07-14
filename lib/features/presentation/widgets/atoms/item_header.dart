@@ -1,4 +1,6 @@
 import 'package:droppy/config/theme/color.dart';
+import 'package:droppy/features/presentation/bloc/auth/auth_bloc.dart';
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,7 +8,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/button.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../../../domain/entities/user.dart';
+import '../../bloc/follow/follow_bloc.dart';
+import '../../bloc/follow/follow_event.dart';
+import '../../bloc/follow/follow_state.dart';
 import '../../bloc/user/user_bloc.dart';
+import '../../bloc/user/user_event.dart';
 import '../../bloc/user/user_state.dart';
 import '../molecules/app_bar_widget.dart';
 import 'cached_image_widget.dart';
@@ -126,17 +132,88 @@ class ItemHeader extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                      onPressed: () => {
+                  if(user?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) BlocConsumer<FollowsBloc, FollowsState>(
+                    listener: (context, state) {
+                      if(state is PostFollowDone) {
+                        snackBarWidget(
+                          message: 'Follow effectué avec succès',
+                          context: context,
+                        );
 
-                      },
-                      style: elevatedButtonThemeData.style?.copyWith(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
-                      ),
-                      child: Text(
-                        'Follow',
-                        style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                      ),
+                        BlocProvider.of<UsersBloc>(context).add(GetUser({
+                          'id': user?.id ?? 0
+                        }));
+                      }
+
+                      if(state is DeleteFollowDone) {
+                        snackBarWidget(
+                          message: 'Unfollow effectué avec succès',
+                          context: context,
+                        );
+
+                        BlocProvider.of<UsersBloc>(context).add(GetUser({
+                          'id': user?.id ?? 0
+                        }));
+                      }
+
+                      if(state is PostFollowError || state is DeleteFollowError) {
+                        snackBarWidget(
+                          message: 'Erreur lors de l\'action',
+                          context: context,
+                          type: 'error',
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if(user?.currentFollow == null) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<FollowsBloc>(context).add(PostFollow({
+                              'userId': user?.id ?? 0,
+                            }));
+                          },
+                          style: elevatedButtonThemeData.style?.copyWith(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                          ),
+                          child: Text(
+                            'Follow',
+                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                          ),
+                        );
+                      }
+
+                      if (user?.currentFollow != null && user?.currentFollow?.status == 1) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<FollowsBloc>(context).add(DeleteFollow({
+                              'id': user?.id ?? 0,
+                            }));
+                          },
+                          style: elevatedButtonThemeData.style?.copyWith(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                          ),
+                          child: Text(
+                            'Unfollow',
+                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                          ),
+                        );
+                      }
+
+                      if(user?.currentFollow != null && user?.currentFollow?.status == 0) {
+                        return ElevatedButton(
+                          onPressed: () {},
+                          style: elevatedButtonThemeData.style?.copyWith(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                          ),
+                          child: Text(
+                            'Demande envoyée',
+                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                          ),
+                        );
+                      }
+
+                      return const SizedBox(height: 0);
+                    },
                   ),
                 ],
               )
@@ -166,13 +243,19 @@ class ItemHeader extends StatelessWidget {
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 60) / 3,
                   child: GestureDetector(
-                    onTap: () => context.goNamed(
-                      'followers',
-                      pathParameters: {
-                        'userId': user?.id.toString() ?? '',
-                        'username': user?.username ?? 'Incroyable mec',
-                      },
-                    ),
+                    onTap: () => {
+                      if (user?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id ||
+                          user?.isPrivate == false ||
+                          (user?.currentFollow != null && user?.currentFollow?.status == 1)){
+                        context.goNamed(
+                          'followers',
+                          pathParameters: {
+                            'userId': user?.id.toString() ?? '',
+                            'username': user?.username ?? ''
+                          }
+                        )
+                      }
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -191,13 +274,19 @@ class ItemHeader extends StatelessWidget {
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 60) / 3,
                   child: GestureDetector(
-                    onTap: () => context.goNamed(
-                      'followed',
-                      pathParameters: {
-                        'userId': user?.id.toString() ?? '',
-                        'username': user?.username ?? 'Incroyable mec',
-                      },
-                    ),
+                    onTap: () => {
+                      if (user?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id ||
+                          user?.isPrivate == false ||
+                          (user?.currentFollow != null && user?.currentFollow?.status == 1)){
+                        context.goNamed(
+                            'followed',
+                            pathParameters: {
+                              'userId': user?.id.toString() ?? '',
+                              'username': user?.username ?? ''
+                            }
+                        )
+                      }
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:droppy/features/data/data_source/goup/group_api_service.dart';
+import 'package:droppy/features/domain/repository/follow_repository.dart';
 import 'package:droppy/features/domain/usecases/drop/get_drops.dart';
 import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
@@ -10,6 +11,7 @@ import 'core/util/http_overrides.dart';
 import 'features/data/data_source/auth/auth_api_service.dart';
 import 'features/data/data_source/comment/comment_api_service.dart';
 import 'features/data/data_source/drop/drop_api_service.dart';
+import 'features/data/data_source/follow/follow_api_service.dart';
 import 'features/data/data_source/like/like_api_service.dart';
 import 'features/data/data_source/place_search/place_search_api_service.dart';
 import 'features/data/data_source/report/report_api_service.dart';
@@ -17,6 +19,7 @@ import 'features/data/data_source/user/user_api_service.dart';
 import 'features/data/repository/auth_repository_impl.dart';
 import 'features/data/repository/comment_repository_impl.dart';
 import 'features/data/repository/drop_repository_impl.dart';
+import 'features/data/repository/follow_repository_impl.dart';
 import 'features/data/repository/group_repository_impl.dart';
 import 'features/data/repository/like_repository_impl.dart';
 import 'features/data/repository/place_search_repository_impl.dart';
@@ -38,10 +41,15 @@ import 'features/domain/usecases/comment/post_comment.dart';
 import 'features/domain/usecases/drop/get_drop.dart';
 import 'features/domain/usecases/drop/get_user_drops.dart';
 import 'features/domain/usecases/drop/post_drop.dart';
+import 'features/domain/usecases/follow/accept_follow.dart';
+import 'features/domain/usecases/follow/delete_follow.dart';
+import 'features/domain/usecases/follow/post_follow.dart';
+import 'features/domain/usecases/follow/refuse_follow.dart';
 import 'features/domain/usecases/group/get_group.dart';
 import 'features/domain/usecases/group/patch_group.dart';
 import 'features/domain/usecases/group/post_group.dart';
 import 'features/domain/usecases/group_member/post_group_join.dart';
+import 'features/domain/usecases/group_member/post_group_member.dart';
 import 'features/domain/usecases/like/delete_like.dart';
 import 'features/domain/usecases/like/post_like.dart';
 import 'features/domain/usecases/place_search/get_place_autocomplete.dart';
@@ -57,6 +65,7 @@ import 'features/domain/usecases/user/post_user.dart';
 import 'features/presentation/bloc/auth/auth_bloc.dart';
 import 'features/presentation/bloc/comment/remote/comment_bloc.dart';
 import 'features/presentation/bloc/drop/drop_bloc.dart';
+import 'features/presentation/bloc/follow/follow_bloc.dart';
 import 'features/presentation/bloc/follow/get/follow_get_bloc.dart';
 import 'features/presentation/bloc/group/feed/goup_feed_bloc.dart';
 import 'features/presentation/bloc/group/goup_bloc.dart';
@@ -141,7 +150,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetUserFollowersUseCase>(GetUserFollowersUseCase(sl()));
   sl.registerSingleton<GetUserFollowedUseCase>(GetUserFollowedUseCase(sl()));
   sl.registerFactory<FollowGetBloc>(
-        () => FollowGetBloc(sl(), sl()),
+    () => FollowGetBloc(sl(), sl()),
   );
 
   sl.registerSingleton<AuthApiService>(AuthApiService(sl()));
@@ -165,6 +174,16 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetPlaceReverseGeocodingUseCase>(GetPlaceReverseGeocodingUseCase(sl()));
   sl.registerFactory<PlaceSearchBloc>(
     () => PlaceSearchBloc(sl(), sl(), sl())
+  );
+
+  sl.registerSingleton<FollowApiService>(FollowApiService(sl()));
+  sl.registerSingleton<FollowRepository>(FollowRepositoryImpl(sl()));
+  sl.registerSingleton<PostFollowUseCase>(PostFollowUseCase(sl()));
+  sl.registerSingleton<DeleteFollowUseCase>(DeleteFollowUseCase(sl()));
+  sl.registerSingleton<AcceptFollowUseCase>(AcceptFollowUseCase(sl()));
+  sl.registerSingleton<RefuseFollowUseCase>(RefuseFollowUseCase(sl()));
+  sl.registerFactory<FollowsBloc>(
+    () => FollowsBloc(sl(), sl(), sl(), sl())
   );
 
   sl.registerSingleton<GetGroupFeedUseCase>(GetGroupFeedUseCase(sl()));

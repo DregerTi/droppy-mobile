@@ -1,8 +1,7 @@
-
-
 import 'package:droppy/features/data/models/drop.dart';
 import 'package:droppy/features/data/models/group.dart';
 import '../../domain/entities/user.dart';
+import 'follow.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
@@ -20,7 +19,9 @@ class UserModel extends UserEntity {
     DropModel ? lastDrop,
     List<DropModel> ? pinnedDrops,
     List<GroupModel> ? groups,
-    int? totalDrops
+    int? totalDrops,
+    FollowModel ? currentFollow,
+    bool ? isPrivate
   }) : super(
     id: id,
     email: email,
@@ -36,7 +37,9 @@ class UserModel extends UserEntity {
     lastDrop: lastDrop,
     pinnedDrops: pinnedDrops,
     groups: groups,
-    totalDrops: totalDrops
+    totalDrops: totalDrops,
+    currentFollow: currentFollow,
+    isPrivate: isPrivate
   );
   
   factory UserModel.fromJson(Map<String, dynamic >map) {
@@ -56,6 +59,8 @@ class UserModel extends UserEntity {
       pinnedDrops: map['PinnedDrops'] != null ? (map['PinnedDrops'] as List).map((e) => DropModel.fromJson(e)).toList() : [],
       groups: map['Groups'] != null ? (map['Groups'] as List).map((e) => GroupModel.fromJson(e)).toList() : [],
       totalDrops: map['TotalDrops'] ?? 0,
+      currentFollow: map['CurrentFollow'] != null ? FollowModel.fromJson(map['CurrentFollow']) : null,
+      isPrivate: map['IsPrivate'] ?? false
     );
   }
 
@@ -75,7 +80,9 @@ class UserModel extends UserEntity {
       lastDrop: entity.lastDrop,
       pinnedDrops: entity.pinnedDrops,
       groups: entity.groups,
-      totalDrops: entity.totalDrops
+      totalDrops: entity.totalDrops,
+      currentFollow: entity.currentFollow,
+      isPrivate: entity.isPrivate
     );
   }
 }
