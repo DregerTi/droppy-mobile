@@ -2,15 +2,9 @@ import 'package:droppy/features/presentation/widgets/atoms/warning_card.dart';
 import 'package:droppy/features/presentation/widgets/organisms/drop_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_socket_channel/io.dart';
 import '../../bloc/feed/feed_bloc.dart';
+import '../../bloc/feed/feed_event.dart';
 import '../../bloc/feed/feed_state.dart';
-
-final channel = IOWebSocketChannel.connect(
-    Uri.parse('ws://localhost:3000/users/my-feed/ws'),headers: {
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA4NDM2NjksInJvbGUiOiJ1c2VyIiwic3ViIjo0MzF9.2hW_qFnU8lDM8bmXCRNYaXrEPOqN9t0547doQvW6O1g'
-});
-
 
 class Feed extends StatelessWidget {
 
@@ -20,39 +14,40 @@ class Feed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<FeedBloc>(
-      create: (context) => FeedBloc(channel),
-      child: BlocConsumer<FeedBloc, FeedState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is WebSocketInitial) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                ],
-              ),
-            );
-          }
+    if(BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageState || BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageReceived){
+      BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
+    }
 
-          if(state is WebSocketMessageState) {
-            return DropFeedWidget(drops: state.drops);
-          }
+    return BlocConsumer<FeedBloc, FeedState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is WebSocketInitial) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(child: CircularProgressIndicator()),
+              ],
+            ),
+          );
+        }
 
-          if(state is WebSocketDisconnected) {
-            return const Center(
-              child: WarningCard(
-                message: 'Aucun drop',
-                icon: 'empty'
-              ),
-            );
-          }
+        if(state is WebSocketMessageState || state is WebSocketMessageReceived) {
+          return DropFeedWidget(drops: state.drops);
+        }
 
-          return const SizedBox();
-        },
-      ),
+        if(state is WebSocketDisconnected) {
+          return const Center(
+            child: WarningCard(
+              message: 'Aucun drop',
+              icon: 'empty'
+            ),
+          );
+        }
+
+        return const SizedBox();
+      },
     );
   }
 }

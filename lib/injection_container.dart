@@ -4,6 +4,7 @@ import 'package:droppy/features/domain/usecases/drop/get_drops.dart';
 import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
+import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'core/util/http_overrides.dart';
 import 'features/data/data_source/auth/auth_api_service.dart';
@@ -169,6 +170,10 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetGroupFeedUseCase>(GetGroupFeedUseCase(sl()));
   sl.registerFactory<GroupFeedBloc>(
     () => GroupFeedBloc(sl())
+  );
+
+  sl.registerFactory<FeedBloc>(
+    () => FeedBloc()
   );
 }
 

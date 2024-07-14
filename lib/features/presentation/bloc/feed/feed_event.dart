@@ -7,6 +7,8 @@ abstract class FeedEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class WebSocketConnect extends FeedEvent {}
+
 class WebSocketSendMessage extends FeedEvent {
   final String message;
 

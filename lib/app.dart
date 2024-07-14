@@ -38,6 +38,9 @@ class _MainAppState extends State<MainApp> {
         BlocProvider<UsersBloc>(
           create: (context) => sl(),
         ),
+        BlocProvider<FeedBloc>(
+          create: (context) => sl(),
+        ),
       ],
       child: Builder(
         builder: (BuildContext context) {
