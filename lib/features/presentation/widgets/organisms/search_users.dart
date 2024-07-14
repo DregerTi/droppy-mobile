@@ -93,7 +93,7 @@ class _SearchUsersState extends State<SearchUsers> {
                     ),
                   );
                 }
-                if (state is FollowedDone){
+                if (state is FollowedDone && (state.users?.isNotEmpty ?? false)){
                   return SingleChildScrollView(
                       physics: const ClampingScrollPhysics(),
                       child: Column(
