@@ -24,6 +24,7 @@ import '../../features/presentation/pages/drop/add_drop_report.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
 import '../../features/presentation/pages/groups/add_group.dart';
 import '../../features/presentation/pages/groups/group_feed.dart';
+import '../../features/presentation/pages/groups/group_setting.dart';
 import '../../features/presentation/pages/groups/group_view.dart';
 import '../../features/presentation/pages/groups/groups_view.dart';
 import '../../features/presentation/pages/user/user_followed.dart';
@@ -208,12 +209,6 @@ class AppRoutes{
                       builder: (context, state) => const AddGroupView(),
                     ),
                     GoRoute(
-                      path: 'group/:groupId/setting',
-                      name: 'group-setting',
-                      builder: (context, state) => const SignUpView(),
-                      //builder: (context, state) => const GroupSettingView(),
-                    ),
-                    GoRoute(
                       path: 'group/:groupId/feed',
                       name: 'group-feed',
                       builder: (context, state) {
@@ -228,6 +223,15 @@ class AppRoutes{
                       builder: (context, state) {
                         return GroupView(groupId: state.pathParameters['groupId']);
                       },
+                      routes: [
+                        GoRoute(
+                          path: 'setting',
+                          name: 'group-setting',
+                          builder: (context, state) => GroupSettingView(
+                            groupId: int.parse(state.pathParameters['groupId'] ?? '0'),
+                          ),
+                        ),
+                      ]
                     ),
                   ]
               ),

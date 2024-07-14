@@ -103,7 +103,7 @@ class _GroupApiService implements GroupApiService {
           _dio.options,
           '/groups/${id}',
           queryParameters: queryParameters,
-          data: _data,
+          data: FormData.fromMap(_data),
         )
             .copyWith(
             baseUrl: _combineBaseUrls(
