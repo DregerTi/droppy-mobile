@@ -5,6 +5,7 @@ import 'cached_image_widget.dart';
 
 class TileItemWidget extends StatelessWidget {
   final String title;
+  final Color? titleColor;
   final String? subtitle;
   final Widget? leadingIcon;
   final String? leadingImageUrl;
@@ -14,6 +15,7 @@ class TileItemWidget extends StatelessWidget {
   const TileItemWidget({
     super.key,
     required this.title,
+    this.titleColor,
     this.subtitle,
     this.leadingImageUrl,
     this.onTap,
@@ -53,7 +55,7 @@ class TileItemWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: textTheme.bodyMedium,
+                  style: titleColor != null ? textTheme.bodyMedium?.copyWith(color: titleColor) : textTheme.bodyMedium,
                 ),
                 if (subtitle != null) Text(
                   subtitle!,
