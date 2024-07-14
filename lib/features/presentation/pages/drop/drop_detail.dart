@@ -8,6 +8,7 @@ import '../../bloc/drop/drop_state.dart';
 import '../../bloc/like/like_bloc.dart';
 import '../../widgets/atoms/warning_card.dart';
 import '../../widgets/organisms/drop_feed.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DropDetailsView extends HookWidget {
   final String dropId;
@@ -42,7 +43,7 @@ class DropDetailsView extends HookWidget {
             } else if (state is DropError) {
               return Center(
                 child: WarningCard(
-                  message: 'Erreur lors du chargement du drop',
+                  message: AppLocalizations.of(context)!.loadingError,
                   icon: 'error',
                   onTap: () {
                     BlocProvider.of<DropsBloc>(context).add(GetDrop({

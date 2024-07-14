@@ -7,9 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/button.dart';
 import '../../../../config/theme/widgets/text.dart';
-import '../../bloc/user/user_bloc.dart';
-import '../../bloc/user/user_state.dart';
-import '../molecules/app_bar_widget.dart';
 import 'cached_image_widget.dart';
 
 class GroupHeader extends StatelessWidget {
@@ -69,12 +66,14 @@ class GroupHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    if(group?.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) IconButton(
+                    if((group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
+                        && group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
+                        || group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) IconButton(
                       icon: const Icon(Icons.settings),
                       onPressed: () => context.goNamed(
                         'group-setting',
-                        extra: {
-                          'groupId': group?.id,
+                        pathParameters: {
+                          'groupId': group?.id.toString() ?? '0'
                         },
                       ),
                       style: iconButtonThemeData.style?.copyWith(
@@ -153,7 +152,7 @@ class GroupHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '12',
+                        group?.totalDrops.toString() ?? '0',
                         style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
                       ),
                       Text(
@@ -171,11 +170,11 @@ class GroupHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '0',
+                          group?.groupMembers?.length.toString() ?? '0',
                           style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
                         ),
                         Text(
-                          'Membre',
+                          'Membres',
                           style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                         ),
                       ],

@@ -1,4 +1,5 @@
 import 'package:droppy/features/data/models/drop.dart';
+import 'package:droppy/features/data/models/group_member.dart';
 import 'package:droppy/features/data/models/user.dart';
 import '../../domain/entities/group.dart';
 
@@ -13,6 +14,8 @@ class GroupModel extends GroupEntity {
     List<DropModel> ? drops,
     DateTime ? createdAt,
     DateTime ? updatedAt,
+    List<GroupMemberModel> ? groupMembers,
+    int? totalDrops,
   }) : super(
     id: id,
     name: name,
@@ -23,6 +26,8 @@ class GroupModel extends GroupEntity {
     drops: drops,
     createdAt: createdAt,
     updatedAt: updatedAt,
+    groupMembers: groupMembers,
+    totalDrops: totalDrops,
   );
   
   factory GroupModel.fromJson(Map<String, dynamic >map) {
@@ -39,9 +44,17 @@ class GroupModel extends GroupEntity {
           .toList()
         : []
       ),
-      createdBy: map['Created_by_id'] != null ? UserModel.fromJson(map['user']) : null,
+      createdBy: map['CreatedBy'] != null ? UserModel.fromJson(map['CreatedBy']) : null,
       createdAt: map['CreatedAt'] != null ? DateTime.parse(map['CreatedAt']) : null,
       updatedAt: map['UpdatedAt'] != null ? DateTime.parse(map['UpdatedAt']) : null,
+      groupMembers: (map['GroupMembers'] != null
+          && map['GroupMembers'].length > 0 ?
+        (map['GroupMembers'] as List<dynamic>)
+          .map((groupMember) => GroupMemberModel.fromJson(groupMember))
+          .toList()
+        : []
+      ),
+      totalDrops: map['TotalDrops'] ?? 0,
     );
   }
 
@@ -56,6 +69,8 @@ class GroupModel extends GroupEntity {
       drops: entity.drops,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      groupMembers: entity.groupMembers,
+      totalDrops: entity.totalDrops,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../data/models/drop.dart';
+import '../../data/models/group_member.dart';
 import '../../data/models/user.dart';
 
 
@@ -13,6 +14,8 @@ class GroupEntity extends Equatable {
   final List<DropModel> ? drops;
   final DateTime ? createdAt;
   final DateTime ? updatedAt;
+  final List<GroupMemberModel> ? groupMembers;
+  final int? totalDrops;
 
   const GroupEntity({
     this.id,
@@ -24,6 +27,8 @@ class GroupEntity extends Equatable {
     this.drops,
     this.createdAt,
     this.updatedAt,
+    this.groupMembers,
+    this.totalDrops,
   });
 
   @override
@@ -38,6 +43,8 @@ class GroupEntity extends Equatable {
       drops,
       createdAt,
       updatedAt,
+      groupMembers,
+      totalDrops,
     ];
   }
 }
