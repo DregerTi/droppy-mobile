@@ -165,7 +165,7 @@ class AppRoutes{
                   routes: [
                     GoRoute(
                         path: 'drop/:dropId/:username',
-                        name: 'drop',
+                        name: 'drop-from-map',
                         builder: (context, state) {
                           return DropDetailsView(
                             dropId: state.pathParameters['dropId'] ?? '',

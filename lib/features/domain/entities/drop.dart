@@ -1,7 +1,6 @@
 import 'package:droppy/features/data/models/user.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/models/content_type.dart';
-import '../../data/models/like.dart';
 import '../../data/models/report.dart';
 import '../../data/models/comment.dart';
 
@@ -20,6 +19,8 @@ class DropEntity extends Equatable {
   final bool ? isCurrentUserLiking;
   final int ? totalComments;
   final int ? totalLikes;
+  final double? lat;
+  final double? lng;
 
   const DropEntity({
     this.iri,
@@ -34,7 +35,9 @@ class DropEntity extends Equatable {
     this.comments,
     this.isCurrentUserLiking,
     this.totalComments,
-    this.totalLikes
+    this.totalLikes,
+    this.lat,
+    this.lng
   });
 
   @override
@@ -52,7 +55,9 @@ class DropEntity extends Equatable {
       comments,
       isCurrentUserLiking,
       totalComments,
-      totalLikes
+      totalLikes,
+      lat,
+      lng
     ];
   }
 }

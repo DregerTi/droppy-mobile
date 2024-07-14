@@ -2,7 +2,6 @@ import 'package:droppy/features/data/models/report.dart';
 import 'package:droppy/features/data/models/user.dart';
 import 'package:droppy/features/data/models/comment.dart';
 import 'package:droppy/features/data/models/content_type.dart';
-import 'package:droppy/features/data/models/like.dart';
 import '../../domain/entities/drop.dart';
 
 class DropModel extends DropEntity {
@@ -19,7 +18,9 @@ class DropModel extends DropEntity {
     List<CommentModel> ? comments,
     bool ? isCurrentUserLiking,
     int? totalComments,
-    int? totalLikes
+    int? totalLikes,
+    double? lat,
+    double? lng
   }) : super(
     iri: iri,
     id: id,
@@ -33,7 +34,9 @@ class DropModel extends DropEntity {
     comments: comments,
     isCurrentUserLiking: isCurrentUserLiking,
     totalComments: totalComments,
-    totalLikes: totalLikes
+    totalLikes: totalLikes,
+    lat: lat,
+    lng: lng
   );
   
   factory DropModel.fromJson(Map<String, dynamic >map) {
@@ -62,7 +65,9 @@ class DropModel extends DropEntity {
       ),
       isCurrentUserLiking: map['IsCurrentUserLiking'] ?? false,
       totalComments: map['TotalComments'] ?? 0,
-      totalLikes: map['TotalLikes'] ?? 0
+      totalLikes: map['TotalLikes'] ?? 0,
+      lat: map['Lat'] != null ? map['Lat'].toDouble() : 0,
+      lng: map['Lng'] != null ? map['Lng'].toDouble() : 0
     );
   }
 
@@ -80,7 +85,9 @@ class DropModel extends DropEntity {
       comments: entity.comments,
       isCurrentUserLiking: entity.isCurrentUserLiking,
       totalComments: entity.totalComments,
-      totalLikes: entity.totalLikes
+      totalLikes: entity.totalLikes,
+      lat: entity.lat,
+      lng: entity.lng
     );
   }
 }

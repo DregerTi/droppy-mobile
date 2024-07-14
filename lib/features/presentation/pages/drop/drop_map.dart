@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../injection_container.dart';
+import 'package:latlong2/latlong.dart';
 import '../../../../config/theme/widgets/text.dart';
-import '../../bloc/place_search/place_search_bloc.dart';
-import '../../bloc/place_search/place_search_event.dart';
+import '../../bloc/feed/feed_bloc.dart';
+import '../../bloc/feed/feed_event.dart';
+import '../../bloc/feed/feed_state.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
+import '../../widgets/atoms/warning_card.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/organisms/map_widget.dart';
 
@@ -26,7 +30,6 @@ class _DropMapState extends State<DropMap> {
   late final MapController mapController;
 
   String activeElement = 'main';
-  TextEditingController searchFieldController = TextEditingController();
   late AlignOnUpdate alignPositionOnUpdate;
   late final StreamController<double?> alignPositionStreamController;
   Timer? debounce;
@@ -51,13 +54,14 @@ class _DropMapState extends State<DropMap> {
 
   @override
   Widget build(BuildContext context) {
+    if(BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageState || BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageReceived){
+      BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
+    }
+    
     return SafeArea(
       child: Scaffold(
-          body: BlocProvider<PlaceSearchBloc>(
-            create: (context) => sl(),
-            child: Builder(
-              builder: (BuildContext context) => _buildBody(context),
-            ),
+          body: Builder(
+            builder: (BuildContext context) => _buildBody(context),
           )
       ),
     );
@@ -71,7 +75,7 @@ class _DropMapState extends State<DropMap> {
           MapWidget(
             mapController: mapController,
             userLocation: true,
-            hasSearchBar: true,
+            hasSearchBar: false,
             alignPositionStreamController: alignPositionStreamController.stream,
             alignPositionOnUpdate: alignPositionOnUpdate,
             onMapReady: (evt){
@@ -79,9 +83,7 @@ class _DropMapState extends State<DropMap> {
                 activeElement = 'main';
               });
               if (evt is MapEventMoveEnd) {
-                BlocProvider.of<PlaceSearchBloc>(context).add(GetPlaceReverseGeocoding({
-                  'latlng': '${evt.camera.center.latitude},${evt.camera.center.longitude}',
-                }));
+
               }
             },
             onPositionChanged: (position, hasGesture) {
@@ -91,6 +93,109 @@ class _DropMapState extends State<DropMap> {
                 );
               }
             },
+            markers: BlocConsumer<FeedBloc, FeedState>(
+              listener: (context, state) {},
+              builder: (_,state){
+                return MarkerClusterLayerWidget(
+                    options: MarkerClusterLayerOptions(
+                      maxClusterRadius: 45,
+                      size: const Size(40, 40),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(50),
+                      maxZoom: 15,
+                      markers: state.drops!.map((drops) => Marker(
+                        point: LatLng(drops.lat!, drops.lng!),
+                        width: 75.0,
+                        height: 75.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              context.goNamed(
+                                'drop-from-map',
+                                pathParameters: {
+                                  'dropId': drops.id.toString(),
+                                  'username': drops.user!.username ?? '',
+                                },
+                              );
+                            });
+                            mapController.move(LatLng(drops.lat! - 0.002, drops.lng!), 15.0);
+                          },
+                          child: Stack(
+                            children: [
+                              SizedBox(
+                                width: 75,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.location_on,
+                                    color: primaryColor,
+                                    size: 75,
+                                    shadows: [
+                                      Shadow(
+                                        color: secondaryColor.withOpacity(0.9),
+                                        blurRadius: 5,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                left: 7,
+                                right: 7,
+                                bottom: 14,
+                                child: Container(
+                                  width: 38,
+                                  height: 38,
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(19),
+                                  ),
+                                  child: (drops.picturePath != null)
+                                      ? CachedImageWidget(
+                                    imageUrl: drops.picturePath!,
+                                    borderRadius: BorderRadius.circular(18),
+                                    height: 38,
+                                    width: 38,
+                                  ) : ClipRRect(
+                                    borderRadius: BorderRadius.circular(18),
+                                    child: SvgPicture.asset(
+                                      'lib/assets/images/avatar.svg',
+                                      height: 38,
+                                      width: 38,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )).toList(),
+                      builder: (context, markers) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: primaryColor,
+                            boxShadow: [
+                              BoxShadow(
+                                color: secondaryColor.withOpacity(0.9),
+                                blurRadius: 5,
+                                spreadRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              markers.length.toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+              },
+            ),
           ),
           Container(
             height: 30,
@@ -167,34 +272,73 @@ class _DropMapState extends State<DropMap> {
                       borderRadius: BorderRadius.all(Radius.circular(46)),
                     ),
                     height: (MediaQuery.of(context).size.width / 5.5) < 60 ? 140 : (MediaQuery.of(context).size.width / 5.5) + 70,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(width: 16);
-                      },
-                      itemCount: 8,
-                      itemBuilder: (BuildContext context, int index) {
-                        if(index == 0 || index == 7){
-                          return const SizedBox(width: 14);
+                    child: BlocConsumer<FeedBloc, FeedState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+
+                        if(state is WebSocketDisconnected) {
+                          return const Center(
+                            child: WarningCard(
+                                message: 'Aucun drop',
+                                icon: 'empty'
+                            ),
+                          );
                         }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CachedImageWidget(
-                              borderRadius: BorderRadius.circular(16),
-                              imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
-                              height: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
-                              width: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Moi ouei',
-                              style: textTheme.labelSmall,
-                            ),
-                          ],
+
+                        if(state is WebSocketMessageState || state is WebSocketMessageReceived) {
+                          return ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (BuildContext context, int index) {
+                              return const SizedBox(width: 16);
+                            },
+                            itemCount: state.drops!.length + 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              if(index == 0 || index == 7){
+                                return const SizedBox(width: 14);
+                              }
+                              return GestureDetector(
+                                onTap: (){
+                                  mapController.move(LatLng(state.drops![index - 1].lat! - 0.001, state.drops![index - 1].lng!), 15.0);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if(state.drops![index - 1].user!.avatar != null) CachedImageWidget(
+                                      borderRadius: BorderRadius.circular(20),
+                                      imageUrl: state.drops![index - 1].user!.avatar!,
+                                      height: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
+                                      width: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
+                                    ) else ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: SvgPicture.asset(
+                                        'lib/assets/images/avatar.svg',
+                                        height: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
+                                        width: (MediaQuery.of(context).size.width / 5.5) < 60 ? 60 : MediaQuery.of(context).size.width / 5.5,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      state.drops![index - 1].user!.username!,
+                                      style: textTheme.labelSmall,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          );
+                        }
+
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(child: CircularProgressIndicator()),
+                            ],
+                          ),
                         );
-                      }
+                      },
                     )
                   )
                 ],
