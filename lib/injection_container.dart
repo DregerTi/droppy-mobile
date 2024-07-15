@@ -9,6 +9,7 @@ import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
 import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
 import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
+import 'package:droppy/features/presentation/bloc/has_dropped/has_dropped_bloc.dart';
 import 'package:droppy/features/presentation/bloc/pin_drop/pin_drop_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'core/util/http_overrides.dart';
@@ -215,6 +216,10 @@ Future<void> initializeDependencies() async {
 
   sl.registerFactory<PendingFollowBloc>(
     () => PendingFollowBloc()
+  );
+
+  sl.registerFactory<HasDroppedBloc>(
+    () => HasDroppedBloc()
   );
 }
 
