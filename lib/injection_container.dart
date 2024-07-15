@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:droppy/features/data/data_source/comment_response/comment_response_api_service.dart';
+import 'package:droppy/features/data/data_source/content/content_api_service.dart';
 import 'package:droppy/features/data/data_source/goup/group_api_service.dart';
+import 'package:droppy/features/domain/repository/content_repository.dart';
 import 'package:droppy/features/domain/repository/follow_repository.dart';
+import 'package:droppy/features/domain/usecases/content/search_content.dart';
 import 'package:droppy/features/domain/usecases/drop/get_drops.dart';
 import 'package:droppy/features/domain/usecases/drop/patch_drop.dart';
 import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
+import 'package:droppy/features/presentation/bloc/content/content_bloc.dart';
 import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
 import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
 import 'package:droppy/features/presentation/bloc/has_dropped/has_dropped_bloc.dart';
@@ -24,6 +28,7 @@ import 'features/data/data_source/user/user_api_service.dart';
 import 'features/data/repository/auth_repository_impl.dart';
 import 'features/data/repository/comment_repository_impl.dart';
 import 'features/data/repository/comment_response_repository_impl.dart';
+import 'features/data/repository/content_repository_impl.dart';
 import 'features/data/repository/drop_repository_impl.dart';
 import 'features/data/repository/follow_repository_impl.dart';
 import 'features/data/repository/group_repository_impl.dart';
@@ -203,6 +208,13 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<RefuseFollowUseCase>(RefuseFollowUseCase(sl()));
   sl.registerFactory<FollowsBloc>(
     () => FollowsBloc(sl(), sl(), sl(), sl())
+  );
+
+  sl.registerSingleton<ContentApiService>(ContentApiService(sl()));
+  sl.registerSingleton<ContentRepository>(ContentRepositoryImpl(sl()));
+  sl.registerSingleton<SearchContentUseCase>(SearchContentUseCase(sl()));
+  sl.registerFactory<ContentBloc>(
+    () => ContentBloc(sl())
   );
 
   sl.registerSingleton<GetGroupFeedUseCase>(GetGroupFeedUseCase(sl()));
