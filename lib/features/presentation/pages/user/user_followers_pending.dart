@@ -1,10 +1,15 @@
+import 'package:droppy/features/presentation/bloc/follow/follow_event.dart';
 import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_event.dart';
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../config/theme/color.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../../../injection_container.dart';
+import '../../bloc/follow/follow_bloc.dart';
+import '../../bloc/follow/follow_state.dart';
 import '../../bloc/follow/pending/pending_follow_state.dart';
 import '../../bloc/follow/pending/pending_follow_bloc.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
@@ -19,52 +24,86 @@ class UserFollowersPendingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                AppBarWidget(
-                  leadingIcon: const Icon(Icons.arrow_back),
-                  leadingOnPressed: () {
-                    context.pop();
-                  },
-                  title: 'Notifications',
-                ),
-                Expanded(
-                  child: BlocConsumer<PendingFollowBloc, PendingFollowState>(
-                    listener: (BuildContext context, PendingFollowState state) {},
-                    builder: (_,state) {
-                      if (state is PendingFollowWebSocketInitial) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(child: CircularProgressIndicator()),
-                            ],
-                          ),
-                        );
-                      }
-                      if(state is PendingFollowWebSocketDisconnected) {
-                        return Center(
-                          child: WarningCard(
+    return BlocProvider<FollowsBloc>(
+      create: (context) => sl(),
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              BlocListener<FollowsBloc, FollowsState>(
+                listener: (BuildContext context, FollowsState state) {
+
+                  if (state is AcceptFollowDone) {
+                    snackBarWidget(
+                      message: 'Demande de suivi acceptée',
+                      context: context
+                    );
+                  }
+                  if (state is AcceptFollowError) {
+                    snackBarWidget(
+                      message: 'Erreur lors de l\'acceptation de la demande de suivi',
+                      type: 'error',
+                      context: context
+                    );
+                  }
+                  if (state is RefuseFollowDone) {
+                    snackBarWidget(
+                      message: 'Demande de suivi refusée',
+                      context: context
+                    );
+                  }
+                  if (state is RefuseFollowError) {
+                    snackBarWidget(
+                      message: 'Erreur lors du refus de la demande de suivi',
+                      type: 'error',
+                      context: context
+                    );
+                  }
+                },
+                child: const SizedBox(),
+              ),
+              Column(
+                children: [
+                  AppBarWidget(
+                    leadingIcon: const Icon(Icons.arrow_back),
+                    leadingOnPressed: () {
+                      context.pop();
+                    },
+                    title: 'Notifications',
+                  ),
+                  Expanded(
+                    child: BlocConsumer<PendingFollowBloc, PendingFollowState>(
+                      listener: (BuildContext context, PendingFollowState state) {},
+                      builder: (_,state) {
+                        if (state is PendingFollowWebSocketInitial) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(child: CircularProgressIndicator()),
+                              ],
+                            ),
+                          );
+                        }
+                        if(state is PendingFollowWebSocketDisconnected) {
+                          return Center(
+                            child: WarningCard(
                               message: AppLocalizations.of(context)!.loadingError,
                               icon: 'empty'
-                          ),
-                        );
-                      }
-                      if(state is PendingFollowWebSocketMessageState || state is PendingFollowWebSocketMessageReceived) {
-                        if (state.follows?.isEmpty ?? true) {
-                          return const WarningCard(
-                            icon: 'empty',
-                            message: 'Aucun résultat',
+                            ),
                           );
-                        } else {
-                          return SingleChildScrollView(
+                        }
+                        if(state is PendingFollowWebSocketMessageState || state is PendingFollowWebSocketMessageReceived) {
+                          if (state.follows?.isEmpty ?? true) {
+                            return const WarningCard(
+                              icon: 'empty',
+                              message: 'Aucun résultat',
+                            );
+                          } else {
+                            return SingleChildScrollView(
                               physics: const ClampingScrollPhysics(),
                               child: ListView.builder(
                                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
@@ -97,8 +136,8 @@ class UserFollowersPendingView extends StatelessWidget {
                                         ),
                                       ),
                                       title: Text(
-                                          '${state.follows?[index].follower?.username} vous a envoyé une demande de suivi',
-                                          style: Theme.of(context).textTheme.titleSmall
+                                        '${state.follows?[index].follower?.username} vous a envoyé une demande de suivi',
+                                        style: Theme.of(context).textTheme.titleSmall
                                       ),
                                       subtitle: Padding(
                                         padding: const EdgeInsets.only(top: 4),
@@ -106,29 +145,33 @@ class UserFollowersPendingView extends StatelessWidget {
                                           children:[
                                             Expanded(
                                               child: GestureDetector(
-                                                  onTap: () {
-
-                                                  },
-                                                  child: Container(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                                    decoration: BoxDecoration(
-                                                      color: surfaceColor,
-                                                      borderRadius: BorderRadius.circular(8),
+                                                onTap: () {
+                                                  context.read<FollowsBloc>().add(RefuseFollow({
+                                                    'id': state.follows?[index].id,
+                                                  }));
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                    color: surfaceColor,
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Refuser',
+                                                      style: textTheme.labelSmall
                                                     ),
-                                                    child: Center(
-                                                      child: Text(
-                                                          'Refuser',
-                                                          style: textTheme.labelSmall
-                                                      ),
-                                                    ),
-                                                  )
+                                                  ),
+                                                )
                                               ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
                                               child: GestureDetector(
                                                 onTap: () {
-
+                                                  context.read<FollowsBloc>().add(AcceptFollow({
+                                                    'id': state.follows?[index].id,
+                                                  }));
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -154,16 +197,17 @@ class UserFollowersPendingView extends StatelessWidget {
                                   );
                                 },
                               )
-                          );
+                            );
+                          }
                         }
-                      }
-                      return const SizedBox();
-                    },
-                  ),
-                )
-              ],
-            )
-          ],
+                        return const SizedBox();
+                      },
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

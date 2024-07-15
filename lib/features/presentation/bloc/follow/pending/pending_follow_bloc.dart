@@ -40,6 +40,7 @@ class PendingFollowBloc extends Bloc<PendingFollowEvent, PendingFollowState> {
       if(data is List) {
         follows = data.map<FollowModel>((dynamic i) => FollowModel.fromJson(i as Map<String, dynamic>)).toList();
       }
+      print(follows);
       emit(PendingFollowWebSocketMessageLoadingReceived(follows));
       emit(PendingFollowWebSocketMessageState(follows));
     });
