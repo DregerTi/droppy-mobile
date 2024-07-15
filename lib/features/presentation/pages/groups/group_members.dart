@@ -18,7 +18,6 @@ import '../../bloc/group/group_event.dart';
 import '../../bloc/group/group_state.dart';
 import '../../bloc/group_member/group_member_event.dart';
 import '../../bloc/user/user_bloc.dart';
-import '../../bloc/user/user_event.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/atoms/warning_card.dart';
@@ -76,7 +75,6 @@ class _GroupMembersViewState extends State<GroupMembersView> {
           members.removeWhere((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id);
           members.removeWhere((element) => element.member?.id == state.group?.createdBy?.id);
 
-          print(members);
           setState(() {
             selectedUsers = members;
           });
@@ -113,55 +111,6 @@ class _GroupMembersViewState extends State<GroupMembersView> {
                         leadingOnPressed: () {
                           context.pop();
                         },
-                        actionWidget: BlocConsumer<GroupsBloc, GroupsState>(
-                          listener: (context, state) {
-                            if(state is PostGroupError) {
-                              snackBarWidget(
-                                message: AppLocalizations.of(context)!.loadingError,
-                                context: context,
-                                type: 'error',
-                              );
-                            }
-                            if(state is PostGroupDone) {
-                              BlocProvider.of<UsersBloc>(context).add(GetMe({
-                                'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
-                              }));
-                              snackBarWidget(
-                                message: 'Group créé avec succès!',
-                                context: context,
-                              );
-                              context.pop(true);
-                            }
-                          },
-                          builder: (context, state) {
-                            return IconButton(
-                              icon: (state is PostGroupLoading)
-                                ? const SizedBox(
-                                  width: 14,
-                                  height: 14,
-                                  child: Center(
-                                    child: CircularProgressIndicator()
-                                  )
-                                )
-                                : const Icon(Icons.check_rounded),
-                              style: iconButtonThemeData.style?.copyWith(
-                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-
-                                var data = {
-                                  'members': selectedUsers.map((e) => e.id).toList(),
-                                };
-
-                                context.read<GroupsBloc>().add(PostGroup(data));
-                              }
-                            );
-                          },
-                        ),
                       ),
                       BlocConsumer<GroupMembersBloc, GroupMembersState>(
                         listener: (context, state) {

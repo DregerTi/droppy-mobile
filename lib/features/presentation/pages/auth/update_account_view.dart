@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../config/theme/color.dart';
+import '../../../../config/theme/color.dart';
 import '../../../../config/theme/widgets/button.dart';
+import '../../../../config/theme/widgets/text.dart';
 import '../../../data/models/user.dart';
 import '../../../domain/entities/media_picker_item.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_event.dart';
 import '../../bloc/user/user_state.dart';
 import '../../widgets/atoms/snack_bar.dart';
-import '../../widgets/molecules/action_bar.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/molecules/media_picker.dart';
 import 'package:dio/dio.dart';
@@ -19,9 +19,9 @@ class UpdateAccountView extends StatefulWidget {
   final UserModel user;
 
   const UpdateAccountView({
-    Key? key,
+    super.key,
     required this.user
-  }) : super(key: key);
+  });
 
   @override
   State<UpdateAccountView> createState() => _UpdateAccountViewState();
@@ -34,24 +34,26 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
   TextEditingController descriptionController = TextEditingController();
   String activeElement = 'main';
   List<MediaPickerItemEntity> selectedMedias = [];
+  bool isPrivate = true;
 
   @override
   initState() {
     usernameController.text = widget.user.username!;
     descriptionController.text = widget.user.bio!;
+    isPrivate = widget.user.isPrivate!;
     super.initState();
   }
 
   String? usernameError(String? value) {
-    if (value!.length < 2 || value.length > 26) {
-      return 'Entre 2 et 26 caractères';
+    if (value!.length < 4 || value.length > 26) {
+      return 'Entre 4 et 26 caractères';
     }
     return null;
   }
 
   String? descriptionError(String? value) {
     if ((value!.length < 5 || value.length > 60) && value.isNotEmpty) {
-      return 'Entre 2 et 60 caractères ou vide';
+      return 'Entre 5 et 60 caractères ou vide';
     }
     return null;
   }
@@ -111,15 +113,21 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                             onPressed: () async {
                               if(formKey.currentState!.validate() && descriptionFormKey.currentState!.validate()) {
 
-                                var data = {
-                                  'name': usernameController.text,
-                                  'description': descriptionController.text ?? '',
+                                Map<String, dynamic> data = {
+                                  'username': usernameController.text,
+                                  'bio': descriptionController.text ?? '',
+                                  'isPrivate': isPrivate,
                                 };
 
                                 if (selectedMedias.isNotEmpty) {
                                   final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file)!.path);
-                                  data['avatar'] = mainMedia as dynamic;
+                                  data['picture'] = mainMedia;
                                 }
+
+                                print({
+                                  'id': widget.user.id,
+                                  'user': data,
+                                });
 
                                 context.read<UsersBloc>().add(PatchUser({
                                   'id': widget.user.id,
@@ -183,6 +191,41 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                               ),
                             ),
                           ],
+                        ),
+                        if (activeElement == 'main') Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPrivate = !isPrivate;
+                              });
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 48,
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: isPrivate ? surfaceColor : primaryColor,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    isPrivate ? Icons.lock_open_rounded : Icons.lock_rounded,
+                                    color: isPrivate ? onSurfaceColor : textColor,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    isPrivate ? 'Compte privé' : 'Compte publique',
+                                    style: textTheme.labelMedium?.copyWith(
+                                      color: isPrivate ? onSurfaceColor : textColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                         if (activeElement == 'main') Padding(
                           padding: const EdgeInsets.only(bottom: 20),

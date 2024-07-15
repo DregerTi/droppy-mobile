@@ -24,7 +24,6 @@ class DropFeedWidget extends StatefulWidget {
 }
 
 class _DropFeedWidgetState extends State<DropFeedWidget> {
-
   List<DropEntity?> feed = [];
 
   @override
@@ -63,7 +62,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                     return DropTileWidget(
                       drop: drop,
                       onDropPressed: (drop) {
-                        context.goNamed('drop', pathParameters: {'dropId': drop.id.toString()});
+                        context.pushNamed('drop', pathParameters: {'dropId': drop.id.toString()});
                       },
                     );
                   }).toList()
@@ -97,13 +96,16 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                   ),
                   leadingOnPressed: () => {
                     if (widget.group == null) {
-                      context.goNamed('users')
+                      context.pushNamed('users')
                     } else {
                       context.pop()
                     }
                   },
                   mainActionIcon: const Icon(Icons.notifications_rounded),
-                  mainActionOnPressed: () => context.goNamed('notifications'),
+                  isMainActionActive: true,
+                  mainActionOnPressed: () {
+                    context.pushNamed('notification');
+                  },
                 ),
               ),
               Positioned(
@@ -120,7 +122,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                             GestureDetector(
                               onTap: () {
                                 if (widget.group != null) {
-                                  context.goNamed(
+                                  context.pushNamed(
                                     'group',
                                     pathParameters: {
                                       'groupId': widget.group!.id.toString()

@@ -117,7 +117,7 @@ class _SearchUsersState extends State<SearchUsers> {
                                   if(widget.onTap != null) {
                                     widget.onTap!((BlocProvider.of<FollowGetBloc>(context).state as FollowedDone).users?[index]);
                                   } else {
-                                    context.goNamed(
+                                    context.pushNamed(
                                       'user-profile',
                                       pathParameters: {
                                         'userId': (BlocProvider.of<FollowGetBloc>(context).state as FollowedDone).users?[index]?.id.toString() ?? '',
@@ -195,7 +195,7 @@ class _SearchUsersState extends State<SearchUsers> {
                               if(widget.onTap != null) {
                                 widget.onTap!(state.users?[index]);
                               } else {
-                                context.goNamed(
+                                context.pushNamed(
                                   'user-profile',
                                   pathParameters: {
                                     'userId': state.users?[index]?.id.toString() ?? '',

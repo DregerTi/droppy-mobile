@@ -336,9 +336,13 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                         .map(
                           (e) => DropdownMenuItem<AssetPathEntity>(
                         value: e,
-                        child: Text(
+                        child: Container(
+                          width: 80,
+                          child: Text(
                             e.name.isEmpty ? "0" : e.name,
-                            style: textTheme.titleSmall
+                            style: textTheme.titleSmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ).toList(),

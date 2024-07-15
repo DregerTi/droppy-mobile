@@ -53,7 +53,7 @@ class GroupHeader extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.notifications),
-                      onPressed: () => context.goNamed('notifications'),
+                      onPressed: () => context.pushNamed('notification'),
                       style: iconButtonThemeData.style?.copyWith(
                         backgroundColor: WidgetStateProperty.all<Color>(onPrimaryColor),
                         foregroundColor: WidgetStateProperty.all<Color>(onBackgroundColor),
@@ -70,7 +70,7 @@ class GroupHeader extends StatelessWidget {
                         && group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
                         || group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) IconButton(
                       icon: const Icon(Icons.settings),
-                      onPressed: () => context.goNamed(
+                      onPressed: () => context.pushNamed(
                         'group-setting',
                         pathParameters: {
                           'groupId': group?.id.toString() ?? '0'
@@ -122,7 +122,7 @@ class GroupHeader extends StatelessWidget {
                   const SizedBox(height: 10),
                   ElevatedButton(
                       onPressed: () => {
-                        context.goNamed(
+                        context.pushNamed(
                           'group-feed',
                           pathParameters: {
                             'groupId': group?.id.toString() ?? '',

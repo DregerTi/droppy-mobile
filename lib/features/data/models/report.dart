@@ -1,19 +1,17 @@
-
-
 import '../../domain/entities/report.dart';
 
 class ReportModel extends ReportEntity {
   const ReportModel({
     String ? message,
-    String ? commentIri,
-    String ? dropIri,
-    String ? commentReponseIri,
+    String ? commentId,
+    String ? dropId,
+    String ? commentReponseId,
     String ? description,
   }) : super(
     message: message,
-    commentIri: commentIri,
-    dropIri: dropIri,
-    commentReponseIri: commentReponseIri,
+    commentId: commentId,
+    dropId: dropId,
+    commentReponseId: commentReponseId,
     description: description
   );
   
@@ -21,9 +19,9 @@ class ReportModel extends ReportEntity {
 
     return ReportModel(
       message: map['message'] ?? "",
-      commentIri: map['commentIri'] ?? "",
-      dropIri: map['dropIri'] ?? "",
-      commentReponseIri: map['commentReponseIri'] ?? "",
+      commentId: map['commentId'] ?? "",
+      dropId: map['dropId'] ?? "",
+      commentReponseId: map['commentReponseId'] ?? "",
       description: map['description'] ?? "",
     );
   }
@@ -31,9 +29,9 @@ class ReportModel extends ReportEntity {
   factory ReportModel.fromEntity(ReportModel entity) {
     return ReportModel(
       message: entity.message,
-      commentIri: entity.commentIri,
-      dropIri: entity.dropIri,
-      commentReponseIri: entity.commentReponseIri,
+      commentId: entity.commentId,
+      dropId: entity.dropId,
+      commentReponseId: entity.commentReponseId,
       description: entity.description,
     );
   }

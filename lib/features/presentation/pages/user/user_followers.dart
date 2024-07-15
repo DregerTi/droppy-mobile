@@ -91,7 +91,7 @@ class UserFollowersView extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     return ListTile(
                                       onTap: () {
-                                        context.goNamed(
+                                        context.pushNamed(
                                           'user-profile',
                                           pathParameters: {
                                             'userId': state.users?[index]?.id.toString() ?? '',
@@ -100,7 +100,7 @@ class UserFollowersView extends StatelessWidget {
                                       },
                                       leading: state.users?[index]?.avatar != null ? CachedImageWidget(
                                         borderRadius: BorderRadius.circular(16),
-                                        imageUrl: BlocProvider.of<UsersBloc>(context).state.users?[index]?.avatar ?? '',
+                                        imageUrl: state.users?[index]?.avatar ?? '',
                                         height: 50,
                                         width: 50,
                                       ) : ClipRRect(

@@ -42,4 +42,10 @@ abstract class DropApiService {
   Future<HttpResponse<dynamic>> deleteLike({
     @Path("id") required int id,
   });
+
+  @PATCH("/drops/{id}")
+  Future<HttpResponse<DropModel>> patchDrop({
+    @Path("id") required int id,
+    @Body() required Map<String, dynamic> drop,
+  });
 }

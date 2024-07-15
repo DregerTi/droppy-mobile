@@ -92,7 +92,7 @@ class _SearchGroupsState extends State<SearchGroups> {
                                 if (widget.onTap != null) {
                                   widget.onTap!(BlocProvider.of<UsersBloc>(context).state.me!.groups![index]);
                                 } else {
-                                  context.goNamed(
+                                  context.pushNamed(
                                     'user-profile',
                                     pathParameters: {
                                       'userId': BlocProvider.of<UsersBloc>(context).state.me!.groups![index].id
@@ -174,7 +174,7 @@ class _SearchGroupsState extends State<SearchGroups> {
                               if(widget.onTap != null) {
                                 widget.onTap!(state.groups?[index]);
                               } else {
-                                context.goNamed(
+                                context.pushNamed(
                                   'user-profile',
                                   pathParameters: {
                                     'userId': state.groups?[index]?.id.toString() ?? '',

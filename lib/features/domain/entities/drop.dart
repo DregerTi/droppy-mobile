@@ -1,6 +1,5 @@
 import 'package:droppy/features/data/models/user.dart';
 import 'package:equatable/equatable.dart';
-import '../../data/models/content_type.dart';
 import '../../data/models/report.dart';
 import '../../data/models/comment.dart';
 
@@ -13,7 +12,7 @@ class DropEntity extends Equatable {
   final String ? picturePath;
   final bool ? isPinned;
   final List<ReportModel> ? reports;
-  final ContentTypeModel ? contentType;
+  final String ? type;
   final UserModel ? user;
   final List<CommentModel> ? comments;
   final bool ? isCurrentUserLiking;
@@ -21,6 +20,10 @@ class DropEntity extends Equatable {
   final int ? totalLikes;
   final double? lat;
   final double? lng;
+  final String? contentTitle;
+  final String? contentPicturePath;
+  final String? contentSubTitle;
+  final String? location;
 
   const DropEntity({
     this.iri,
@@ -30,14 +33,18 @@ class DropEntity extends Equatable {
     this.picturePath,
     this.isPinned,
     this.reports,
-    this.contentType,
+    this.type,
     this.user,
     this.comments,
     this.isCurrentUserLiking,
     this.totalComments,
     this.totalLikes,
     this.lat,
-    this.lng
+    this.lng,
+    this.contentTitle,
+    this.contentPicturePath,
+    this.contentSubTitle,
+    this.location
   });
 
   @override
@@ -50,14 +57,18 @@ class DropEntity extends Equatable {
       picturePath,
       isPinned,
       reports,
-      contentType,
+      type,
       user,
       comments,
       isCurrentUserLiking,
       totalComments,
       totalLikes,
       lat,
-      lng
+      lng,
+      contentTitle,
+      contentPicturePath,
+      contentSubTitle,
+      location
     ];
   }
 }

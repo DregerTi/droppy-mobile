@@ -96,7 +96,8 @@ class _DropMapState extends State<DropMap> {
             markers: BlocConsumer<FeedBloc, FeedState>(
               listener: (context, state) {},
               builder: (_,state){
-                return MarkerClusterLayerWidget(
+                if(state.drops != null && state.drops!.isNotEmpty) {
+                  return MarkerClusterLayerWidget(
                     options: MarkerClusterLayerOptions(
                       maxClusterRadius: 45,
                       size: const Size(40, 40),
@@ -110,7 +111,7 @@ class _DropMapState extends State<DropMap> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              context.goNamed(
+                              context.pushNamed(
                                 'drop-from-map',
                                 pathParameters: {
                                   'dropId': drops.id.toString(),
@@ -194,6 +195,8 @@ class _DropMapState extends State<DropMap> {
                       },
                     ),
                   );
+                }
+                return const SizedBox();
               },
             ),
           ),
@@ -215,8 +218,9 @@ class _DropMapState extends State<DropMap> {
             padding: const EdgeInsets.only(top: 24),
             child: AppBarWidget(
               leadingIcon: const Icon(Icons.person_add),
-              mainActionIcon: const Icon(Icons.notifications),
-              mainActionOnPressed: () => context.goNamed('notifications'),
+              mainActionIcon: const Icon(Icons.notifications_rounded),
+              isMainActionActive: true,
+              mainActionOnPressed: () => context.pushNamed('notification'),
             ),
           ),
           Positioned(
@@ -275,7 +279,6 @@ class _DropMapState extends State<DropMap> {
                     child: BlocConsumer<FeedBloc, FeedState>(
                       listener: (context, state) {},
                       builder: (context, state) {
-
                         if(state is WebSocketDisconnected) {
                           return const Center(
                             child: WarningCard(
@@ -286,6 +289,14 @@ class _DropMapState extends State<DropMap> {
                         }
 
                         if(state is WebSocketMessageState || state is WebSocketMessageReceived) {
+                          if(state.drops!.isEmpty) {
+                            return const Center(
+                              child: WarningCard(
+                                  message: 'Aucun drop',
+                              ),
+                            );
+                          }
+
                           return ListView.separated(
                             scrollDirection: Axis.horizontal,
                             separatorBuilder: (BuildContext context, int index) {
@@ -329,9 +340,8 @@ class _DropMapState extends State<DropMap> {
                           );
                         }
 
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
-                          child: const Column(
+                        return const SizedBox(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Center(child: CircularProgressIndicator()),

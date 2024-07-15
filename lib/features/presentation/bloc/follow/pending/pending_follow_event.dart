@@ -7,24 +7,24 @@ abstract class PendingFollowEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class WebSocketConnect extends PendingFollowEvent {}
+class PendingFollowWebSocketConnect extends PendingFollowEvent {}
 
-class WebSocketSendMessage extends PendingFollowEvent {
+class PendingFollowWebSocketSendMessage extends PendingFollowEvent {
   final String message;
 
-  const WebSocketSendMessage(this.message);
+  const PendingFollowWebSocketSendMessage(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class WebSocketMessageReceived extends PendingFollowEvent {
+class PendingFollowWebSocketMessageReceived extends PendingFollowEvent {
   final String message;
 
-  const WebSocketMessageReceived(this.message);
+  const PendingFollowWebSocketMessageReceived(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class WebSocketDisconnect extends PendingFollowEvent {}
+class PendingFollowWebSocketDisconnect extends PendingFollowEvent {}

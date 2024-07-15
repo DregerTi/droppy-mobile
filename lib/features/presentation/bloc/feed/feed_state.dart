@@ -14,8 +14,11 @@ abstract class FeedState extends Equatable {
 class WebSocketInitial extends FeedState {}
 
 class WebSocketMessageState extends FeedState {
-
   const WebSocketMessageState(List<DropEntity> drops) : super(drops: drops);
+}
+
+class  WebSocketMessageLoadingReceived extends FeedState {
+  const WebSocketMessageLoadingReceived(List<DropEntity> drops): super(drops: drops);
 }
 
 class WebSocketDisconnected extends FeedState {}

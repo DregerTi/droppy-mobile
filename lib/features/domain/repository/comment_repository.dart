@@ -3,6 +3,6 @@ import '../../data/models/comment.dart';
 
 abstract class CommentRepository {
 
-  Future<DataState<CommentModel>> postComment(Map<String, dynamic> comment);
+  Future<DataState<CommentModel>> postComment(Map<String, dynamic> params);
 
 }

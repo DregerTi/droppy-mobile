@@ -12,37 +12,41 @@ import 'pending_follow_state.dart';
 class PendingFollowBloc extends Bloc<PendingFollowEvent, PendingFollowState> {
   late final WebSocketChannel _channel;
 
-  PendingFollowBloc() : super(WebSocketInitial()) {
-    on <WebSocketConnect>(onWebSocketConnect);
+  PendingFollowBloc() : super(PendingFollowWebSocketInitial()) {
+    on <PendingFollowWebSocketConnect>(onPendingFollowWebSocketConnect);
   }
 
-  void onWebSocketConnect(WebSocketConnect event, Emitter<PendingFollowState> emit) async {
+  void onPendingFollowWebSocketConnect(PendingFollowWebSocketConnect event, Emitter<PendingFollowState> emit) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final jwtToken = prefs.getString('jwtToken');
 
     _channel = IOWebSocketChannel.connect(
-        Uri.parse('$wsBaseUrl/follows/pending/ws'),headers: {
+        Uri.parse('$wsBaseUrl/follows/pending'),headers: {
       'Authorization': 'Bearer $jwtToken'
     });
 
     _channel.stream.listen((data) {
-      add(WebSocketMessageReceived(data));
+      add(PendingFollowWebSocketMessageReceived(data));
     });
 
-    on<WebSocketSendMessage>((event, emit) {
+    on<PendingFollowWebSocketSendMessage>((event, emit) {
       _channel.sink.add(event.message);
     });
 
-    on<WebSocketMessageReceived>((event, emit) {
+    on<PendingFollowWebSocketMessageReceived>((event, emit) {
       final data = jsonDecode(event.message);
-      final List<FollowModel> drops = data.map<FollowModel>((dynamic i) => FollowModel.fromJson(i as Map<String, dynamic>)).toList();
+      List<FollowModel> follows = [];
 
-      emit(WebSocketMessageState(drops));
+      if(data is List) {
+        follows = data.map<FollowModel>((dynamic i) => FollowModel.fromJson(i as Map<String, dynamic>)).toList();
+      }
+      emit(PendingFollowWebSocketMessageLoadingReceived(follows));
+      emit(PendingFollowWebSocketMessageState(follows));
     });
 
-    on<WebSocketDisconnect>((event, emit) {
+    on<PendingFollowWebSocketDisconnect>((event, emit) {
       _channel.sink.close();
-      emit(WebSocketDisconnected());
+      emit(PendingFollowWebSocketDisconnected());
     });
   }
 

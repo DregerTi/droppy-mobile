@@ -73,7 +73,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
           context.read<LangBloc>().add(UpdateLang(L10n.all[item.value].languageCode));
         },
         leadingOnPressed: () {
-          context.goNamed(
+          context.pushNamed(
             'preferences',
             extra: {'user': widget.user},
           );

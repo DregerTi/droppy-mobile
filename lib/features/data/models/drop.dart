@@ -1,7 +1,6 @@
 import 'package:droppy/features/data/models/report.dart';
 import 'package:droppy/features/data/models/user.dart';
 import 'package:droppy/features/data/models/comment.dart';
-import 'package:droppy/features/data/models/content_type.dart';
 import '../../domain/entities/drop.dart';
 
 class DropModel extends DropEntity {
@@ -13,14 +12,18 @@ class DropModel extends DropEntity {
     String ? picturePath,
     bool ? isPinned,
     List<ReportModel> ? reports,
-    ContentTypeModel ? contentType,
+    String ? type,
     UserModel ? user,
     List<CommentModel> ? comments,
     bool ? isCurrentUserLiking,
     int? totalComments,
     int? totalLikes,
     double? lat,
-    double? lng
+    double? lng,
+    String? contentTitle,
+    String? contentPicturePath,
+    String? contentSubTitle,
+    String? location
   }) : super(
     iri: iri,
     id: id,
@@ -29,14 +32,18 @@ class DropModel extends DropEntity {
     picturePath: picturePath,
     isPinned: isPinned,
     reports: reports,
-    contentType: contentType,
+    type: type,
     user: user,
     comments: comments,
     isCurrentUserLiking: isCurrentUserLiking,
     totalComments: totalComments,
     totalLikes: totalLikes,
     lat: lat,
-    lng: lng
+    lng: lng,
+    contentTitle: contentTitle,
+    contentPicturePath: contentPicturePath,
+    contentSubTitle: contentSubTitle,
+    location: location
   );
   
   factory DropModel.fromJson(Map<String, dynamic >map) {
@@ -54,7 +61,7 @@ class DropModel extends DropEntity {
           .toList()
         : []
       ),
-      contentType: map['ContentType'] != null ? ContentTypeModel.fromJson(map['ContentType']) : null,
+      type: map['Type'] ?? "",
       user: map['CreatedBy'] != null ? UserModel.fromJson(map['CreatedBy']) : null,
       comments: (map['Comments'] != null
           && map['Comments'].length > 0 ?
@@ -67,7 +74,11 @@ class DropModel extends DropEntity {
       totalComments: map['TotalComments'] ?? 0,
       totalLikes: map['TotalLikes'] ?? 0,
       lat: map['Lat'] != null ? map['Lat'].toDouble() : 0,
-      lng: map['Lng'] != null ? map['Lng'].toDouble() : 0
+      lng: map['Lng'] != null ? map['Lng'].toDouble() : 0,
+      contentTitle: map['ContentTitle'] ?? "",
+      contentPicturePath: map['ContentPicturePath'] ?? "",
+      contentSubTitle: map['ContentSubTitle'] ?? "",
+      location: map['Location'] ?? ""
     );
   }
 
@@ -80,14 +91,18 @@ class DropModel extends DropEntity {
       picturePath: entity.picturePath,
       isPinned: entity.isPinned,
       reports: entity.reports,
-      contentType: entity.contentType,
+      type: entity.type,
       user: entity.user,
       comments: entity.comments,
       isCurrentUserLiking: entity.isCurrentUserLiking,
       totalComments: entity.totalComments,
       totalLikes: entity.totalLikes,
       lat: entity.lat,
-      lng: entity.lng
+      lng: entity.lng,
+      contentTitle: entity.contentTitle,
+      contentPicturePath: entity.contentPicturePath,
+      contentSubTitle: entity.contentSubTitle,
+      location: entity.location
     );
   }
 }

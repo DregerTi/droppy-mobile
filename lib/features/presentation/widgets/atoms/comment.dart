@@ -1,6 +1,8 @@
 import 'package:droppy/config/theme/color.dart';
+import 'package:droppy/features/data/models/comment_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
 import 'cached_image_widget.dart';
 import 'comment_response.dart';
@@ -12,6 +14,9 @@ class Comment extends StatelessWidget {
   final Function? onTap;
   final int? commentId;
   final int? dropId;
+  final DateTime? createdAt;
+  final List<CommentResponseModel>? commentResponses;
+  final Function? setIsCommentResponse;
 
   const Comment({
     Key? key,
@@ -21,6 +26,9 @@ class Comment extends StatelessWidget {
     this.onTap,
     this.commentId,
     this.dropId,
+    this.createdAt,
+    this.commentResponses,
+    this.setIsCommentResponse,
   }) : super(key: key);
 
   @override
@@ -31,12 +39,26 @@ class Comment extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(avatar != null) CachedImageWidget(
-              imageUrl: avatar ?? '',
-              width: 30,
-              height: 30,
-              borderRadius: BorderRadius.circular(12),
-              fit: BoxFit.fitWidth
+          if(avatar != null) GestureDetector(
+            onTap: () {
+              if(onTap != null){
+                onTap!();
+              }
+            },
+            child: GestureDetector(
+              onTap: () {
+                if(onTap != null){
+                  onTap!();
+                }
+              },
+              child: CachedImageWidget(
+                  imageUrl: avatar ?? '',
+                  width: 30,
+                  height: 30,
+                  borderRadius: BorderRadius.circular(12),
+                  fit: BoxFit.fitWidth
+              ),
+            ),
           ) else ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: SvgPicture.asset(
@@ -47,11 +69,7 @@ class Comment extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           GestureDetector(
-            onTap: () {
-              if(onTap != null){
-                onTap!();
-              }
-            },
+            onTap: () {},
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,15 +77,22 @@ class Comment extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      username ?? 'Anonyme',
-                      style: textTheme.labelSmall?.copyWith(
-                        fontSize: 12,
+                    GestureDetector(
+                      onTap: () {
+                        if(onTap != null){
+                          onTap!();
+                        }
+                      },
+                      child: Text(
+                        username ?? 'Anonyme',
+                        style: textTheme.labelSmall?.copyWith(
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '12-12-2021',
+                      '• ${createdAt?.difference(DateTime.now()).inMinutes} min',
                       style: textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                       ),
@@ -87,15 +112,29 @@ class Comment extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'Reply',
-                            style: textTheme.labelSmall?.copyWith(
-                              fontSize: 11,
+                          GestureDetector(
+                            onTap: () {
+
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                if(setIsCommentResponse != null){
+                                  setIsCommentResponse!(true, commentId);
+                                } else {
+                                  setIsCommentResponse!(false, commentId);
+                                }
+                              },
+                              child: Text(
+                                'Reply',
+                                style: textTheme.labelSmall?.copyWith(
+                                  fontSize: 11,
+                                ),
+                              ),
                             ),
                           ),
-                          const SizedBox(width: 14),
-                          Text(
-                            'Voir 4 réponses',
+                          if(commentResponses != null && commentResponses!.isNotEmpty) const SizedBox(width: 14),
+                          if(commentResponses != null && commentResponses!.isNotEmpty) Text(
+                            'Voir réponses ${commentResponses!.length}',
                             style: textTheme.labelSmall?.copyWith(
                               fontSize: 11,
                             ),
@@ -103,7 +142,14 @@ class Comment extends StatelessWidget {
                         ],
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(
+                              'report',
+                              extra: {
+                                'commentId': commentId.toString(),
+                              }
+                          );
+                        },
                         child: const Icon(
                           Icons.flag_rounded,
                           size: 16,
@@ -113,14 +159,14 @@ class Comment extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
-                Column(
-                  children: List.generate(3, (index) {
-                    return const CommentResponse(
-                      avatar: null,
-                      message: 'This is a comment',
-                      username: 'Username',
-                      commentResponseId: 1,
+                if(commentResponses != null && commentResponses!.isNotEmpty) const SizedBox(height: 18),
+                if(commentResponses != null && commentResponses!.isNotEmpty) Column(
+                  children: List.generate(commentResponses!.length, (index) {
+                    return CommentResponse(
+                      avatar: commentResponses![index].user!.avatar,
+                      message: commentResponses![index].content,
+                      username: commentResponses![index].user!.username,
+                      commentResponseId: commentResponses![index].id,
                     );
                   }),
                 ),

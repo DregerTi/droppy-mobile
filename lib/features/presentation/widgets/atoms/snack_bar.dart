@@ -8,7 +8,7 @@ void snackBarWidget({
   bool? isIcon = true,
   String? type
 }) {
-  Color backgroundColor = secondaryColor;
+  Color backgroundColor = primaryColor;
   IconData icon = Icons.check_circle;
 
   switch (type) {
@@ -21,7 +21,7 @@ void snackBarWidget({
       icon = Icons.warning;
       break;
     default:
-      backgroundColor = secondaryColor;
+      backgroundColor = primaryColor;
       icon = Icons.check_circle;
   }
 
@@ -29,7 +29,7 @@ void snackBarWidget({
     SnackBar(
       animation: AnimationController(vsync: Scaffold.of(context)),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
       ),
       margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
       backgroundColor: backgroundColor,

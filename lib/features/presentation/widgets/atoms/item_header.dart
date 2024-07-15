@@ -43,8 +43,8 @@ class ItemHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () => context.goNamed('notifications'),
+                  icon: const Icon(Icons.notifications_rounded),
+                  onPressed: () => context.pushNamed('notification'),
                   style: iconButtonThemeData.style?.copyWith(
                     backgroundColor: MaterialStateProperty.all<Color>(onPrimaryColor),
                     foregroundColor: MaterialStateProperty.all<Color>(onBackgroundColor),
@@ -59,7 +59,7 @@ class ItemHeader extends StatelessWidget {
                 const SizedBox(width: 6),
                 if(isMe) IconButton(
                   icon: const Icon(Icons.settings),
-                  onPressed: () => context.goNamed(
+                  onPressed: () => context.pushNamed(
                     'preferences',
                     extra: {
                       'user': user,
@@ -85,7 +85,7 @@ class ItemHeader extends StatelessWidget {
                 mainActionIcon: user?.id == null ? const Icon(Icons.settings) : null,
                 mainActionOnPressed: () {
                   if(state is MeDone) {
-                    context.goNamed(
+                    context.pushNamed(
                       'preferences',
                       extra: {
                         'user': state.me,
@@ -186,7 +186,7 @@ class ItemHeader extends StatelessWidget {
                         return ElevatedButton(
                           onPressed: () {
                             BlocProvider.of<FollowsBloc>(context).add(DeleteFollow({
-                              'id': user?.id ?? 0,
+                              'id': user?.currentFollow?.id ?? 0,
                             }));
                           },
                           style: elevatedButtonThemeData.style?.copyWith(
@@ -247,7 +247,7 @@ class ItemHeader extends StatelessWidget {
                       if (user?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id ||
                           user?.isPrivate == false ||
                           (user?.currentFollow != null && user?.currentFollow?.status == 1)){
-                        context.goNamed(
+                        context.pushNamed(
                           'followers',
                           pathParameters: {
                             'userId': user?.id.toString() ?? '',
@@ -278,7 +278,7 @@ class ItemHeader extends StatelessWidget {
                       if (user?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id ||
                           user?.isPrivate == false ||
                           (user?.currentFollow != null && user?.currentFollow?.status == 1)){
-                        context.goNamed(
+                        context.pushNamed(
                             'followed',
                             pathParameters: {
                               'userId': user?.id.toString() ?? '',

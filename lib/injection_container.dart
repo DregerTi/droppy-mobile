@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:droppy/features/data/data_source/comment_response/comment_response_api_service.dart';
 import 'package:droppy/features/data/data_source/goup/group_api_service.dart';
 import 'package:droppy/features/domain/repository/follow_repository.dart';
 import 'package:droppy/features/domain/usecases/drop/get_drops.dart';
+import 'package:droppy/features/domain/usecases/drop/patch_drop.dart';
 import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
 import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
+import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
+import 'package:droppy/features/presentation/bloc/pin_drop/pin_drop_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'core/util/http_overrides.dart';
 import 'features/data/data_source/auth/auth_api_service.dart';
@@ -18,6 +22,7 @@ import 'features/data/data_source/report/report_api_service.dart';
 import 'features/data/data_source/user/user_api_service.dart';
 import 'features/data/repository/auth_repository_impl.dart';
 import 'features/data/repository/comment_repository_impl.dart';
+import 'features/data/repository/comment_response_repository_impl.dart';
 import 'features/data/repository/drop_repository_impl.dart';
 import 'features/data/repository/follow_repository_impl.dart';
 import 'features/data/repository/group_repository_impl.dart';
@@ -27,6 +32,7 @@ import 'features/data/repository/report_repository_impl.dart';
 import 'features/data/repository/user_repository_impl.dart';
 import 'features/domain/repository/auth_repository.dart';
 import 'features/domain/repository/comment_repository.dart';
+import 'features/domain/repository/comment_response_repository.dart';
 import 'features/domain/repository/drop_repository.dart';
 import 'features/domain/repository/group_repository.dart';
 import 'features/domain/repository/like_repository.dart';
@@ -38,6 +44,7 @@ import 'features/domain/usecases/auth/authenticate.dart';
 import 'features/domain/usecases/auth/refresh_token.dart';
 import 'features/domain/usecases/auth/sign_out.dart';
 import 'features/domain/usecases/comment/post_comment.dart';
+import 'features/domain/usecases/comment_response/post_comment_response.dart';
 import 'features/domain/usecases/drop/get_drop.dart';
 import 'features/domain/usecases/drop/get_user_drops.dart';
 import 'features/domain/usecases/drop/post_drop.dart';
@@ -63,7 +70,7 @@ import 'features/domain/usecases/user/get_users_search.dart';
 import 'features/domain/usecases/user/patch_user.dart';
 import 'features/domain/usecases/user/post_user.dart';
 import 'features/presentation/bloc/auth/auth_bloc.dart';
-import 'features/presentation/bloc/comment/remote/comment_bloc.dart';
+import 'features/presentation/bloc/comment/comment_bloc.dart';
 import 'features/presentation/bloc/drop/drop_bloc.dart';
 import 'features/presentation/bloc/follow/follow_bloc.dart';
 import 'features/presentation/bloc/follow/get/follow_get_bloc.dart';
@@ -99,6 +106,11 @@ Future<void> initializeDependencies() async {
     () => DropsBloc(sl(), sl(), sl(), sl()),
   );
 
+  sl.registerSingleton<PatchDropUseCase>(PatchDropUseCase(sl()));
+  sl.registerFactory<PinDropBloc>(
+    () => PinDropBloc(sl()),
+  );
+
   sl.registerSingleton<GroupApiService>(GroupApiService(sl()));
   sl.registerSingleton<GroupRepository>(GroupRepositoryImpl(sl()));
   sl.registerSingleton<GetGroupUseCase>(GetGroupUseCase(sl()));
@@ -116,11 +128,16 @@ Future<void> initializeDependencies() async {
     () => GroupMembersBloc(sl(), sl(), sl()),
   );
 
+
+  sl.registerSingleton<CommentResponseApiService>(CommentResponseApiService(sl()));
+  sl.registerSingleton<CommentResponseRepository>(CommentResponseRepositoryImpl(sl()));
+  sl.registerSingleton<PostCommentResponseUseCase>(PostCommentResponseUseCase(sl()));
+
   sl.registerSingleton<CommentApiService>(CommentApiService(sl()));
   sl.registerSingleton<CommentRepository>(CommentRepositoryImpl(sl()));
   sl.registerSingleton<PostCommentUseCase>(PostCommentUseCase(sl()));
   sl.registerFactory<CommentsBloc>(
-    () => CommentsBloc(sl()),
+    () => CommentsBloc(sl(), sl()),
   );
 
   sl.registerSingleton<ReportApiService>(ReportApiService(sl()));
@@ -194,6 +211,10 @@ Future<void> initializeDependencies() async {
 
   sl.registerFactory<FeedBloc>(
     () => FeedBloc()
+  );
+
+  sl.registerFactory<PendingFollowBloc>(
+    () => PendingFollowBloc()
   );
 }
 

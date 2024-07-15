@@ -9,11 +9,13 @@ import '../../../../injection_container.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/group/group_event.dart';
 import '../../bloc/group/group_state.dart';
+import '../../bloc/group_member/goup_member_bloc.dart';
+import '../../bloc/group_member/group_member_event.dart';
+import '../../bloc/group_member/group_member_state.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/atoms/group_header.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../widgets/atoms/list_items_widget.dart';
+import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/atoms/tile_item_widget.dart';
 
 class GroupView extends StatefulWidget {
@@ -40,162 +42,196 @@ class _GroupViewState extends State<GroupView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocProvider<GroupsBloc>(
-            create: (context) => sl()..add(
-              GetGroup({
-                'id':int.parse(widget.groupId ?? '')
-              })
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<GroupsBloc>(
+              create: (context) => sl()..add(
+                GetGroup({
+                  'id':int.parse(widget.groupId ?? '')
+                })
+              ),
             ),
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BlocBuilder<GroupsBloc , GroupsState>(
-                    builder: (context, state) {
-                      if (state is GroupDone ) {
-                        return GroupHeader(
-                          group: state.group,
-                        );
-                      }
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(child: CircularProgressIndicator()),
-                          ],
-                        ),
+            BlocProvider<GroupMembersBloc>(
+              create: (context) => sl(),
+            ),
+          ],
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BlocBuilder<GroupsBloc , GroupsState>(
+                  builder: (context, state) {
+                    if (state is GroupDone ) {
+                      return GroupHeader(
+                        group: state.group,
                       );
-                    },
-                  ),
-                  BlocBuilder<GroupsBloc , GroupsState>(
-                    builder: (context, state) {
-                      if (state is GroupDone) {
-                        return SingleChildScrollView(
-                            physics: const ClampingScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (state.group?.description != null) Padding(
-                                    padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 0),
-                                    child: Text(
-                                        'Description',
-                                        style: textTheme.titleMedium
+                    }
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                BlocBuilder<GroupsBloc , GroupsState>(
+                  builder: (context, state) {
+                    if (state is GroupDone) {
+                      return SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (state.group?.description != null) Padding(
+                              padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 0),
+                              child: Text(
+                                'Description',
+                                style: textTheme.titleMedium
+                              )
+                            ),
+                            if (state.group?.description != null) Padding(
+                              padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 0),
+                              child: Text(
+                                state.group?.description ?? '',
+                                style: textTheme.bodyMedium
+                              )
+                            ),
+                            BlocConsumer<GroupMembersBloc, GroupMembersState>(
+                              listener: (context, state) {
+                                if(state is LeaveGroupDone) {
+                                  snackBarWidget(
+                                    message: 'Vous avez quitté le groupe',
+                                    context: context,
+                                  );
+
+                                  context.pop();
+                                }
+
+                                if(state is LeaveGroupError) {
+                                  snackBarWidget(
+                                    message: 'Erreur',
+                                    context: context,
+                                    type: 'error',
+                                  );
+                                }
+
+                              },
+                              builder: (context, state) {
+                                return const SizedBox(height: 0,);
+                              },
+                            ),
+                            if(state.group?.isPrivate == false || state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty) Padding(
+                              padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
+                              child: ListItemsWidget(
+                                title: 'Membres',
+                                children: [
+                                  if((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
+                                    && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
+                                    || state.group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
+                                    title: 'Gérer les membres',
+                                    leadingIcon: const Icon(
+                                        Icons.person_add_rounded,
+                                        color: textColor
+                                    ),
+                                    onTap: () {
+                                      context.pushNamed(
+                                        'group-members-list',
+                                        pathParameters: {
+                                          'groupId': state.group?.id.toString() ?? '',
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  if(state.group!.createdBy?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
+                                    title: 'Quitter le groupe',
+                                    titleColor: errorColor,
+                                    leadingIcon: const Icon(
+                                        Icons.logout_rounded,
+                                        color: errorColor
+                                    ),
+                                    onTap: () {
+                                      BlocProvider.of<GroupMembersBloc>(context).add(LeaveGroup({
+                                        'id': int.parse(widget.groupId ?? '0'),
+                                        'memberId': BlocProvider.of<AuthBloc>(context).state.auth?.id ?? 0
+                                      }));
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (state.group?.groupMembers != null) ListView.builder(
+                              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.group?.groupMembers?.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  onTap: () => {
+                                    context.pushNamed(
+                                      'user-profile',
+                                      pathParameters: {
+                                        'userId': state.group?.groupMembers?[index].member?.id.toString() ?? '',
+                                      },
                                     )
-                                ),
-                                if (state.group?.description != null) Padding(
-                                  padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 0),
-                                  child: Text(
-                                      state.group?.description ?? '',
-                                      style: textTheme.bodyMedium
-                                  )
-                                ),
-                                if(state.group?.isPrivate == false || state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty) Padding(
-                                  padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
-                                  child: ListItemsWidget(
-                                    title: 'Membres',
+                                  },
+                                  leading: state.group?.groupMembers?[index].member?.avatar != null ? CachedImageWidget(
+                                    borderRadius: BorderRadius.circular(16),
+                                    imageUrl: state.group?.groupMembers?[index].member?.avatar ?? '',
+                                    height: 50,
+                                    width: 50,
+                                  ) : ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: SvgPicture.asset(
+                                      'lib/assets/images/avatar.svg',
+                                      height: 50,
+                                      width: 50,
+                                    ),
+                                  ),
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      if((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
-                                        && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
-                                        || state.group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
-                                        title: 'Ajouter un membre',
-                                        leadingIcon: const Icon(
-                                            Icons.person_add_rounded,
-                                            color: textColor
-                                        ),
-                                        onTap: () {
-                                          context.goNamed(
-                                            'group-members-list',
-                                            pathParameters: {
-                                              'groupId': state.group?.id.toString() ?? '',
-                                            },
-                                          );
-                                        },
+                                      Text(
+                                          state.group?.groupMembers?[index].member?.username ?? '',
+                                          style: Theme.of(context).textTheme.titleMedium
                                       ),
-                                      if(state.group!.createdBy?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
-                                        title: 'Quitter le groupe',
-                                        titleColor: errorColor,
-                                        leadingIcon: const Icon(
-                                            Icons.logout_rounded,
-                                            color: errorColor
+                                      if (state.group?.groupMembers?[index].role != 'member') Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(7),
+                                          color: onPrimaryColor.withOpacity(0.4),
                                         ),
-                                        onTap: () {
-                                        },
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        child: Text(
+                                          state.group?.groupMembers?[index].role ?? '',
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                             fontSize: 11
+                                          )
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                if (state.group?.groupMembers != null) ListView.builder(
-                                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: state.group?.groupMembers?.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () => {
-                                        context.goNamed(
-                                          'user-profile',
-                                          pathParameters: {
-                                            'userId': state.group?.groupMembers?[index].member?.id.toString() ?? '',
-                                          },
-                                        )
-                                      },
-                                      leading: state.group?.groupMembers?[index].member?.avatar != null ? CachedImageWidget(
-                                        borderRadius: BorderRadius.circular(16),
-                                        imageUrl: state.group?.groupMembers?[index].member?.avatar ?? '',
-                                        height: 50,
-                                        width: 50,
-                                      ) : ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: SvgPicture.asset(
-                                          'lib/assets/images/avatar.svg',
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                      ),
-                                      title: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              state.group?.groupMembers?[index].member?.username ?? '',
-                                              style: Theme.of(context).textTheme.titleMedium
-                                          ),
-                                          if (state.group?.groupMembers?[index].role != 'member') Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(7),
-                                              color: onPrimaryColor.withOpacity(0.4),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                            child: Text(
-                                              state.group?.groupMembers?[index].role ?? '',
-                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                 fontSize: 11
-                                              )
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      subtitle: Text(
-                                        state.group?.groupMembers?[index].member?.bio ?? '',
-                                      ),
-                                    );
-                                  }
-                                ),
-                              ],
+                                  subtitle: Text(
+                                    state.group?.groupMembers?[index].member?.bio ?? '',
+                                  ),
+                                );
+                              }
                             ),
-                          );
-                      }
-                      return const SizedBox();
-                    },
-                  ),
-                ],
-              ),
-            )
+                          ],
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
-
 }

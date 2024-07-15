@@ -9,8 +9,9 @@ part 'comment_api_service.g.dart';
 abstract class CommentApiService {
   factory CommentApiService(Dio dio) = _CommentApiService;
 
-  @POST("/comments")
-  Future<HttpResponse<CommentModel>> postComment(
-    @Body() Map<String, dynamic> comment,
-  );
+  @POST("/drops/{dropId}/comments")
+  Future<HttpResponse<CommentModel>> postComment({
+    @Path("dropId") required int dropId,
+    @Body() required Map<String, dynamic> comment,
+  });
 }

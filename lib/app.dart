@@ -3,6 +3,7 @@ import 'package:droppy/features/presentation/bloc/auth/auth_state.dart';
 
 import 'features/presentation/bloc/auth/auth_event.dart';
 import 'features/presentation/bloc/feed/feed_bloc.dart';
+import 'features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
 import 'l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,6 +44,9 @@ class _MainAppState extends State<MainApp> {
           create: (context) => sl(),
         ),
         BlocProvider<FeedBloc>(
+          create: (context) => sl(),
+        ),
+        BlocProvider<PendingFollowBloc>(
           create: (context) => sl(),
         ),
       ],

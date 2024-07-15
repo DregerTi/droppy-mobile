@@ -26,7 +26,7 @@ class _SignInFormState extends State<SignInForm> {
         if (state is AuthError) {
           SnackBar(content: Text('Authentication failed: ${state.error}'));
         } else if (state is AuthDone) {
-          context.goNamed('account');
+          context.pushNamed('account');
         }
       },
       builder: (_, state) {
@@ -71,7 +71,7 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.goNamed('forget-password');
+                      context.pushNamed('forget-password');
                     },
                     child: Flexible(
                       child: Wrap(

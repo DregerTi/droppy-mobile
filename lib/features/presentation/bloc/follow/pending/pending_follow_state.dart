@@ -2,19 +2,23 @@ import 'package:equatable/equatable.dart';
 import '../../../../domain/entities/follow.dart';
 
 abstract class PendingFollowState extends Equatable {
-  final List<FollowEntity> ? drops;
+  final List<FollowEntity> ? follows;
 
-  const PendingFollowState({this.drops});
+  const PendingFollowState({this.follows});
 
   @override
   List<Object> get props => [];
 }
 
-class WebSocketInitial extends PendingFollowState {}
+class PendingFollowWebSocketInitial extends PendingFollowState {}
 
-class WebSocketMessageState extends PendingFollowState {
+class PendingFollowWebSocketMessageState extends PendingFollowState {
 
-  const WebSocketMessageState(List<FollowEntity> drops) : super(drops: drops);
+  const PendingFollowWebSocketMessageState(List<FollowEntity> follows) : super(follows: follows);
 }
 
-class WebSocketDisconnected extends PendingFollowState {}
+class PendingFollowWebSocketMessageLoadingReceived extends PendingFollowState {
+  const PendingFollowWebSocketMessageLoadingReceived(List<FollowEntity> follows): super(follows: follows);
+}
+
+class PendingFollowWebSocketDisconnected extends PendingFollowState {}

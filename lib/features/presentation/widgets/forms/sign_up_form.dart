@@ -67,7 +67,7 @@ class _SignInFormState extends State<SignUpForm> {
         if (state is AuthError) {
           SnackBar(content: Text('Authentication failed: ${state.error}'));
         } else if (state is AuthDone) {
-          context.goNamed('account');
+          context.pushNamed('account');
         }
       },
       builder: (_, state) {

@@ -11,21 +11,30 @@ class CommentModel extends CommentEntity {
     UserModel ? user,
     DropModel ? drop,
     List<CommentResponseModel> ? commentResponses,
+    DateTime ? createdAt,
   }) : super(
     id: id,
     content: content,
     user: user,
     drop: drop,
     commentResponses: commentResponses,
+    createdAt: createdAt,
   );
   
   factory CommentModel.fromJson(Map<String, dynamic >map) {
     return CommentModel(
-      id: map['id'] ?? "",
-      content: map['content'] ?? "",
-      user: map['createdBy'] != null ? UserModel.fromJson(map['createdBy']) : null,
-      drop: map['drop'] != null ? DropModel.fromJson(map['drop']) : null,
-      commentResponses: (map['commentResponses'] != null ? List<CommentResponseModel>.from(map['commentResponses'].map((commentResponse) => CommentResponseModel.fromJson(commentResponse))) : []),
+      id: map['ID'] ?? 0,
+      content: map['Content'] ?? "",
+      user: map['CreatedBy'] != null ? UserModel.fromJson(map['CreatedBy']) : null,
+      drop: map['Drop'] != null ? DropModel.fromJson(map['Drop']) : null,
+      commentResponses: (map['Responses'] != null
+        && map['Responses'].length > 0 ?
+        (map['Responses'] as List<dynamic>)
+            .map((commentResponse) => CommentResponseModel.fromJson(commentResponse))
+            .toList()
+            : []
+        ),
+      createdAt: DateTime.parse(map['CreatedAt'].toString()),
     );
   }
 
@@ -36,6 +45,7 @@ class CommentModel extends CommentEntity {
       user: entity.user,
       drop: entity.drop,
       commentResponses: entity.commentResponses,
+      createdAt: entity.createdAt,
     );
   }
 }

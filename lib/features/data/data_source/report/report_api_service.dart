@@ -9,7 +9,7 @@ part 'report_api_service.g.dart';
 abstract class ReportApiService {
   factory ReportApiService(Dio dio) = _ReportApiService;
 
-  @POST("/reports")
+  @POST("/reports/")
   Future<HttpResponse<ReportModel>> postReport(
     @Body() Map<String, dynamic> report,
   );

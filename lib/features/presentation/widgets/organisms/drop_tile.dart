@@ -1,13 +1,16 @@
 import 'dart:ui';
 import 'package:droppy/config/theme/color.dart';
 import 'package:droppy/features/domain/entities/drop.dart';
+import 'package:droppy/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:droppy/features/presentation/widgets/molecules/comment_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/like_btn.dart';
+import '../atoms/pin_btn.dart';
 
 class DropTileWidget extends StatelessWidget {
   final DropEntity ? drop;
@@ -52,33 +55,61 @@ class DropTileWidget extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: onPrimaryColor,
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                          Icons.location_on,
-                                          color: backgroundColor,
-                                          size: 16
+                                Row(
+                                  children: [
+                                    if(drop!.location != null) Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: onPrimaryColor,
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Paris',
-                                        style: textTheme.labelSmall?.copyWith(color: backgroundColor),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                              Icons.location_on,
+                                              color: backgroundColor,
+                                              size: 16
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            drop!.location ?? '',
+                                            style: textTheme.labelSmall?.copyWith(color: backgroundColor),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    if(drop?.totalLikes != null && drop?.totalLikes != 0) const SizedBox(width: 8),
+                                    if(drop?.totalLikes != null && drop?.totalLikes != 0) Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: onPrimaryColor,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                              Icons.favorite_rounded,
+                                              color: backgroundColor,
+                                              size: 16
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            '${drop?.totalLikes}',
+                                            style: textTheme.labelSmall?.copyWith(color: backgroundColor),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 8),
                                 GestureDetector(
                                   onTap: () => {
-                                    context.goNamed(
+                                    context.pushNamed(
                                       'user-profile',
                                       pathParameters: {
                                         'userId': drop!.user!.id.toString(),
@@ -93,41 +124,53 @@ class DropTileWidget extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    Text(
-                                      drop!.description?? '',
-                                      maxLines : 2,
-                                      overflow : TextOverflow.ellipsis,
-                                      style: textTheme.bodySmall,
+                                    Container(
+                                      width: MediaQuery.of(context).size.width - 126,
+                                      child: Text(
+                                        drop!.description ?? '',
+                                        maxLines : 2,
+                                        overflow : TextOverflow.ellipsis,
+                                        style: textTheme.bodySmall,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CachedImageWidget(
-                                  width: 56,
-                                  height: 56,
-                                  borderRadius: BorderRadius.circular(16),
-                                  imageUrl: drop!.picturePath ?? '',
-                                ),
-                                const SizedBox(width: 12),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Musique',
-                                      style: textTheme.titleMedium,
+                            const SizedBox(height: 20),
+                            Container(
+                              width: MediaQuery.of(context).size.width - 126,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CachedImageWidget(
+                                    width: 56,
+                                    height: 56,
+                                    borderRadius: BorderRadius.circular(16),
+                                    imageUrl: drop!.contentPicturePath ?? '',
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          drop!.type ?? '',
+                                          style: textTheme.titleMedium,
+                                          overflow : TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          drop!.contentTitle ?? '',
+                                          style: textTheme.bodySmall,
+                                          maxLines : 2,
+                                          overflow : TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      'Goody ahh sound effect - 2h',
-                                      style: textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -144,7 +187,7 @@ class DropTileWidget extends StatelessWidget {
                               const SizedBox(height: 10),
                               GestureDetector(
                                 onTap: () => {
-                                  context.goNamed(
+                                  context.pushNamed(
                                     'user-profile',
                                     pathParameters: {
                                       'userId': drop!.user!.id.toString(),
@@ -182,23 +225,25 @@ class DropTileWidget extends StatelessWidget {
                                   Icons.mode_comment,
                                 ),
                               ),
-                              IconButton(
+                              if(drop?.user?.id != BlocProvider.of<AuthBloc>(context).state.auth!.id) IconButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                                 ),
-                                onPressed: _onTap,
+                                onPressed: () => {
+                                  context.pushNamed(
+                                    'report',
+                                    extra: {
+                                      'dropId': drop!.id!.toString(),
+                                    }
+                                  )
+                                },
                                 icon: const Icon(
                                   Icons.flag_rounded,
                                 ),
                               ),
-                              if(false) IconButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                                ),
-                                onPressed: _onTap,
-                                icon: const Icon(
-                                  Icons.bookmark,
-                                ),
+                              if(drop?.user?.id == BlocProvider.of<AuthBloc>(context).state.auth!.id) PinBtn(
+                                dropId: drop!.id!,
+                                isPinned: drop!.isPinned ?? false,
                               ),
                             ],
                           ),

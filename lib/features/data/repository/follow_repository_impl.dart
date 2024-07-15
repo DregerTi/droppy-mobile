@@ -36,7 +36,7 @@ class FollowRepositoryImpl implements FollowRepository {
     try {
       final httpResponse = await _followApiService.deleteFollow(id: params['id']);
 
-      if (httpResponse.response.statusCode == HttpStatus.noContent) {
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(

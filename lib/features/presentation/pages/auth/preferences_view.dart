@@ -47,7 +47,7 @@ class PreferencesView extends StatelessWidget {
                               leadingImageUrl: user.avatar,
                               avatar: true,
                               onTap: () {
-                                context.goNamed(
+                                context.pushNamed(
                                     'my-account',
                                     extra: {
                                       'user': user
@@ -62,7 +62,7 @@ class PreferencesView extends StatelessWidget {
                                 color: textColor
                               ),
                               onTap: () {
-                                context.goNamed(
+                                context.pushNamed(
                                     'language',
                                     extra: {
                                       'user': user
@@ -84,7 +84,7 @@ class PreferencesView extends StatelessWidget {
                             color: textColor,
                           ),
                           onTap: () {
-                            context.goNamed(
+                            context.pushNamed(
                                 'cgu',
                                 extra: {
                                   'user': user

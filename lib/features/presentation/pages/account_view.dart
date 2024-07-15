@@ -93,7 +93,7 @@ class _AccountViewState extends State<AccountView> {
                               padding: const EdgeInsets.only(left: 24, right: 24, top: 42),
                               child: GestureDetector(
                                 onTap: () {
-                                  context.goNamed(
+                                  context.pushNamed(
                                     'drop-from-profile',
                                     pathParameters: {
                                       'userId': user?.id.toString() ?? '',
@@ -153,21 +153,23 @@ class _AccountViewState extends State<AccountView> {
                                                 width: 56,
                                                 height: 56,
                                                 borderRadius: BorderRadius.circular(16),
-                                                imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                                                imageUrl: user?.lastDrop?.contentPicturePath ?? '',
                                               ),
                                               const SizedBox(width: 12),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Musique',
-                                                    style: textTheme.titleMedium,
-                                                  ),
-                                                  Text(
-                                                    'Goody ahh sound effect - 2h',
-                                                    style: textTheme.bodySmall,
-                                                  ),
-                                                ],
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      user?.lastDrop?.type ?? '',
+                                                      style: textTheme.titleMedium,
+                                                    ),
+                                                    Text(
+                                                      user?.lastDrop?.contentTitle ?? '',
+                                                      style: textTheme.bodySmall,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -199,12 +201,12 @@ class _AccountViewState extends State<AccountView> {
                                   }
                                   return GestureDetector(
                                     onTap: () {
-                                      context.goNamed(
+                                      context.pushNamed(
                                         'drop-from-profile',
                                         pathParameters: {
                                           'userId': user?.id.toString() ?? '',
                                           'username': user?.username ?? '',
-                                          'dropId': user?.lastDrop?.id.toString() ?? ''
+                                          'dropId': user?.pinnedDrops?[index - 1].id.toString() ?? ''
                                         }
                                       );
                                     },
@@ -240,7 +242,7 @@ class _AccountViewState extends State<AccountView> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
-                                                  'Goody ahh sound effect - 2h',
+                                                  user?.pinnedDrops?[index - 1].contentTitle ?? '',
                                                   style: textTheme.titleSmall,
                                                 ),
                                                 const SizedBox(height: 8),
@@ -248,7 +250,7 @@ class _AccountViewState extends State<AccountView> {
                                                   width: 56,
                                                   height: 56,
                                                   borderRadius: BorderRadius.circular(16),
-                                                  imageUrl: "https://pbs.twimg.com/media/F7_vMxKWAAAf9CV?format=jpg&name=4096x4096",
+                                                  imageUrl: user?.pinnedDrops?[index - 1].contentPicturePath ?? '',
                                                 ),
                                               ],
                                             ),

@@ -21,12 +21,12 @@ class FollowModel extends FollowEntity {
   factory FollowModel.fromJson(Map<String, dynamic >map) {
 
     return FollowModel(
-      id: map['ID'] ?? 0,
-      followed: map['Followed'] != null ? UserModel.fromJson(map['Followed']) : null,
-      follower: map['Follower'] != null ? UserModel.fromJson(map['Follower']) : null,
-      createdAt: map['CreatedAt'] != null ? DateTime.parse(map['CreatedAt']) : null,
-      updatedAt: map['UpdatedAt'] != null ? DateTime.parse(map['UpdatedAt']) : null,
-      status: map['Status'] ?? 0,
+      id: map['id'] ?? 0,
+      followed: map['followed'] != null ? UserModel.fromJson(map['followed']) : null,
+      follower: map['follower'] != null ? UserModel.fromJson(map['follower']) : null,
+      createdAt: map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
+      updatedAt: map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
+      status: map['status'] ?? 0,
     );
   }
 

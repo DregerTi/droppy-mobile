@@ -121,5 +121,5 @@ Widget _buildBottom(context) {
 }
 
 void _goToSignIn(BuildContext context) {
-  context.goNamed('sign-in');
+  context.pushNamed('sign-in');
 }

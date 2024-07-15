@@ -74,7 +74,7 @@ class MyAccountView extends StatelessWidget {
                     ),
                     const SizedBox(height: 28),
                     GestureDetector(
-                      onTap: () => context.goNamed(
+                      onTap: () => context.pushNamed(
                           'update-account',
                           extra: {
                             'user': user

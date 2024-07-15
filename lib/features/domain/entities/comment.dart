@@ -9,6 +9,7 @@ class CommentEntity extends Equatable {
   final UserModel ? user;
   final DropModel ? drop;
   final List<CommentResponseModel> ? commentResponses;
+  final DateTime ? createdAt;
 
   const CommentEntity({
     this.id,
@@ -16,6 +17,7 @@ class CommentEntity extends Equatable {
     this.user,
     this.drop,
     this.commentResponses,
+    this.createdAt,
   });
 
   @override
@@ -26,6 +28,7 @@ class CommentEntity extends Equatable {
       user,
       drop,
       commentResponses,
+      createdAt,
     ];
   }
 }

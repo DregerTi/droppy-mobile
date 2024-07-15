@@ -18,10 +18,10 @@ class CommentResponseModel extends CommentResponseEntity {
   
   factory CommentResponseModel.fromJson(Map<String, dynamic >map) {
     return CommentResponseModel(
-      id: map['id'] ?? "",
-      content: map['content'] ?? "",
-      user: map['createdBy'] != null ? UserModel.fromJson(map['createdBy']) : null,
-      comment: map['comment'] != null ? CommentModel.fromJson(map['comment']) : null,
+      id: map['ID'],
+      content: map['Content'] ?? "",
+      user: map['CreatedBy'] != null ? UserModel.fromJson(map['CreatedBy']) : null,
+      comment: map['Comment'] != null ? CommentModel.fromJson(map['Comment']) : null,
     );
   }
 

@@ -104,7 +104,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final httpResponse = await _userApiService.patchUser(id: params['id'], user: params['user']);
 
-      if (httpResponse.response.statusCode == HttpStatus.created) {
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(

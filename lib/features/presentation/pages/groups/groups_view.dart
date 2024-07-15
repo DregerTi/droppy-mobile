@@ -72,11 +72,12 @@ class _GroupsViewState extends State<GroupsView> {
                 AppBarWidget(
                   leadingIcon: const Icon(Icons.group_add),
                   leadingOnPressed: () {
-                    context.goNamed('add-group');
+                    context.pushNamed('add-group');
                   },
-                  mainActionIcon: const Icon(Icons.notifications),
+                  mainActionIcon: const Icon(Icons.notifications_rounded),
+                  isMainActionActive: true,
                   mainActionOnPressed: () {
-                    context.goNamed('notifications');
+                    context.pushNamed('notification');
                   },
                 ),
                 Positioned(
@@ -104,7 +105,7 @@ class _GroupsViewState extends State<GroupsView> {
                     if(state is MeDone){
                       return SearchGroups(
                         onTap: (group) {
-                          context.goNamed(
+                          context.pushNamed(
                             'group-feed',
                             pathParameters: {
                               'groupId': group.id.toString(),

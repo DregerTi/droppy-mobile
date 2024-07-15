@@ -25,7 +25,8 @@ class _LikeBtnState extends State<LikeBtn> {
   Widget build(BuildContext context) {
     return BlocProvider<LikesBloc>(
       create: (context) => sl(),
-      child: BlocBuilder<LikesBloc, LikesState>(
+      child: BlocConsumer<LikesBloc, LikesState>(
+        listener: (context, state){},
         builder: (context, state) {
           bool isLiked = widget.isLiked;
 

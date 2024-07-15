@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/feed/feed_bloc.dart';
 import '../../bloc/feed/feed_event.dart';
 import '../../bloc/feed/feed_state.dart';
+import '../../bloc/follow/pending/pending_follow_bloc.dart';
+import '../../bloc/follow/pending/pending_follow_event.dart';
+import '../../bloc/follow/pending/pending_follow_state.dart';
 
 class Feed extends StatelessWidget {
 
@@ -16,6 +19,10 @@ class Feed extends StatelessWidget {
   Widget build(BuildContext context) {
     if(BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageState || BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageReceived){
       BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
+    }
+
+    if(BlocProvider.of<PendingFollowBloc>(context).state is! PendingFollowWebSocketMessageState || BlocProvider.of<PendingFollowBloc>(context).state is! PendingFollowWebSocketMessageReceived){
+      BlocProvider.of<PendingFollowBloc>(context).add(PendingFollowWebSocketConnect());
     }
 
     return BlocConsumer<FeedBloc, FeedState>(

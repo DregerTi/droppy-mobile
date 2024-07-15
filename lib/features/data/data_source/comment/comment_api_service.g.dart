@@ -21,30 +21,28 @@ class _CommentApiService implements CommentApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<CommentModel>> postComment(
-      Map<String, dynamic> comment) async {
-    final _extra = <String, dynamic>{};
+  Future<HttpResponse<CommentModel>> postComment({
+    required int dropId,
+    required Map<String, dynamic> comment,
+  }) async {
+    const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = comment;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<CommentModel>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
+        _setStreamType<HttpResponse<CommentModel>>(
+            Options(
+              method: 'POST',
+              headers: _headers,
+              extra: _extra,
+            ).compose(
               _dio.options,
-              '/comments',
+              '/drops/$dropId/comments',
               queryParameters: queryParameters,
               data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var value = CommentModel.fromJson(_result.data!);
+            )).copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)));
+    final value = CommentModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }
