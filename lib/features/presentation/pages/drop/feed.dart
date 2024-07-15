@@ -17,11 +17,11 @@ class Feed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageState || BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageReceived){
+    if(BlocProvider.of<FeedBloc>(context).state is WebSocketInitial){
       BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
     }
 
-    if(BlocProvider.of<PendingFollowBloc>(context).state is! PendingFollowWebSocketMessageState || BlocProvider.of<PendingFollowBloc>(context).state is! PendingFollowWebSocketMessageReceived){
+    if(BlocProvider.of<PendingFollowBloc>(context).state is PendingFollowWebSocketInitial){
       BlocProvider.of<PendingFollowBloc>(context).add(PendingFollowWebSocketConnect());
     }
 

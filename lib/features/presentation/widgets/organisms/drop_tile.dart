@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../bloc/has_dropped/has_dropped_bloc.dart';
+import '../../bloc/has_dropped/has_dropped_event.dart';
+import '../../bloc/has_dropped/has_dropped_state.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/like_btn.dart';
 import '../atoms/pin_btn.dart';
@@ -24,6 +27,10 @@ class DropTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial){
+      BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketConnect());
+    }
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
       child: Stack(
@@ -254,6 +261,54 @@ class DropTileWidget extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          BlocConsumer<HasDroppedBloc, HasDroppedState>(
+            listener: (context, hasDroppedState) {},
+            builder: (context, hasDroppedState) {
+              if(hasDroppedState is HasDroppedWebSocketMessageLoadingReceived
+                || hasDroppedState is HasDroppedWebSocketMessageState
+                && (hasDroppedState.hasDropped != null
+                && hasDroppedState.hasDropped! == false)) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(46),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        color: onPrimaryColor.withOpacity(0.3),
+                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 26),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.stop_rounded,
+                                color: secondaryTextColor,
+                                size: 56,
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: 230,
+                                child: Text(
+                                  'Post ton drop du jour pour voir les drops de tes amis !',
+                                  textAlign: TextAlign.center,
+                                  style: textTheme.labelMedium?.copyWith(
+                                    color: secondaryTextColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
           ),
         ],
       ),

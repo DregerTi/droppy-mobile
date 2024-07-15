@@ -33,9 +33,7 @@ class HasDroppedBloc extends Bloc<HasDroppedEvent, HasDroppedState> {
 
     on<HasDroppedWebSocketMessageReceived>((event, emit) {
       final data = jsonDecode(event.message);
-      bool hasDropped = data;
-
-      print(hasDropped);
+      bool hasDropped = data['status'];
       emit(HasDroppedWebSocketMessageLoadingReceived(hasDropped));
       emit(HasDroppedWebSocketMessageState(hasDropped));
     });

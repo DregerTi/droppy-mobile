@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:droppy/features/presentation/bloc/auth/auth_state.dart';
+import 'package:droppy/features/presentation/bloc/has_dropped/has_dropped_bloc.dart';
 
 import 'features/presentation/bloc/auth/auth_event.dart';
 import 'features/presentation/bloc/feed/feed_bloc.dart';
@@ -47,6 +48,9 @@ class _MainAppState extends State<MainApp> {
           create: (context) => sl(),
         ),
         BlocProvider<PendingFollowBloc>(
+          create: (context) => sl(),
+        ),
+        BlocProvider<HasDroppedBloc>(
           create: (context) => sl(),
         ),
       ],
