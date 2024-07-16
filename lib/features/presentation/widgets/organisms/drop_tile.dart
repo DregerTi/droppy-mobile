@@ -284,9 +284,9 @@ class DropTileWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
-                                Icons.stop_rounded,
+                                Icons.visibility_off_rounded,
                                 color: secondaryTextColor,
-                                size: 56,
+                                size: 50,
                               ),
                               const SizedBox(height: 16),
                               SizedBox(
@@ -299,6 +299,18 @@ class DropTileWidget extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => {
+                                  context.pushNamed('add-drop')
+                                },
+                                child: Text(
+                                  'Poster un Drop',
+                                  style: textTheme.labelMedium?.copyWith(
+                                    color: backgroundColor,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
