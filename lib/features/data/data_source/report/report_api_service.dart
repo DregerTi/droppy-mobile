@@ -5,7 +5,7 @@ import '../../models/report.dart';
 
 part 'report_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class ReportApiService {
   factory ReportApiService(Dio dio) = _ReportApiService;
 

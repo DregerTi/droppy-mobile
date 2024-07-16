@@ -5,7 +5,7 @@ import '../../models/like.dart';
 
 part 'like_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class LikeApiService {
   factory LikeApiService(Dio dio) = _LikeApiService;
 

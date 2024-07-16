@@ -69,7 +69,7 @@ class LocalHttpOverrides extends HttpOverrides{
             if (refreshToken != null) {
               final dio = Dio();
               final response = await dio.post(
-                '$baseUrl/auth/refresh',
+                '$apiBaseUrl/auth/refresh',
                 data: {
                   'refresh_token': refreshToken,
                 },

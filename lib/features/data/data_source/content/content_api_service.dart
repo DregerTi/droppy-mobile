@@ -5,7 +5,7 @@ import '../../models/content.dart';
 
 part 'content_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class ContentApiService {
   factory ContentApiService(Dio dio) = _ContentApiService;
 

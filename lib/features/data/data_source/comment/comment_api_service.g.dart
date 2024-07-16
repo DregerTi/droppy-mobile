@@ -13,7 +13,7 @@ class _CommentApiService implements CommentApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:3000';
+    baseUrl ??= apiBaseUrl;
   }
 
   final Dio _dio;

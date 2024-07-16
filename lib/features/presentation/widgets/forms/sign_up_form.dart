@@ -20,19 +20,11 @@ class _SignInFormState extends State<SignUpForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController firstnameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
 
-  String? fistnameError(String? value) {
+  String? usernameError(String? value) {
     if (value!.length < 2 || value.length > 50) {
       return 'Le prénom doit être compris entre 2 et 50 caractères';
-    }
-    return null;
-  }
-
-  String? lastnameError(String? value) {
-    if (value!.length < 2 || value.length > 50) {
-      return 'Le nom doit être compris entre 2 et 50 caractères';
     }
     return null;
   }
@@ -87,19 +79,10 @@ class _SignInFormState extends State<SignUpForm> {
                     children: [
                       const SizedBox(height: 20),
                       TextFormField(
-                        controller: firstnameController,
-                        validator: fistnameError,
+                        controller: usernameController,
+                        validator: usernameError,
                         decoration: InputDecoration(
                           hintText: AppLocalizations.of(context)!.firstName,
-                          helperText: '',
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      TextFormField(
-                        controller: lastnameController,
-                        validator: lastnameError,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.lastName,
                           helperText: '',
                         ),
                       ),
@@ -151,8 +134,7 @@ class _SignInFormState extends State<SignUpForm> {
                                   context.read<UsersBloc>().add(
                                     PostUser(
                                       {
-                                        'firstname': firstnameController.text,
-                                        'lastname': lastnameController.text,
+                                        'username': usernameController.text,
                                         'email': emailController.text,
                                         'password': passwordController.text,
                                       }

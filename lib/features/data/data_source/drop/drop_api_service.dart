@@ -6,7 +6,7 @@ import '../../../../core/constants/constants.dart';
 
 part 'drop_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class DropApiService {
   factory DropApiService(Dio dio) = _DropApiService;
 

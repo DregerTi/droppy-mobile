@@ -5,7 +5,7 @@ import '../../models/follow.dart';
 
 part 'follow_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class FollowApiService {
   factory FollowApiService(Dio dio) = _FollowApiService;
 

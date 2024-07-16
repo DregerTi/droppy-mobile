@@ -5,7 +5,7 @@ import '../../models/comment.dart';
 
 part 'comment_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class CommentApiService {
   factory CommentApiService(Dio dio) = _CommentApiService;
 

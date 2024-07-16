@@ -8,7 +8,7 @@ import '../../models/group_member.dart';
 
 part 'group_api_service.g.dart';
 
-@RestApi(baseUrl:baseUrl)
+@RestApi(baseUrl:apiBaseUrl)
 abstract class GroupApiService {
   factory GroupApiService(Dio dio) = _GroupApiService;
 
