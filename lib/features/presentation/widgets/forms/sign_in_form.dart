@@ -20,7 +20,6 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(context) {
-
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
@@ -31,68 +30,70 @@ class _SignInFormState extends State<SignInForm> {
       },
       builder: (_, state) {
         return SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.email,
-                      helperText: '',
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.email,
+                    helperText: '',
+                  ),
+                  controller: emailController,
+                ),
+                const SizedBox(height: 4),
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.password,
+                    helperText: '',
+                    errorText: (state is AuthError)
+                        ? 'Identifiant ou mot de passe incorrect'
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        context.read<AuthBloc>().add(
+                              Authenticate({
+                                'email': emailController.text,
+                                'password': passwordController.text,
+                              }),
+                            ),
+                      },
+                      child: (state is AuthLoading)
+                          ? Image.asset('lib/assets/images/loading.gif',
+                              width: 30)
+                          : const Text('Connexion'),
+                    )),
+                TextButton(
+                  onPressed: () {
+                    context.pushNamed('forget-password');
+                  },
+                  child: Flexible(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.forgotPassword,
+                          style: textTheme.bodySmall,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(AppLocalizations.of(context)!.findHelpHere,
+                            style: textTheme.titleSmall),
+                      ],
                     ),
-                    controller: emailController,
                   ),
-                  const SizedBox(height: 4),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.password,
-                      helperText: '',
-                      errorText: (state is AuthError) ? 'Identifiant ou mot de passe incorrect' : null,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => {
-                          context.read<AuthBloc>().add(
-                            Authenticate({
-                              'email': emailController.text,
-                              'password': passwordController.text,
-                            }),
-                          ),
-                        },
-                        child: (state is AuthLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : const Text('Connexion'),
-                      )
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.pushNamed('forget-password');
-                    },
-                    child: Flexible(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.forgotPassword,
-                            style: textTheme.bodySmall,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                              AppLocalizations.of(context)!.findHelpHere,
-                              style: textTheme.titleSmall
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
         );
       },
     );
