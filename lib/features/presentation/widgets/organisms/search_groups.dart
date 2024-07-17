@@ -10,6 +10,7 @@ import '../../bloc/group/group_event.dart';
 import '../../bloc/group/group_state.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../atoms/cached_image_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchGroups extends StatefulWidget {
   final Function? onTap;
@@ -63,8 +64,8 @@ class _SearchGroupsState extends State<SearchGroups> {
                         });
                       }
                     },
-                    decoration: const InputDecoration(
-                      hintText: 'Rejoindre un groupe',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.joinGroup,
                       suffixIcon: Icon(Icons.search, color: onSurfaceColor, size: 20),
                     )
                   ),
@@ -133,9 +134,9 @@ class _SearchGroupsState extends State<SearchGroups> {
                         )
                     );
                   } else {
-                    return const WarningCard(
+                    return WarningCard(
                       icon: 'empty',
-                      message: 'Tu ne fais parti d\'aucun groupe',
+                      message: AppLocalizations.of(context)!.youAreNotPartOfAnyGroup,
                     );
                   }
                 }
@@ -149,16 +150,16 @@ class _SearchGroupsState extends State<SearchGroups> {
                   );
                 }
                 if(state is GroupsError) {
-                  return const WarningCard(
+                  return WarningCard(
                     icon: 'error',
-                    message: 'Une erreur est survenue',
+                    message: AppLocalizations.of(context)!.anErrorOccurred,
                   );
                 }
                 if(state is GroupsDone) {
                   if (state.groups?.isEmpty ?? true) {
-                    return const WarningCard(
+                    return WarningCard(
                       icon: 'empty',
-                      message: 'Aucun résultat',
+                      message: AppLocalizations.of(context)!.noResults,
                     );
                   } else {
                     return SingleChildScrollView(

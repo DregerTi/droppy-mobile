@@ -50,7 +50,7 @@ class _SignInFormState extends State<SignInForm> {
                     hintText: AppLocalizations.of(context)!.password,
                     helperText: '',
                     errorText: (state is AuthError)
-                        ? 'Identifiant ou mot de passe incorrect'
+                        ? AppLocalizations.of(context)!.incorrectUsernameOrPassword
                         : null,
                   ),
                 ),

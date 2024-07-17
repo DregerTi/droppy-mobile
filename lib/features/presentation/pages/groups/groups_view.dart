@@ -11,6 +11,7 @@ import '../../bloc/group/goup_bloc.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/organisms/search_groups.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupsView extends StatefulWidget {
 
@@ -86,7 +87,7 @@ class _GroupsViewState extends State<GroupsView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Groups',
+                          AppLocalizations.of(context)!.groups,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ],

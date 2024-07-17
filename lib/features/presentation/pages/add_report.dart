@@ -66,7 +66,7 @@ class _AddReportViewState extends State<AddReportView> {
                               }
                               if(state is PostReportDone) {
                                 snackBarWidget(
-                                  message: 'Merci pour ton signalement!',
+                                  message: AppLocalizations.of(context)!.thanksForYourReport,
                                   context: context,
                                 );
                                 context.pop(true);

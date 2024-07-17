@@ -16,6 +16,7 @@ import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/atoms/warning_card.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/organisms/map_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DropMap extends StatefulWidget {
 
@@ -230,7 +231,7 @@ class _DropMapState extends State<DropMap> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Map',
+                    AppLocalizations.of(context)!.map,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
@@ -280,9 +281,9 @@ class _DropMapState extends State<DropMap> {
                       listener: (context, state) {},
                       builder: (context, state) {
                         if(state is WebSocketDisconnected) {
-                          return const Center(
+                          return Center(
                             child: WarningCard(
-                                message: 'Aucun drop',
+                                message: AppLocalizations.of(context)!.noDrops,
                                 icon: 'empty'
                             ),
                           );
@@ -290,9 +291,9 @@ class _DropMapState extends State<DropMap> {
 
                         if(state is WebSocketMessageState || state is WebSocketMessageReceived) {
                           if(state.drops!.isEmpty) {
-                            return const Center(
+                            return Center(
                               child: WarningCard(
-                                  message: 'Aucun drop',
+                                  message: AppLocalizations.of(context)!.noDrops,
                               ),
                             );
                           }

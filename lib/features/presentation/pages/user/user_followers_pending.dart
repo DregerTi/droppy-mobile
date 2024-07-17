@@ -37,26 +37,26 @@ class UserFollowersPendingView extends StatelessWidget {
 
                   if (state is AcceptFollowDone) {
                     snackBarWidget(
-                      message: 'Demande de suivi acceptée',
+                      message: AppLocalizations.of(context)!.followRequestAccepted,
                       context: context
                     );
                   }
                   if (state is AcceptFollowError) {
                     snackBarWidget(
-                      message: 'Erreur lors de l\'acceptation de la demande de suivi',
+                      message: AppLocalizations.of(context)!.errorAcceptingFollowRequest,
                       type: 'error',
                       context: context
                     );
                   }
                   if (state is RefuseFollowDone) {
                     snackBarWidget(
-                      message: 'Demande de suivi refusée',
+                      message: AppLocalizations.of(context)!.followRequestDeclined,
                       context: context
                     );
                   }
                   if (state is RefuseFollowError) {
                     snackBarWidget(
-                      message: 'Erreur lors du refus de la demande de suivi',
+                      message: AppLocalizations.of(context)!.errorDecliningFollowRequest,
                       type: 'error',
                       context: context
                     );
@@ -71,7 +71,7 @@ class UserFollowersPendingView extends StatelessWidget {
                     leadingOnPressed: () {
                       context.pop();
                     },
-                    title: 'Notifications',
+                    title: AppLocalizations.of(context)!.notifications,
                   ),
                   Expanded(
                     child: BlocConsumer<PendingFollowBloc, PendingFollowState>(
@@ -98,9 +98,9 @@ class UserFollowersPendingView extends StatelessWidget {
                         }
                         if(state is PendingFollowWebSocketMessageState || state is PendingFollowWebSocketMessageReceived) {
                           if (state.follows?.isEmpty ?? true) {
-                            return const WarningCard(
+                            return WarningCard(
                               icon: 'empty',
-                              message: 'Aucun résultat',
+                              message: AppLocalizations.of(context)!.noResults,
                             );
                           } else {
                             return SingleChildScrollView(
@@ -136,7 +136,7 @@ class UserFollowersPendingView extends StatelessWidget {
                                         ),
                                       ),
                                       title: Text(
-                                        '${state.follows?[index].follower?.username} vous a envoyé une demande de suivi',
+                                        '${state.follows?[index].follower?.username} ${AppLocalizations.of(context)!.followRequestSentYou}',
                                         style: Theme.of(context).textTheme.titleSmall
                                       ),
                                       subtitle: Padding(
@@ -158,7 +158,7 @@ class UserFollowersPendingView extends StatelessWidget {
                                                   ),
                                                   child: Center(
                                                     child: Text(
-                                                      'Refuser',
+                                                      AppLocalizations.of(context)!.decline,
                                                       style: textTheme.labelSmall
                                                     ),
                                                   ),
@@ -181,7 +181,7 @@ class UserFollowersPendingView extends StatelessWidget {
                                                   ),
                                                   child: Center(
                                                     child: Text(
-                                                      'Accepter',
+                                                      AppLocalizations.of(context)!.accept,
                                                       style: textTheme.labelSmall?.copyWith(
                                                         color: surfaceColor
                                                       )

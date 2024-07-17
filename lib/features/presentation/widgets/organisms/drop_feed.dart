@@ -6,6 +6,7 @@ import 'package:droppy/features/presentation/widgets/molecules/app_bar_widget.da
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'drop_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DropFeedWidget extends StatefulWidget {
   final List<DropEntity?> ? drops;
@@ -68,9 +69,9 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                   }).toList()
                 ),
               ),
-              if (feed.isEmpty) const Center(
+              if (feed.isEmpty) Center(
                 child: WarningCard(
-                  message: 'Aucun drop',
+                  message: AppLocalizations.of(context)!.noDrops,
                   icon: 'empty'
                 ),
               ),
@@ -124,7 +125,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                                 onTap: () {
                                   if (widget.group != null) {
                                     context.pushNamed(
-                                      'group',
+                                      AppLocalizations.of(context)!.groups,
                                       pathParameters: {
                                         'groupId': widget.group!.id.toString()
                                       }
@@ -132,7 +133,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                                   }
                                 },
                                 child: Text(
-                                  (widget.group?.name ?? (widget.username ?? 'Amis')),
+                                  (widget.group?.name ?? (widget.username ?? AppLocalizations.of(context)!.friends)),
                                   style: Theme.of(context).textTheme.headlineMedium,
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,

@@ -16,6 +16,7 @@ import '../../bloc/user/user_event.dart';
 import '../../bloc/user/user_state.dart';
 import '../molecules/app_bar_widget.dart';
 import 'cached_image_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemHeader extends StatelessWidget {
   final UserEntity? user;
@@ -136,7 +137,7 @@ class ItemHeader extends StatelessWidget {
                     listener: (context, state) {
                       if(state is PostFollowDone) {
                         snackBarWidget(
-                          message: 'Follow effectué avec succès',
+                          message: AppLocalizations.of(context)!.followSuccessful,
                           context: context,
                         );
 
@@ -147,7 +148,7 @@ class ItemHeader extends StatelessWidget {
 
                       if(state is DeleteFollowDone) {
                         snackBarWidget(
-                          message: 'Unfollow effectué avec succès',
+                          message: AppLocalizations.of(context)!.unfollowSuccessful,
                           context: context,
                         );
 
@@ -158,7 +159,7 @@ class ItemHeader extends StatelessWidget {
 
                       if(state is PostFollowError || state is DeleteFollowError) {
                         snackBarWidget(
-                          message: 'Erreur lors de l\'action',
+                          message: AppLocalizations.of(context)!.errorPerformingAction,
                           context: context,
                           type: 'error',
                         );
@@ -206,7 +207,7 @@ class ItemHeader extends StatelessWidget {
                             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
                           ),
                           child: Text(
-                            'Demande envoyée',
+                            AppLocalizations.of(context)!.pendingRequest,
                             style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                           ),
                         );

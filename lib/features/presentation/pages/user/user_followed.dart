@@ -8,10 +8,10 @@ import '../../../../config/theme/widgets/text.dart';
 import '../../../../injection_container.dart';
 import '../../bloc/follow/get/follow_get_bloc.dart';
 import '../../bloc/follow/get/follow_get_state.dart';
-import '../../bloc/user/user_bloc.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/atoms/warning_card.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserFollowedView extends StatelessWidget {
   final String? userId;
@@ -69,16 +69,16 @@ class UserFollowedView extends StatelessWidget {
                           );
                         }
                         if(state is FollowedError) {
-                          return const WarningCard(
+                          return WarningCard(
                             icon: 'error',
-                            message: 'Une erreur est survenue',
+                            message: AppLocalizations.of(context)!.anErrorOccurred,
                           );
                         }
                         if(state is FollowedDone) {
                           if (state.users?.isEmpty ?? true) {
-                            return const WarningCard(
+                            return WarningCard(
                               icon: 'empty',
-                              message: 'Aucun résultat',
+                              message: AppLocalizations.of(context)!.noResults,
                             );
                           } else {
                             return SingleChildScrollView(

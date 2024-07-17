@@ -42,14 +42,14 @@ class _GroupSettingViewState extends State<GroupSettingView> {
 
   String? titleValidation(String? value) {
     if (value!.length < 2 || value.length > 22) {
-      return 'Entre 2 et 22 caractères';
+      return AppLocalizations.of(context)!.between2And22Characters;
     }
     return null;
   }
 
   String? descriptionValidation(String? value) {
     if ((value!.length < 2 || value.length > 30) && value.isNotEmpty) {
-      return 'Entre 2 et 30 caractères ou vide';
+      return AppLocalizations.of(context)!.between2And30CharactersOrEmpty;
     }
     return null;
   }
@@ -83,7 +83,7 @@ class _GroupSettingViewState extends State<GroupSettingView> {
                     Visibility(
                       visible: activeElement == 'main',
                       child: AppBarWidget(
-                        title: 'Réglages',
+                        title: AppLocalizations.of(context)!.settings,
                         leadingIcon: const Icon(Icons.arrow_back),
                         leadingOnPressed: () {
                           context.pop();
@@ -99,7 +99,7 @@ class _GroupSettingViewState extends State<GroupSettingView> {
                             }
                             if(state is PatchGroupDone) {
                               snackBarWidget(
-                                message: 'Group mis à jour',
+                                message: AppLocalizations.of(context)!.groupUpdated,
                                 context: context,
                               );
                               context.pop(true);
@@ -217,8 +217,8 @@ class _GroupSettingViewState extends State<GroupSettingView> {
                                             controller: titleController,
                                             validator: titleValidation,
                                             textInputAction: TextInputAction.search,
-                                            decoration: const InputDecoration(
-                                              hintText: 'Nom',
+                                            decoration: InputDecoration(
+                                              hintText: AppLocalizations.of(context)!.name,
                                               helperText: '',
                                             )
                                         ),
@@ -251,7 +251,7 @@ class _GroupSettingViewState extends State<GroupSettingView> {
                                           ),
                                           const SizedBox(width: 10),
                                           Text(
-                                            isPublic ? 'Groupe publique' : 'Groupe privé',
+                                            isPublic ? AppLocalizations.of(context)!.publicGroup : AppLocalizations.of(context)!.privateGroup,
                                             style: textTheme.labelMedium?.copyWith(
                                               color: isPublic ? onSurfaceColor : textColor,
                                             ),
@@ -270,8 +270,8 @@ class _GroupSettingViewState extends State<GroupSettingView> {
                                       controller: descriptionController,
                                       maxLines: 8,
                                       validator: descriptionValidation,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Description...',
+                                      decoration: InputDecoration(
+                                        hintText: '${AppLocalizations.of(context)!.description}...',
                                         helperText: '',
                                       ),
                                     ),

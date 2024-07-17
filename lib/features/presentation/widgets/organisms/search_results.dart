@@ -6,6 +6,7 @@ import '../../bloc/place_search/place_search_bloc.dart';
 import '../../bloc/place_search/place_search_event.dart';
 import '../../bloc/place_search/place_search_state.dart';
 import '../atoms/location_list_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchResults extends StatelessWidget {
   final String activeElement;
@@ -36,16 +37,16 @@ class SearchResults extends StatelessWidget {
             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 20, vertical: 20)),
             backgroundColor: MaterialStateProperty.all<Color>(surfaceColor),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.my_location,
                 color: onSurfaceColor,
               ),
               SizedBox(width: 10),
               Text(
-                'Utiliser ma position actuelle',
+                AppLocalizations.of(context)!.useCurrentLocation,
                 style: TextStyle(
                   color: onSurfaceColor,
                 ),

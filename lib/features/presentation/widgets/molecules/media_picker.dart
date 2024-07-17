@@ -7,6 +7,7 @@ import '../../../data/repository/media_picker_repository_impl.dart';
 import '../../../domain/entities/media_picker_item.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/medias_grid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MediaPickerWidget extends StatefulWidget {
   final String activeElement;
@@ -196,7 +197,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                               ),
                               if (!widget.lite) const SizedBox(height: 10),
                               if (!widget.lite) Text(
-                                'Ajouter une photo',
+                                AppLocalizations.of(context)!.addAPhoto,
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: onSurfaceColor,
                                 ),

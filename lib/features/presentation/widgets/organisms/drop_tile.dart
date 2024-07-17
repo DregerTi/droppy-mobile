@@ -16,6 +16,7 @@ import '../../bloc/has_dropped/has_dropped_state.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/like_btn.dart';
 import '../atoms/pin_btn.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DropTileWidget extends StatelessWidget {
   final DropEntity ? drop;
@@ -309,7 +310,7 @@ class DropTileWidget extends StatelessWidget {
                               SizedBox(
                                 width: 230,
                                 child: Text(
-                                  'Post ton drop du jour pour voir les drops de tes amis !',
+                                  '${AppLocalizations.of(context)!.postToSee} ${AppLocalizations.of(context)!.toSeeOthersContentPostYourDrop}',
                                   textAlign: TextAlign.center,
                                   style: textTheme.labelMedium?.copyWith(
                                     color: secondaryTextColor,
@@ -322,7 +323,7 @@ class DropTileWidget extends StatelessWidget {
                                   context.pushNamed('add-drop')
                                 },
                                 child: Text(
-                                  'Poster un Drop',
+                                  AppLocalizations.of(context)!.postADrop,
                                   style: textTheme.labelMedium?.copyWith(
                                     color: backgroundColor,
                                   ),

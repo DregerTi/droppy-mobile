@@ -10,6 +10,7 @@ import '../../../../injection_container.dart';
 import '../../../data/models/comment.dart';
 import '../../bloc/comment/comment_event.dart';
 import '../atoms/comment.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentSheet extends StatefulWidget {
   final List<CommentModel>? comments;
@@ -52,7 +53,7 @@ class _CommentSheetState extends State<CommentSheet> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${widget.totalComments} comments',
+                      '${widget.totalComments} ${AppLocalizations.of(context)!.comment}',
                       style: textTheme.labelMedium
                     ),
                     const SizedBox(height: 20),
@@ -119,14 +120,14 @@ class _CommentSheetState extends State<CommentSheet> {
                           if(state is PostCommentDone || state is PostCommentResponseDone){
                             commentController.clear();
                             snackBarWidget(
-                              message: 'Commentaire envoyé',
+                              message: AppLocalizations.of(context)!.commentSent,
                               context: context
                             );
                           }
 
                           if (state is PostCommentError || state is PostCommentResponseError) {
                             snackBarWidget(
-                              message: 'Erreur lors de l\'envoi du commentaire',
+                              message: AppLocalizations.of(context)!.errorSendingComment,
                               type: 'error',
                               context: context
                             );
@@ -182,7 +183,7 @@ class _CommentSheetState extends State<CommentSheet> {
                           );
                         },
                       ),
-                      hintText: isCommentResponse ? 'Whrite comment response' : 'Whrite comment',
+                      hintText: isCommentResponse ? AppLocalizations.of(context)!.writeComment : AppLocalizations.of(context)!.writeReply,
                       helperText: '',
                     )
                   ),

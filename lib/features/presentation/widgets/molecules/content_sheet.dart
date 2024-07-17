@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../../config/theme/color.dart';
-import '../../../../injection_container.dart';
 import '../../../data/models/content.dart';
 import '../../bloc/content/content_bloc.dart';
 import '../../bloc/content/content_state.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/warning_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContentSheet extends StatefulWidget {
   final List<ContentModel>? contents;
@@ -68,16 +68,16 @@ class _ContentSheetState extends State<ContentSheet> {
                   );
                 }
                 if(state is SearchContentError) {
-                  return const WarningCard(
+                  return WarningCard(
                     icon: 'error',
-                    message: 'Une erreur est survenue',
+                    message: AppLocalizations.of(context)!.anErrorOccurred,
                   );
                 }
                 if(state is SearchContentDone) {
                   if (state.contents?.isEmpty ?? true) {
-                    return const WarningCard(
+                    return WarningCard(
                       icon: 'empty',
-                      message: 'Aucun résultat',
+                      message: AppLocalizations.of(context)!.noResults,
                     );
                   } else {
                     return SingleChildScrollView(
@@ -163,9 +163,9 @@ class _ContentSheetState extends State<ContentSheet> {
                       });
                     }
                   },
-                  decoration: const InputDecoration(
-                    hintText: 'Chercher un contenu',
-                    suffixIcon: Icon(Icons.search, color: onSurfaceColor, size: 20),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.searchContent,
+                    suffixIcon: const Icon(Icons.search, color: onSurfaceColor, size: 20),
                   )
                 ),
               )

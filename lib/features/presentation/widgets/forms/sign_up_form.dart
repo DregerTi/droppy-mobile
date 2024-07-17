@@ -32,7 +32,7 @@ class _SignInFormState extends State<SignUpForm> {
 
   String? passwordError(String? value) {
     if (value!.length < 8) {
-      return 'Le mot de passe doit contenir au moins 8 caractères';
+      return AppLocalizations.of(context)!.passwordMustBeAtLeast8Characters;
     }
     return null;
   }
@@ -83,7 +83,7 @@ class _SignInFormState extends State<SignUpForm> {
                         controller: usernameController,
                         validator: usernameError,
                         decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.firstName,
+                          hintText: AppLocalizations.of(context)!.username,
                           helperText: '',
                         ),
                       ),
@@ -128,14 +128,14 @@ class _SignInFormState extends State<SignUpForm> {
                           listener: (context, state) {
                             if (state is PostUserDone) {
                               snackBarWidget(
-                                message: 'Inscription réussie !',
+                                message: AppLocalizations.of(context)!.signupSuccessful,
                                 context: context
                               );
                               context.goNamed('sign-in');
                             }
                             if(state is PostUserError) {
                               snackBarWidget(
-                                message: 'Erreur lors de l\'inscription',
+                                message: AppLocalizations.of(context)!.errorSigningUp,
                                 context: context,
                                 type: 'error'
                               );

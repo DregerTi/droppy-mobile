@@ -57,7 +57,7 @@ class _SaveDropState extends State<SaveDrop> {
           children: [
             AppBarWidget(
               leadingIcon: const Icon(Icons.arrow_back),
-              title: 'Envoyer à...',
+              title: AppLocalizations.of(context)!.sendTo,
               actionWidget: BlocConsumer<DropsBloc, DropsState>(
                 listener: (context, state) {
                   if(state is PostDropError) {
@@ -69,7 +69,7 @@ class _SaveDropState extends State<SaveDrop> {
                   }
                   if(state is PostDropDone) {
                     snackBarWidget(
-                      message: 'Drop créé avec succès!',
+                      message: AppLocalizations.of(context)!.dropCreatedSuccessfully,
                       context: context,
                     );
                     context.goNamed('home');
@@ -107,7 +107,7 @@ class _SaveDropState extends State<SaveDrop> {
 
                       } else {
                         snackBarWidget(
-                          message: 'Erreur lors de la création du drop',
+                          message: AppLocalizations.of(context)!.errorCreatingDrop,
                           context: context,
                           type: 'error',
                         );
@@ -136,7 +136,7 @@ class _SaveDropState extends State<SaveDrop> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Mes amis',
+                            AppLocalizations.of(context)!.friends,
                             style: textTheme.labelMedium?.copyWith(
                               color: textColor,
                             ),
@@ -165,7 +165,7 @@ class _SaveDropState extends State<SaveDrop> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Groupes',
+                                  AppLocalizations.of(context)!.groups,
                                   style: textTheme.titleMedium,
                                 ),
                                 const SizedBox(height: 20),

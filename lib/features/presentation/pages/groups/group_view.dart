@@ -17,6 +17,7 @@ import '../../widgets/atoms/group_header.dart';
 import '../../widgets/atoms/list_items_widget.dart';
 import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/atoms/tile_item_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupView extends StatefulWidget {
   final String? groupId;
@@ -89,7 +90,7 @@ class _GroupViewState extends State<GroupView> {
                             if (state.group?.description != null) Padding(
                               padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 0),
                               child: Text(
-                                'Description',
+                                AppLocalizations.of(context)!.description,
                                 style: textTheme.titleMedium
                               )
                             ),
@@ -104,7 +105,7 @@ class _GroupViewState extends State<GroupView> {
                               listener: (context, state) {
                                 if(state is LeaveGroupDone) {
                                   snackBarWidget(
-                                    message: 'Vous avez quitté le groupe',
+                                    message: AppLocalizations.of(context)!.youHaveLeftTheGroup,
                                     context: context,
                                   );
 
@@ -113,7 +114,7 @@ class _GroupViewState extends State<GroupView> {
 
                                 if(state is LeaveGroupError) {
                                   snackBarWidget(
-                                    message: 'Erreur',
+                                    message: AppLocalizations.of(context)!.error,
                                     context: context,
                                     type: 'error',
                                   );
@@ -128,12 +129,12 @@ class _GroupViewState extends State<GroupView> {
                               child: ((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
                                 && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
                                 || state.group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) ? ListItemsWidget(
-                                title: 'Membres',
+                                title: AppLocalizations.of(context)!.members,
                                 children: [
                                   if((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
                                     && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
                                     || state.group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
-                                    title: 'Gérer les membres',
+                                    title: AppLocalizations.of(context)!.manageMembers,
                                     leadingIcon: const Icon(
                                         Icons.person_add_rounded,
                                         color: textColor
@@ -149,7 +150,7 @@ class _GroupViewState extends State<GroupView> {
                                   ),
                                   if(state.group!.createdBy?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id
                                     && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty) TileItemWidget(
-                                    title: 'Quitter le groupe',
+                                    title: AppLocalizations.of(context)!.leaveGroup,
                                     titleColor: errorColor,
                                     leadingIcon: const Icon(
                                         Icons.logout_rounded,
@@ -166,7 +167,7 @@ class _GroupViewState extends State<GroupView> {
                               ) : Padding(
                                 padding: const EdgeInsets.only(top:28),
                                 child: Text(
-                                  'Membres',
+                                  AppLocalizations.of(context)!.members,
                                   style: textTheme.titleMedium
                                 ),
                               ),

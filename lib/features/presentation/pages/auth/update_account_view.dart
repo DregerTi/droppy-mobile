@@ -87,7 +87,7 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                           }
                           if(state is PatchUserDone) {
                             snackBarWidget(
-                              message: 'User mis à jour',
+                              message: AppLocalizations.of(context)!.accountUpdated,
                               context: context,
                             );
                             BlocProvider.of<UsersBloc>(context).add(GetMe({
@@ -216,7 +216,7 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    isPrivate ? 'Compte privé' : 'Compte publique',
+                                    isPrivate ? AppLocalizations.of(context)!.privateAccount : AppLocalizations.of(context)!.publicAccount,
                                     style: textTheme.labelMedium?.copyWith(
                                       color: isPrivate ? onSurfaceColor : textColor,
                                     ),
@@ -235,8 +235,8 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                               controller: descriptionController,
                               maxLines: 8,
                               validator: descriptionError,
-                              decoration: const InputDecoration(
-                                hintText: 'Description...',
+                              decoration: InputDecoration(
+                                hintText: '${AppLocalizations.of(context)!.description}...',
                                 helperText: '',
                               ),
                             ),

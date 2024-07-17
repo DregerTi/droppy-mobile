@@ -16,7 +16,6 @@ import '../../bloc/group/goup_bloc.dart';
 import '../../bloc/group/group_event.dart';
 import '../../bloc/group/group_state.dart';
 import '../../bloc/group_member/group_member_event.dart';
-import '../../bloc/user/user_bloc.dart';
 import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/atoms/warning_card.dart';
@@ -109,7 +108,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
                         listener: (context, state) {
                           if(state is LeaveGroupDone) {
                             snackBarWidget(
-                              message: 'Membre supprimé avec succès',
+                              message: AppLocalizations.of(context)!.memberRemovedSuccessfully,
                               context: context,
                             );
 
@@ -120,7 +119,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
 
                           if(state is PostGroupMemberDone) {
                             snackBarWidget(
-                              message: 'Membre ajouté avec succès',
+                              message: AppLocalizations.of(context)!.memberAddedSuccessfully,
                               context: context,
                             );
 
@@ -131,7 +130,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
 
                           if(state is LeaveGroupError) {
                             snackBarWidget(
-                              message: 'Erreur lors de la suppression du membre',
+                              message: AppLocalizations.of(context)!.errorRemovingMember,
                               context: context,
                               type: 'error',
                             );
@@ -139,7 +138,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
 
                           if(state is PostGroupMemberError) {
                             snackBarWidget(
-                              message: 'Erreur lors de l\'ajout du membre',
+                              message: AppLocalizations.of(context)!.errorAddingMember,
                               context: context,
                               type: 'error',
                             );
@@ -241,7 +240,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
                             setState(() {
                               if (selectedUsers.where((element) => element.member?.id == user?.id).isNotEmpty) {
                                 snackBarWidget(
-                                  message: 'Membre déjà ajouté',
+                                  message: AppLocalizations.of(context)!.memberAlreadyAdded,
                                   type: 'error',
                                   context: context
                                 );
@@ -264,7 +263,7 @@ class _GroupMembersViewState extends State<GroupMembersView> {
         }
 
         return SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight,
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

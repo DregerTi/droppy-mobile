@@ -12,6 +12,7 @@ import '../bloc/user/user_bloc.dart';
 import '../bloc/user/user_event.dart';
 import '../bloc/user/user_state.dart';
 import '../widgets/atoms/item_header.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountView extends StatefulWidget {
   final String? userId;
@@ -131,7 +132,7 @@ class _AccountViewState extends State<AccountView> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'DROP DU JOUR',
+                                            AppLocalizations.of(context)!.dropOfTheDay,
                                             style: textTheme.titleMedium,
                                           ),
                                           const SizedBox(height: 8),
@@ -182,7 +183,7 @@ class _AccountViewState extends State<AccountView> {
                             if (user?.pinnedDrops?.length != 0) Padding(
                               padding: const EdgeInsets.only(left: 24, right: 24, top: 36, bottom: 8),
                               child: Text(
-                                'Pins',
+                                AppLocalizations.of(context)!.pins,
                                 style: textTheme.titleMedium
                               )
                             ),
@@ -262,11 +263,11 @@ class _AccountViewState extends State<AccountView> {
                               ),
                             )
                           ],
-                        ) : const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 80),
+                        ) : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
                           child: Center(
                             child: WarningCard(
-                              message: 'Ce compte est privé',
+                              message: AppLocalizations.of(context)!.thisAccountIsPrivate,
                               icon: 'lock',
                             ),
                           ),

@@ -17,6 +17,8 @@ import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/molecules/content_sheet.dart';
 import '../../widgets/molecules/media_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class AddDropView extends StatefulWidget {
 
@@ -153,7 +155,7 @@ class _AddDropViewState extends State<AddDropView> {
                                                   ),
                                                   const SizedBox(width: 4),
                                                   Text(
-                                                    (address['city'] != null) ? '${address['city'] ?? ''}, ${address['country'] ?? ''}' : 'Localisation',
+                                                    (address['city'] != null) ? '${address['city'] ?? ''}, ${address['country'] ?? ''}' : AppLocalizations.of(context)!.location,
                                                     style: textTheme.labelSmall?.copyWith(color: onPrimaryColor),
                                                   ),
                                                 ],
@@ -190,7 +192,7 @@ class _AddDropViewState extends State<AddDropView> {
                                                   ),
                                                   const SizedBox(width: 4),
                                                   Text(
-                                                    'Description',
+                                                    AppLocalizations.of(context)!.description,
                                                     style: textTheme.labelSmall?.copyWith(color: onPrimaryColor),
                                                   ),
                                                 ],
@@ -256,13 +258,13 @@ class _AddDropViewState extends State<AddDropView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  content?.title ?? 'Contenu',
+                                                  content?.title ?? AppLocalizations.of(context)!.content,
                                                   style: textTheme.titleMedium,
                                                   maxLines : 2,
                                                   overflow : TextOverflow.ellipsis,
                                                 ),
                                                 Text(
-                                                  content?.subtitle ?? 'Description du contenu',
+                                                  content?.subtitle ?? '',
                                                   style: textTheme.bodySmall,
                                                   maxLines : 2,
                                                   overflow : TextOverflow.ellipsis,
@@ -314,7 +316,7 @@ class _AddDropViewState extends State<AddDropView> {
                       });
 
                       snackBarWidget(
-                        message: 'Description entre 5 et 120 caractères ou vide',
+                        message: AppLocalizations.of(context)!.descriptionBetween5And120CharactersOrEmpty,
                         context: context,
                         type: 'error',
                       );
@@ -326,7 +328,7 @@ class _AddDropViewState extends State<AddDropView> {
 
                     if(content == null) {
                       snackBarWidget(
-                        message: 'Veuillez sélectionner un contenu',
+                        message: AppLocalizations.of(context)!.pleaseSelectContent,
                         context: context,
                         type: 'error',
                       );
@@ -338,7 +340,7 @@ class _AddDropViewState extends State<AddDropView> {
 
                     if(selectedMedias.isEmpty){
                       snackBarWidget(
-                        message: 'Veuillez sélectionner une image',
+                        message: AppLocalizations.of(context)!.pleaseSelectAnImage,
                         context: context,
                         type: 'error',
                       );
@@ -458,7 +460,7 @@ class _AddDropViewState extends State<AddDropView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-                'Description',
+                AppLocalizations.of(context)!.description,
                 style: textTheme.labelMedium
             ),
             const SizedBox(height: 20),
@@ -470,7 +472,7 @@ class _AddDropViewState extends State<AddDropView> {
                 initialValue: description,
                 maxLines: 8,
                 decoration: InputDecoration(
-                  hintText: 'Description',
+                  hintText: '${AppLocalizations.of(context)!.description}...',
                   hintStyle: textTheme.bodySmall,
                   errorStyle: textTheme.bodySmall?.copyWith(color: errorColor),
                 ),

@@ -14,6 +14,7 @@ import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/group/group_event.dart';
 import '../../bloc/group_member/group_member_state.dart';
 import 'cached_image_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupHeader extends StatelessWidget {
   final GroupEntity? group;
@@ -139,7 +140,7 @@ class GroupHeader extends StatelessWidget {
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
                       ),
                       child: Text(
-                        'Feed',
+                        AppLocalizations.of(context)!.feed,
                         style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                       ),
                   ) : ElevatedButton(
@@ -149,7 +150,7 @@ class GroupHeader extends StatelessWidget {
                       })),
                     },
                     child: Text(
-                      'Join',
+                      AppLocalizations.of(context)!.join,
                       style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                     ),
                   ),
@@ -161,7 +162,7 @@ class GroupHeader extends StatelessWidget {
             listener: (context, state) {
               if(state is PostGroupJoinDone) {
                 snackBarWidget(
-                  message: 'Vous avez rejoint le groupe',
+                  message: AppLocalizations.of(context)!.youHaveJoinedTheGroup,
                   context: context,
                 );
 
@@ -172,7 +173,7 @@ class GroupHeader extends StatelessWidget {
 
               if(state is PostGroupJoinError) {
                 snackBarWidget(
-                  message: 'Erreur',
+                  message: AppLocalizations.of(context)!.error,
                   context: context,
                   type: 'error',
                 );
@@ -215,7 +216,7 @@ class GroupHeader extends StatelessWidget {
                           style: textTheme.headlineMedium?.copyWith(color: onBackgroundColor),
                         ),
                         Text(
-                          'Membres',
+                          AppLocalizations.of(context)!.members,
                           style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                         ),
                       ],

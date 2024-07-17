@@ -6,6 +6,7 @@ import '../../bloc/group/feed/goup_feed_bloc.dart';
 import '../../bloc/group/feed/group_feed_event.dart';
 import '../../bloc/group/feed/group_feed_state.dart';
 import '../../widgets/organisms/drop_feed.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupFeed extends StatelessWidget {
   final int groupId;
@@ -44,8 +45,8 @@ class GroupFeed extends StatelessWidget {
           }
 
           if(state is GroupFeedError) {
-            return const WarningCard(
-              message: 'Aucun drop',
+            return WarningCard(
+              message: AppLocalizations.of(context)!.noDrops,
               icon: 'empty'
             );
           }

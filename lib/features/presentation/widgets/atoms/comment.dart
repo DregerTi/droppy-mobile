@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
 import 'cached_image_widget.dart';
 import 'comment_response.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Comment extends StatelessWidget {
   final String? avatar;
@@ -125,7 +126,7 @@ class Comment extends StatelessWidget {
                                 }
                               },
                               child: Text(
-                                'Reply',
+                                AppLocalizations.of(context)!.reply,
                                 style: textTheme.labelSmall?.copyWith(
                                   fontSize: 11,
                                 ),

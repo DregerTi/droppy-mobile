@@ -14,6 +14,7 @@ import '../../bloc/follow/get/follow_get_state.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_event.dart';
 import '../atoms/cached_image_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchUsers extends StatefulWidget {
   final Function? onTap;
@@ -73,9 +74,9 @@ class _SearchUsersState extends State<SearchUsers> {
                         });
                       }
                     },
-                    decoration: const InputDecoration(
-                      hintText: 'Recherche',
-                      suffixIcon: Icon(Icons.search, color: onSurfaceColor, size: 20),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.search,
+                      suffixIcon: const Icon(Icons.search, color: onSurfaceColor, size: 20),
                     )
                   ),
                 )
@@ -170,16 +171,16 @@ class _SearchUsersState extends State<SearchUsers> {
                   );
                 }
                 if(state is UsersSearchError) {
-                  return const WarningCard(
+                  return WarningCard(
                     icon: 'error',
-                    message: 'Une erreur est survenue',
+                    message: AppLocalizations.of(context)!.anErrorOccurred,
                   );
                 }
                 if(state is UsersSearchDone) {
                   if (state.users?.isEmpty ?? true) {
-                    return const WarningCard(
+                    return WarningCard(
                       icon: 'empty',
-                      message: 'Aucun résultat',
+                      message: AppLocalizations.of(context)!.noResults,
                     );
                   } else {
                     return SingleChildScrollView(

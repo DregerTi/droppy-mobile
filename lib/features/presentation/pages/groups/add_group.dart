@@ -45,7 +45,7 @@ class _AddGroupViewState extends State<AddGroupView> {
 
   String? titleValidation(String? value) {
     if (value!.length < 2 || value.length > 22) {
-      return 'Entre 2 et 22 caractères';
+      return AppLocalizations.of(context)!.between2And22Characters;
     }
     return null;
   }
@@ -79,7 +79,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                     Visibility(
                       visible: activeElement == 'main',
                       child: AppBarWidget(
-                        title: 'Créer un groupe',
+                        title: AppLocalizations.of(context)!.createGroup,
                         leadingIcon: const Icon(Icons.arrow_back),
                         leadingOnPressed: () {
                           context.pop();
@@ -98,7 +98,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                                 'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
                               }));
                               snackBarWidget(
-                                message: 'Group créé avec succès!',
+                                message: AppLocalizations.of(context)!.groupCreatedSuccessfully,
                                 context: context,
                               );
                               context.pop(true);
@@ -180,8 +180,8 @@ class _AddGroupViewState extends State<AddGroupView> {
                                       controller: titleController,
                                       validator: titleValidation,
                                       textInputAction: TextInputAction.search,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Nom',
+                                      decoration: InputDecoration(
+                                        hintText: AppLocalizations.of(context)!.name,
                                         helperText: '',
                                       )
                                   ),
@@ -214,7 +214,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      isPublic ? 'Groupe publique' : 'Groupe privé',
+                                      isPublic ? AppLocalizations.of(context)!.publicGroup : AppLocalizations.of(context)!.privateGroup,
                                       style: textTheme.labelMedium?.copyWith(
                                         color: isPublic ? onSurfaceColor : textColor,
                                       ),

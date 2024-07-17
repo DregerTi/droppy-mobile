@@ -67,10 +67,6 @@
     "@title": {
         "description": "Label for the title input field."
     },
-    "description": "Description",
-    "@description": {
-        "description": "Label for the description input field."
-    },
     "address": "Address",
     "@address": {
         "description": "Label for the address input field."
@@ -82,10 +78,6 @@
     "setDescriptionPlaceholder": "Add a description...",
     "@setDescriptionPlaceholder": {
         "description": "Placeholder text for description input field."
-    },
-    "settings": "Settings",
-    "@settings": {
-        "description": "Label for the settings section."
     },
     "share": "Share",
     "@share": {
@@ -266,5 +258,325 @@
     "issueReportedSuccessfully": "The issue has been reported successfully. Thank you!",
     "@issueReportedSuccessfully": {
         "description": "Confirmation message that the issue has been successfully reported."
+    },
+    "map": "Map",
+    "@map": {
+        "description": "Map"
+    },
+    "friends": "Friends",
+    "@friends": {
+        "description": "Amis"
+    },
+    "feed": "Feed",
+    "@feed": {
+        "description": "Feed"
+    },
+    "comment": "Comment",
+    "@comment": {
+        "description": "Commentaire"
+    },
+    "writeComment": "Write a comment",
+    "@writeComment": {
+        "description": "Écrire un commentaire"
+    },
+    "reply": "Reply",
+    "@reply": {
+        "description": "Répondre"
+    },
+    "writeReply": "Write a reply to the comment",
+    "@writeReply": {
+        "description": "Écrire une réponse au commentaire"
+    },
+    "groups": "Groups",
+    "@groups": {
+        "description": "Groupes"
+    },
+    "joinGroup": "Join a group",
+    "@joinGroup": {
+        "description": "Rejoindre un groupe"
+    },
+    "createGroup": "Create a group",
+    "@createGroup": {
+        "description": "Créer un groupe"
+    },
+    "publicGroup": "Public group",
+    "@publicGroup": {
+        "description": "Groupe publique"
+    },
+    "privateGroup": "Private group",
+    "@privateGroup": {
+        "description": "Groupe privée"
+    },
+    "search": "Search",
+    "@search": {
+        "description": "Recherche"
+    },
+    "name": "Name",
+    "@name": {
+        "description": "Nom"
+    },
+    "members": "Members",
+    "@members": {
+        "description": "Membres"
+    },
+    "manageMembers": "Manage members",
+    "@manageMembers": {
+        "description": "Gérer les membres"
+    },
+    "manager": "Manager",
+    "@manager": {
+        "description": "Manager"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Réglages"
+    },
+    "description": "Description",
+    "@description": {
+        "description": "Description"
+    },
+    "notifications": "Notifications",
+    "@notifications": {
+        "description": "Notifications"
+    },
+    "noResults": "No results",
+    "@noResults": {
+        "description": "Aucun résultat"
+    },
+    "dropOfTheDay": "DROP DU JOUR",
+    "@dropOfTheDay": {
+        "description": "DROP DU JOUR"
+    },
+    "pins": "Pins",
+    "@pins": {
+        "description": "Pins"
+    },
+    "username": "Pseudo",
+    "@username": {
+        "description": "Pseudo"
+    },
+    "publicAccount": "Public account",
+    "@publicAccount": {
+        "description": "Compte publique"
+    },
+    "privateAccount": "Private account",
+    "@privateAccount": {
+        "description": "Compte privé"
+    },
+    "join": "Join",
+    "@join": {
+        "description": "Rejoindre"
+    },
+    "leaveGroup": "Leave the group",
+    "@leaveGroup": {
+        "description": "Quitter le groupe"
+    },
+    "pendingRequest": "Pending request",
+    "@pendingRequest": {
+        "description": "Demande en attente"
+    },
+    "postToSee": "Post to see",
+    "@postToSee": {
+        "description": "Poste pour voir"
+    },
+    "toSeeOthersContentPostYourDrop": "To see the content of others, post your Drop",
+    "@toSeeOthersContentPostYourDrop": {
+        "description": "Pour voir le contenu des autres, poste ton Drop"
+    },
+    "postADrop": "Post a Drop",
+    "@postADrop": {
+        "description": "Poster un Drop"
+    },
+    "addAPhoto": "Add a photo",
+    "@addAPhoto": {
+        "description": "Ajouter une photo"
+    },
+    "location": "Location",
+    "@location": {
+        "description": "Localisation"
+    },
+    "content": "Content",
+    "@content": {
+        "description": "Contenu"
+    },
+    "searchContent": "Search for content",
+    "@searchContent": {
+        "description": "Chercher un contenu"
+    },
+    "whereAreYou": "Where are you?",
+    "@whereAreYou": {
+        "description": "Tu es où ?"
+    },
+    "confirmAddress": "Confirm address",
+    "@confirmAddress": {
+        "description": "Confirmer l’adresse"
+    },
+    "useCurrentLocation": "Use current location",
+    "@useCurrentLocation": {
+        "description": "Utiliser ma position actuelle"
+    },
+    "sendTo": "Send to...",
+    "@sendTo": {
+        "description": "Envoyer à…"
+    },
+    "myGroups": "My groups",
+    "@myGroups": {
+        "description": "Mes groupes"
+    },
+    "accountUpdated": "Account updated",
+    "@accountUpdated": {
+        "description": "Compte mis à jour"
+    },
+    "thanksForYourReport": "Thanks for your report!",
+    "@thanksForYourReport": {
+        "description": "Merci pour ton signalement!"
+    },
+    "descriptionBetween5And120CharactersOrEmpty": "Description between 5 and 120 characters or empty",
+    "@descriptionBetween5And120CharactersOrEmpty": {
+        "description": "Description entre 5 et 120 caractères ou vide"
+    },
+    "pleaseSelectContent": "Please select content",
+    "@pleaseSelectContent": {
+        "description": "Veuillez sélectionner un contenu"
+    },
+    "pleaseSelectAnImage": "Please select an image",
+    "@pleaseSelectAnImage": {
+        "description": "Veuillez sélectionner une image"
+    },
+    "dropCreatedSuccessfully": "Drop created successfully!",
+    "@dropCreatedSuccessfully": {
+        "description": "Drop créé avec succès!"
+    },
+    "errorCreatingDrop": "Error creating drop",
+    "@errorCreatingDrop": {
+        "description": "Erreur lors de la création du drop"
+    },
+    "groupCreatedSuccessfully": "Group created successfully!",
+    "@groupCreatedSuccessfully": {
+        "description": "Groupe créé avec succès!"
+    },
+    "memberRemovedSuccessfully": "Member removed successfully",
+    "@memberRemovedSuccessfully": {
+        "description": "Membre supprimé avec succès"
+    },
+    "memberAddedSuccessfully": "Member added successfully",
+    "@memberAddedSuccessfully": {
+        "description": "Membre ajouté avec succès"
+    },
+    "errorRemovingMember": "Error removing member",
+    "@errorRemovingMember": {
+        "description": "Erreur lors de la suppression du membre"
+    },
+    "errorAddingMember": "Error adding member",
+    "@errorAddingMember": {
+        "description": "Erreur lors de l'ajout du membre"
+    },
+    "memberAlreadyAdded": "Member already added",
+    "@memberAlreadyAdded": {
+        "description": "Membre déjà ajouté"
+    },
+    "groupUpdated": "Group updated",
+    "@groupUpdated": {
+        "description": "Groupe mis à jour"
+    },
+    "youHaveLeftTheGroup": "You have left the group",
+    "@youHaveLeftTheGroup": {
+        "description": "Vous avez quitté le groupe"
+    },
+    "error": "Error",
+    "@error": {
+        "description": "Erreur"
+    },
+    "followRequestAccepted": "Follow request accepted",
+    "@followRequestAccepted": {
+        "description": "Demande de suivi acceptée"
+    },
+    "errorAcceptingFollowRequest": "Error accepting follow request",
+    "@errorAcceptingFollowRequest": {
+        "description": "Erreur lors de l'acceptation de la demande de suivi"
+    },
+    "followRequestDeclined": "Follow request declined",
+    "@followRequestDeclined": {
+        "description": "Demande de suivi refusée"
+    },
+    "errorDecliningFollowRequest": "Error declining follow request",
+    "@errorDecliningFollowRequest": {
+        "description": "Erreur lors du refus de la demande de suivi"
+    },
+    "youHaveJoinedTheGroup": "You have joined the group",
+    "@youHaveJoinedTheGroup": {
+        "description": "Vous avez rejoint le groupe"
+    },
+    "followSuccessful": "Follow successful",
+    "@followSuccessful": {
+        "description": "Follow effectué avec succès"
+    },
+    "unfollowSuccessful": "Unfollow successful",
+    "@unfollowSuccessful": {
+        "description": "Unfollow effectué avec succès"
+    },
+    "errorPerformingAction": "Error performing action",
+    "@errorPerformingAction": {
+        "description": "Erreur lors de l'action"
+    },
+    "signupSuccessful": "Sign up successful!",
+    "@signupSuccessful": {
+        "description": "Inscription réussie !"
+    },
+    "errorSigningUp": "Error signing up",
+    "@errorSigningUp": {
+        "description": "Erreur lors de l'inscription"
+    },
+    "commentSent": "Comment sent",
+    "@commentSent": {
+        "description": "Commentaire envoyé"
+    },
+    "errorSendingComment": "Error sending comment",
+    "@errorSendingComment": {
+        "description": "Erreur lors de l'envoi du commentaire"
+    },
+    "thisAccountIsPrivate": "This account is private",
+    "@thisAccountIsPrivate": {
+        "description": "Ce compte est privé"
+    },
+    "noDrops": "No drops",
+    "@noDrops": {
+        "description": "Aucun drop"
+    },
+    "anErrorOccurred": "An error occurred",
+    "@anErrorOccurred": {
+        "description": "Une erreur est survenue"
+    },
+    "youAreNotPartOfAnyGroup": "You are not part of any group",
+    "@youAreNotPartOfAnyGroup": {
+        "description": "Tu ne fais parti d'aucun groupe"
+    },
+    "between2And22Characters": "Between 2 and 22 characters",
+    "@between2And22Characters": {
+        "description": "Entre 2 et 22 caractères"
+    },
+    "between2And30CharactersOrEmpty": "Between 2 and 30 characters or empty",
+    "@between2And30CharactersOrEmpty": {
+        "description": "Entre 2 et 30 caractères ou vide"
+    },
+    "incorrectUsernameOrPassword": "Incorrect username or password",
+    "@incorrectUsernameOrPassword": {
+        "description": "Identifiant ou mot de passe incorrect"
+    },
+    "passwordMustBeAtLeast8Characters": "Password must be at least 8 characters",
+    "@passwordMustBeAtLeast8Characters": {
+        "description": "Le mot de passe doit contenir au moins 8 caractères"
+    },
+    "decline": "Decline",
+    "@decline": {
+        "description": "Refuser"
+    },
+    "accept": "Accept",
+    "@accept": {
+        "description": "Accepter"
+    },
+    "followRequestSentYou": "sent you a follow request",
+    "@followRequestSentYou": {
+        "description": "vous a envoyé une demande de suivi"
     }
 }

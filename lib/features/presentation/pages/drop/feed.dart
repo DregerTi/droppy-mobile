@@ -8,6 +8,7 @@ import '../../bloc/feed/feed_state.dart';
 import '../../bloc/follow/pending/pending_follow_bloc.dart';
 import '../../bloc/follow/pending/pending_follow_event.dart';
 import '../../bloc/follow/pending/pending_follow_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Feed extends StatelessWidget {
 
@@ -45,9 +46,9 @@ class Feed extends StatelessWidget {
         }
 
         if(state is WebSocketDisconnected) {
-          return const Center(
+          return Center(
             child: WarningCard(
-              message: 'Aucun drop',
+              message: AppLocalizations.of(context)!.noDrops,
               icon: 'empty'
             ),
           );

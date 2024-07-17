@@ -15,6 +15,7 @@ import '../../bloc/place_search/place_search_state.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/organisms/map_widget.dart';
 import '../../widgets/organisms/search_results.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddressPicker extends StatefulWidget {
 
@@ -319,8 +320,8 @@ class _AddressPickerState extends State<AddressPicker> {
                         });
                       }
                     },
-                    decoration: const InputDecoration(
-                      hintText: 'Tu es où ?',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.whereAreYou,
                       suffixIcon: Icon(Icons.search, color: onSurfaceColor, size: 20),
                     )
                   ),
@@ -345,7 +346,7 @@ class _AddressPickerState extends State<AddressPicker> {
                       }
                     ),
                   },
-                  child: const Text('Confirmer l\'adresse')
+                  child: Text(AppLocalizations.of(context)!.confirmAddress)
                 )
               ),
             ],
