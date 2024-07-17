@@ -115,25 +115,28 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width - 300,
+                        width: MediaQuery.of(context).size.width - 230,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (widget.group != null) {
-                                  context.pushNamed(
-                                    'group',
-                                    pathParameters: {
-                                      'groupId': widget.group!.id.toString()
-                                    }
-                                  );
-                                }
-                              },
-                              child: Text(
-                                (widget.group?.name ?? (widget.username ?? 'Amis')),
-                                style: Theme.of(context).textTheme.headlineMedium,
-                                overflow: TextOverflow.ellipsis,
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (widget.group != null) {
+                                    context.pushNamed(
+                                      'group',
+                                      pathParameters: {
+                                        'groupId': widget.group!.id.toString()
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  (widget.group?.name ?? (widget.username ?? 'Amis')),
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ],
