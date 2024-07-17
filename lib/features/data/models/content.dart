@@ -7,20 +7,23 @@ class ContentModel extends ContentEntity {
     String ? picturePath,
     String ? search,
     String ? path,
+    String ? content,
   }) : super(
     title: title,
     subtitle: subtitle,
     picturePath: picturePath,
     search: search,
+    content: content,
   );
   
   factory ContentModel.fromJson(Map<String, dynamic >map) {
     return ContentModel(
-      title: map['title'],
-      subtitle: map['subtitle'],
-      picturePath: map['picturePath'],
-      search: map['search'],
-      path: map['path'],
+      title: map['Title'],
+      subtitle: map['Subtitle'],
+      picturePath: map['PicturePath'],
+      search: map['Search'],
+      path: map['Path'],
+      content: map['Content'],
     );
   }
 
@@ -31,6 +34,7 @@ class ContentModel extends ContentEntity {
       picturePath: entity.picturePath,
       search: entity.search,
       path: entity.path,
+      content: entity.content,
     );
   }
 }

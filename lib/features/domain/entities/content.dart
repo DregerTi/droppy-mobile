@@ -6,13 +6,15 @@ class ContentEntity extends Equatable {
   final String ? picturePath;
   final String ? search;
   final String ? path;
+  final String ? content;
 
   const ContentEntity({
     this.title,
     this.subtitle,
     this.picturePath,
     this.search,
-    this.path
+    this.path,
+    this.content,
   });
 
   @override
@@ -22,7 +24,8 @@ class ContentEntity extends Equatable {
       subtitle,
       picturePath,
       search,
-      path
+      path,
+      content,
     ];
   }
 }
