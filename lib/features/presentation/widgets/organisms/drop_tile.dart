@@ -35,14 +35,14 @@ class DropTileWidget extends StatelessWidget {
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
       child: Stack(
         children: [
           CachedImageWidget(
             borderRadius: BorderRadius.circular(46),
             imageUrl: drop!.picturePath ?? "https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg",
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
           ),
           Positioned(
             bottom: 0,
@@ -288,7 +288,7 @@ class DropTileWidget extends StatelessWidget {
                 && (hasDroppedState.hasDropped != null
                 && hasDroppedState.hasDropped! == false)) {
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                  height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(46),

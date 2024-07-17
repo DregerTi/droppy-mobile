@@ -5,6 +5,7 @@ import 'package:droppy/features/presentation/widgets/atoms/warning_card.dart';
 import 'package:droppy/features/presentation/widgets/molecules/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../config/theme/widgets/text.dart';
 import 'drop_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -50,29 +51,42 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
           child: Stack(
             children: [
-              if (feed.isNotEmpty) Expanded(
-                child: ListWheelScrollView(
-                  controller: fixedExtentScrollController,
-                  physics: const FixedExtentScrollPhysics(),
-                  overAndUnderCenterOpacity: 0,
-                  itemExtent: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
-                  children: feed.map((drop) {
-                    return DropTileWidget(
-                      drop: drop,
-                      onDropPressed: (drop) {
-                        context.pushNamed('drop', pathParameters: {'dropId': drop.id.toString()});
-                      },
-                    );
-                  }).toList()
-                ),
+              if (feed.isNotEmpty) ListWheelScrollView(
+                controller: fixedExtentScrollController,
+                physics: const FixedExtentScrollPhysics(),
+                overAndUnderCenterOpacity: 0,
+                itemExtent: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                children: feed.map((drop) {
+                  return DropTileWidget(
+                    drop: drop,
+                    onDropPressed: (drop) {
+                      context.pushNamed('drop', pathParameters: {'dropId': drop.id.toString()});
+                    },
+                  );
+                }).toList()
               ),
               if (feed.isEmpty) Center(
-                child: WarningCard(
-                  message: AppLocalizations.of(context)!.noDrops,
-                  icon: 'empty'
+                child: Column(
+                  children: [
+                    WarningCard(
+                      message: AppLocalizations.of(context)!.noDrops,
+                      icon: 'empty'
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.pushNamed('add-drop');
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.postADrop,
+                        style: textTheme.labelMedium?.copyWith(
+                          color: backgroundColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(

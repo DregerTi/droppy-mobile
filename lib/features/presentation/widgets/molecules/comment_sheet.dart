@@ -57,38 +57,36 @@ class _CommentSheetState extends State<CommentSheet> {
                       style: textTheme.labelMedium
                     ),
                     const SizedBox(height: 20),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        physics: const ClampingScrollPhysics(),
-                        child: Column(
-                          children: List.generate(widget.comments!.length, (index) {
-                            print(widget.comments![index]);
-                            print('jkjjjjkjkkj');
-                            return Comment(
-                              onTap: () {
-                                context.pushNamed(
-                                  'user-profile',
-                                  pathParameters: {
-                                    'userId': widget.comments![index].user!.id.toString()
-                                  }
-                                );
-                              },
-                              setIsCommentResponse: (value, commentId) {
-                                setState(() {
-                                  responseCommentCommentId = commentId;
-                                  isCommentResponse = value;
-                                });
-                              },
-                              avatar: widget.comments![index].user!.avatar,
-                              message: widget.comments![index].content,
-                              username: widget.comments![index].user!.username,
-                              commentId: widget.comments![index].id,
-                              commentResponses: widget.comments![index].commentResponses,
-                              dropId: widget.dropId,
-                            );
-                          }),
-                        ),
-                      )
+                    SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        children: List.generate(widget.comments!.length, (index) {
+                          print(widget.comments![index]);
+                          print('jkjjjjkjkkj');
+                          return Comment(
+                            onTap: () {
+                              context.pushNamed(
+                                'user-profile',
+                                pathParameters: {
+                                  'userId': widget.comments![index].user!.id.toString()
+                                }
+                              );
+                            },
+                            setIsCommentResponse: (value, commentId) {
+                              setState(() {
+                                responseCommentCommentId = commentId;
+                                isCommentResponse = value;
+                              });
+                            },
+                            avatar: widget.comments![index].user!.avatar,
+                            message: widget.comments![index].content,
+                            username: widget.comments![index].user!.username,
+                            commentId: widget.comments![index].id,
+                            commentResponses: widget.comments![index].commentResponses,
+                            dropId: widget.dropId,
+                          );
+                        }),
+                      ),
                     )
                   ],
                 ),

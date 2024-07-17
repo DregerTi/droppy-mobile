@@ -33,25 +33,23 @@ void snackBarWidget({
       ),
       margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
       backgroundColor: backgroundColor,
-      content: Expanded(
-        child: Row(
-          children: [
-            if (isIcon != null)
-              Icon(
-                icon,
+      content: Row(
+        children: [
+          if (isIcon != null)
+            Icon(
+              icon,
+              color: Colors.white,
+            ),
+          if (isIcon != null) const SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              message,
+              style: textTheme.bodyMedium?.copyWith(
                 color: Colors.white,
               ),
-            if (isIcon != null) const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                message,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );

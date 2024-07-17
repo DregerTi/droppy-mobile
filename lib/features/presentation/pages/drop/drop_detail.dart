@@ -55,7 +55,7 @@ class DropDetailsView extends HookWidget {
               );
             }
             return SizedBox(
-              height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+              height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

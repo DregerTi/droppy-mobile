@@ -2,6 +2,9 @@ import 'package:droppy/features/presentation/widgets/atoms/warning_card.dart';
 import 'package:droppy/features/presentation/widgets/organisms/drop_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../config/theme/color.dart';
+import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/feed/feed_bloc.dart';
 import '../../bloc/feed/feed_event.dart';
 import '../../bloc/feed/feed_state.dart';
@@ -31,7 +34,7 @@ class Feed extends StatelessWidget {
       builder: (context, state) {
         if (state is WebSocketInitial) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 30,
+            height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -47,9 +50,24 @@ class Feed extends StatelessWidget {
 
         if(state is WebSocketDisconnected) {
           return Center(
-            child: WarningCard(
-              message: AppLocalizations.of(context)!.noDrops,
-              icon: 'empty'
+            child: Column(
+              children: [
+                WarningCard(
+                  message: AppLocalizations.of(context)!.noDrops,
+                  icon: 'empty'
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.pushNamed('add-drop');
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.postADrop,
+                    style: textTheme.labelMedium?.copyWith(
+                      color: backgroundColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }

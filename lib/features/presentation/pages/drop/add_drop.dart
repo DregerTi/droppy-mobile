@@ -71,11 +71,11 @@ class _AddDropViewState extends State<AddDropView> {
       ],
       child: SafeArea(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
           child: Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
                 decoration: BoxDecoration(
                   color: (activeElement == 'main') ? onBackgroundColor : backgroundColor,
                   borderRadius: BorderRadius.circular(46),
@@ -83,7 +83,7 @@ class _AddDropViewState extends State<AddDropView> {
                 child: Stack(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
                       width: MediaQuery.of(context).size.width,
                       child: MediaPickerWidget(
                         isPostDrop: true,
