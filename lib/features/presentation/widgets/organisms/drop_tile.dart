@@ -2,11 +2,13 @@ import 'dart:ui';
 import 'package:droppy/config/theme/color.dart';
 import 'package:droppy/features/domain/entities/drop.dart';
 import 'package:droppy/features/presentation/bloc/auth/auth_bloc.dart';
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:droppy/features/presentation/widgets/molecules/comment_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/has_dropped/has_dropped_bloc.dart';
 import '../../bloc/has_dropped/has_dropped_event.dart';
@@ -64,7 +66,7 @@ class DropTileWidget extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    if(drop!.location != null) Container(
+                                    if(drop!.location != null && drop!.location != "") Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                                       decoration: BoxDecoration(
                                         color: onPrimaryColor,
@@ -87,7 +89,7 @@ class DropTileWidget extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    if(drop?.totalLikes != null && drop?.totalLikes != 0) const SizedBox(width: 8),
+                                    if(drop?.totalLikes != null && drop?.totalLikes != 0 && drop!.location != null && drop!.location != "") const SizedBox(width: 8),
                                     if(drop?.totalLikes != null && drop?.totalLikes != 0) Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                                       decoration: BoxDecoration(
@@ -145,38 +147,53 @@ class DropTileWidget extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            Container(
-                              width: MediaQuery.of(context).size.width - 126,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  CachedImageWidget(
-                                    width: 56,
-                                    height: 56,
-                                    borderRadius: BorderRadius.circular(16),
-                                    imageUrl: drop!.contentPicturePath ?? '',
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          drop!.type ?? '',
-                                          style: textTheme.titleMedium,
-                                          overflow : TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          drop!.contentTitle ?? '',
-                                          style: textTheme.bodySmall,
-                                          maxLines : 2,
-                                          overflow : TextOverflow.ellipsis,
-                                        ),
-                                      ],
+                            GestureDetector(
+                              onTap: () async {
+                                final Uri url;
+                                url = Uri.parse(drop!.content ?? '');
+
+                                if (await canLaunchUrl(url)) {
+                                  await launchUrl(url);
+                                } else {
+                                  snackBarWidget(
+                                    message: 'Could not launch link',
+                                    context: context
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 126,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    CachedImageWidget(
+                                      width: 56,
+                                      height: 56,
+                                      borderRadius: BorderRadius.circular(16),
+                                      imageUrl: drop!.contentPicturePath ?? '',
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 12),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            drop!.type ?? '',
+                                            style: textTheme.titleMedium,
+                                            overflow : TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            drop!.contentTitle ?? '',
+                                            style: textTheme.bodySmall,
+                                            maxLines : 2,
+                                            overflow : TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

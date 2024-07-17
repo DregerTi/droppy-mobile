@@ -78,7 +78,7 @@ class DropModel extends DropEntity {
       contentTitle: map['ContentTitle'] ?? "",
       contentPicturePath: map['ContentPicturePath'] ?? "",
       contentSubTitle: map['ContentSubTitle'] ?? "",
-      location: map['Location'] ?? ""
+      location: map['Location']
     );
   }
 
