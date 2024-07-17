@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../config/theme/widgets/text.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
@@ -57,39 +56,18 @@ class _SignInFormState extends State<SignInForm> {
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => {
-                        context.read<AuthBloc>().add(
-                              Authenticate({
-                                'email': emailController.text,
-                                'password': passwordController.text,
-                              }),
-                            ),
-                      },
-                      child: (state is AuthLoading)
-                          ? Image.asset('lib/assets/images/loading.gif',
-                              width: 30)
-                          : const Text('Connexion'),
-                    )),
-                TextButton(
-                  onPressed: () {
-                    context.pushNamed('forget-password');
-                  },
-                  child: Flexible(
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.forgotPassword,
-                          style: textTheme.bodySmall,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(AppLocalizations.of(context)!.findHelpHere,
-                            style: textTheme.titleSmall),
-                      ],
-                    ),
-                  ),
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => {
+                      context.read<AuthBloc>().add(
+                        Authenticate({
+                          'email': emailController.text,
+                          'password': passwordController.text,
+                        }),
+                      ),
+                    },
+                    child: (state is AuthLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : const Text('Connexion'),
+                  )
                 ),
               ],
             ),

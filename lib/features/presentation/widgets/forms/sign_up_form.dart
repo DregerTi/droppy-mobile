@@ -1,3 +1,4 @@
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -125,7 +126,20 @@ class _SignInFormState extends State<SignUpForm> {
                         width: double.infinity,
                         child: BlocConsumer<UsersBloc, UsersState>(
                           listener: (context, state) {
-
+                            if (state is PostUserDone) {
+                              snackBarWidget(
+                                message: 'Inscription réussie !',
+                                context: context
+                              );
+                              context.goNamed('sign-in');
+                            }
+                            if(state is PostUserError) {
+                              snackBarWidget(
+                                message: 'Erreur lors de l\'inscription',
+                                context: context,
+                                type: 'error'
+                              );
+                            }
                           },
                           builder: (context, state) {
                             return ElevatedButton(
