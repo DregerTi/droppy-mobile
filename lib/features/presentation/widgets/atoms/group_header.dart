@@ -1,12 +1,18 @@
 import 'package:droppy/config/theme/color.dart';
 import 'package:droppy/features/domain/entities/group.dart';
 import 'package:droppy/features/presentation/bloc/auth/auth_bloc.dart';
+import 'package:droppy/features/presentation/bloc/group/goup_bloc.dart';
+import 'package:droppy/features/presentation/bloc/group_member/goup_member_bloc.dart';
+import 'package:droppy/features/presentation/bloc/group_member/group_member_event.dart';
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/button.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../bloc/group/group_event.dart';
+import '../../bloc/group_member/group_member_state.dart';
 import 'cached_image_widget.dart';
 
 class GroupHeader extends StatelessWidget {
@@ -120,7 +126,7 @@ class GroupHeader extends StatelessWidget {
                     style: textTheme.headlineSmall?.copyWith(color: backgroundColor),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
+                  group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty ? ElevatedButton(
                       onPressed: () => {
                         context.pushNamed(
                           'group-feed',
@@ -136,10 +142,45 @@ class GroupHeader extends StatelessWidget {
                         'Feed',
                         style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                       ),
+                  ) : ElevatedButton(
+                    onPressed: () => {
+                      BlocProvider.of<GroupMembersBloc>(context).add(PostGroupJoin({
+                        'id': group?.id,
+                      })),
+                    },
+                    child: Text(
+                      'Join',
+                      style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                    ),
                   ),
                 ],
               )
             ]
+          ),
+          BlocConsumer<GroupMembersBloc, GroupMembersState>(
+            listener: (context, state) {
+              if(state is PostGroupJoinDone) {
+                snackBarWidget(
+                  message: 'Vous avez rejoint le groupe',
+                  context: context,
+                );
+
+                BlocProvider.of<GroupsBloc>(context).add(GetGroup({
+                  'id': group?.id,
+                }));
+              }
+
+              if(state is PostGroupJoinError) {
+                snackBarWidget(
+                  message: 'Erreur',
+                  context: context,
+                  type: 'error',
+                );
+              }
+            },
+            builder: (context, state) {
+              return const SizedBox(height: 0,);
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
