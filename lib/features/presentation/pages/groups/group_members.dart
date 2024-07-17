@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../config/theme/color.dart';
-import '../../../../config/theme/widgets/button.dart';
 import '../../../../injection_container.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/follow/get/follow_get_event.dart';
@@ -49,12 +48,6 @@ class _GroupMembersViewState extends State<GroupMembersView> {
 
     return MultiBlocProvider(
     providers: [
-      BlocProvider<UsersBloc>(
-        create: (context) => sl(),
-      ),
-      BlocProvider<GroupMembersBloc>(
-        create: (context) => sl(),
-      ),
       BlocProvider<GroupsBloc>(
         create: (context) => sl()..add(
           GetGroup({

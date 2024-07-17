@@ -39,15 +39,14 @@ class _GroupsViewState extends State<GroupsView> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<UsersBloc>(context).add(GetMe({
+      'id': BlocProvider.of<AuthBloc>(context).state.auth!.id,
+    }));
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<GroupsBloc>(
           create: (context) => sl(),
-        ),
-        BlocProvider<UsersBloc>(
-          create: (context) => sl()..add(GetMe({
-            'id': BlocProvider.of<AuthBloc>(context).state.auth!.id,
-          }))
         ),
       ],
       child: Scaffold(
