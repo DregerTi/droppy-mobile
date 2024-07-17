@@ -60,12 +60,6 @@ class _AddGroupViewState extends State<AddGroupView> {
 
     return MultiBlocProvider(
     providers: [
-      BlocProvider<UsersBloc>(
-        create: (context) => sl(),
-      ),
-      BlocProvider<GroupsBloc>(
-        create: (context) => sl(),
-      ),
       BlocProvider<FollowGetBloc>(
         create: (context) => sl()..add(GetUserFollowed({
           'id': int.parse(BlocProvider.of<AuthBloc>(context).state.auth!.id.toString())
