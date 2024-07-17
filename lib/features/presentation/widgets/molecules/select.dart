@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../../../config/theme/widgets/button.dart';
 import '../../../../../config/theme/widgets/text.dart';
 import '../../../../config/theme/color.dart';
 import '../../../domain/entities/select_item.dart';
+import '../atoms/cached_image_widget.dart';
 
 class Select extends StatefulWidget {
   final List<SelectItemEntity> selectItems;
   final Function setSelectedItem;
   final SelectItemEntity? selectedItem;
   final bool? isColumn;
+  final bool picture;
 
   const Select({
     Key? key,
@@ -16,6 +19,7 @@ class Select extends StatefulWidget {
     required this.setSelectedItem,
     this.selectedItem,
     this.isColumn = false,
+    this.picture = false,
   }) : super(key: key);
 
   @override
@@ -69,10 +73,21 @@ class _SelectState extends State<Select> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (selectItem.icon != null) Icon(
-                      selectItem.icon,
-                      color: widget.selectedItem?.value == selectItem.value ? backgroundColor : textColor,
-                      size: 30,
+                    if (widget.picture == true) Container(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: (selectItem.picture != null) ? CachedImageWidget(
+                        borderRadius: BorderRadius.circular(12),
+                        imageUrl: selectItem.picture ?? '',
+                        height: 30,
+                        width: 30,
+                      ) : ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: SvgPicture.asset(
+                          'lib/assets/images/avatar.svg',
+                          height: 30,
+                          width: 30,
+                        ),
+                      ),
                     ),
                     if (selectItem.icon != null) const SizedBox(height: 8),
                     Text(
@@ -125,6 +140,22 @@ class _SelectState extends State<Select> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if (widget.picture == true) Container(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: (selectItem.picture != null) ? CachedImageWidget(
+                    borderRadius: BorderRadius.circular(12),
+                    imageUrl: selectItem.picture ?? '',
+                    height: 30,
+                    width: 30,
+                  ) : ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SvgPicture.asset(
+                      'lib/assets/images/avatar.svg',
+                      height: 30,
+                      width: 30,
+                    ),
+                  ),
+                ),
                 if (selectItem.icon != null) Icon(
                   selectItem.icon,
                   color: widget.selectedItem?.value == selectItem.value ? backgroundColor : textColor,

@@ -5,11 +5,13 @@ class SelectItemEntity extends Equatable {
   final IconData? icon;
   final String label;
   final int value;
+  final String? picture;
 
   const SelectItemEntity({
     this.icon,
     required this.label,
     required this.value,
+    this.picture,
   });
 
   @override
@@ -18,6 +20,7 @@ class SelectItemEntity extends Equatable {
       icon,
       label,
       value,
+      picture,
     ];
   }
 }
