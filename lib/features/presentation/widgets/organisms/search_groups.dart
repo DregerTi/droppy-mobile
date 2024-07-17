@@ -171,16 +171,12 @@ class _SearchGroupsState extends State<SearchGroups> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             onTap: () {
-                              if(widget.onTap != null) {
-                                widget.onTap!(state.groups?[index]);
-                              } else {
-                                context.pushNamed(
-                                  'user-profile',
-                                  pathParameters: {
-                                    'userId': state.groups?[index]?.id.toString() ?? '',
-                                  },
-                                );
-                              }
+                              context.pushNamed(
+                                'group',
+                                pathParameters: {
+                                  'groupId': state.groups?[index]?.id.toString() ?? '',
+                                },
+                              );
                             },
                             leading: state.groups?[index]?.picturePath != null ? CachedImageWidget(
                               borderRadius: BorderRadius.circular(16),
