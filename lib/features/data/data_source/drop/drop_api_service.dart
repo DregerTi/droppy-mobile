@@ -23,7 +23,7 @@ abstract class DropApiService {
     @Path("id") required int id,
   });
 
-  @POST("/drops")
+  @POST("/drops/")
   Future<HttpResponse<DropModel>> postDrop(
     @Body() Map<String, dynamic> drop,
   );

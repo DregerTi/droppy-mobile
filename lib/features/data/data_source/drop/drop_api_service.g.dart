@@ -126,7 +126,7 @@ class _DropApiService implements DropApiService {
     )
             .compose(
               _dio.options,
-              '/drops',
+              '/drops/',
               queryParameters: queryParameters,
               data: FormData.fromMap(_data),
             )
