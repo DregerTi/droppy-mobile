@@ -14,40 +14,37 @@ class UsersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UsersBloc>(
-      create: (context) => sl(),
-      child: Scaffold(
-        body: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: backgroundColor.withOpacity(0.8),
-                        offset: const Offset(0, -15),
-                        spreadRadius: 30,
-                        blurRadius: 30,
-                      ),
-                    ],
-                  ),
+    return Scaffold(
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: backgroundColor.withOpacity(0.8),
+                      offset: const Offset(0, -15),
+                      spreadRadius: 30,
+                      blurRadius: 30,
+                    ),
+                  ],
                 ),
-                const AppBarWidget(
-                  leadingIcon: Icon(Icons.arrow_back),
-                ),
-              ],
-            ),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: SearchUsers(),
               ),
-            )
-          ],
-        ),
+              const AppBarWidget(
+                leadingIcon: Icon(Icons.arrow_back),
+              ),
+            ],
+          ),
+          const Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SearchUsers(),
+            ),
+          )
+        ],
       ),
     );
   }
