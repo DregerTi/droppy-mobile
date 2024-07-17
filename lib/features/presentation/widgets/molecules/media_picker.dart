@@ -16,6 +16,7 @@ class MediaPickerWidget extends StatefulWidget {
   final Function(List<MediaPickerItemEntity>) setSelectedMedias;
   final List<String>? initialMediaEntities;
   final bool lite;
+  final bool? isPostDrop;
 
   const MediaPickerWidget({
     Key? key,
@@ -26,6 +27,7 @@ class MediaPickerWidget extends StatefulWidget {
     this.initialMediaEntities,
     required this.setSelectedMedias,
     this.lite = false,
+    this.isPostDrop = false,
   }) : super(key: key);
 
   @override
@@ -155,9 +157,9 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.only(top: !widget.lite ? 20 : 0),
+          padding: EdgeInsets.only(top: !widget.lite ? 0 : 0),
           width: !widget.lite ? MediaQuery.of(context).size.width : 56,
-          height: !widget.lite ? 180 : 56,
+          height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
           child: ListView.builder(
             shrinkWrap: true,
             controller: previwScrollController,
@@ -170,7 +172,6 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                   visible: widget.maxMedias == null || _selectedMedias.length < widget.maxMedias!,
                   child: Row(
                     children: [
-                      if(!widget.lite) const SizedBox(width: 30),
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -179,11 +180,11 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                           widget.setActiveElement('medias');
                         },
                         child: Container(
-                          height: !widget.lite ? 160 : 56,
-                          width: !widget.lite ? 160 : 56,
+                          height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
+                          width: !widget.lite ? MediaQuery.of(context).size.width : 56,
                           decoration: BoxDecoration(
-                            color: surfaceColor,
-                            borderRadius: BorderRadius.circular(16),
+                            color: (widget.isPostDrop != null && widget.isPostDrop! == true) ? onBackgroundColor : surfaceColor,
+                            borderRadius: BorderRadius.circular((widget.isPostDrop != null && widget.isPostDrop! == true) ? 46 : 16),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -212,11 +213,11 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                   children: [
                     Positioned(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: !widget.lite ? 8 : 0,),
-                        height: !widget.lite ? 160 : 56,
-                        width: !widget.lite ? 160 : 56,
+                        padding: EdgeInsets.symmetric(horizontal: !widget.lite ? 0 : 0,),
+                        height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
+                        width: !widget.lite ? MediaQuery.of(context).size.width : 56,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16.0),
+                          borderRadius: BorderRadius.circular((widget.isPostDrop != null && widget.isPostDrop! == true) ? 46 : 16),
                           child: _selectedMedias[index - 1].widget,
                         ),
                       ),
@@ -233,10 +234,10 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                       bottom: 4,
                       right: !widget.lite ? 12 : 4,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: !widget.lite ? MainAxisAlignment.center : MainAxisAlignment.end,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: !widget.lite ? MainAxisAlignment.center : MainAxisAlignment.end,
                             children: [
                               if (widget.maxMedias == null || widget.maxMedias! > 1) IconButton(
                                 icon: Icon(
@@ -263,7 +264,8 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                               ),
                               IconButton(
                                 icon: Icon(
-                                  !widget.lite ? Icons.delete_rounded : Icons.edit_rounded
+                                  !widget.lite ? Icons.delete_rounded : Icons.edit_rounded,
+                                  size: !widget.lite ? 32 : 20,
                                 ),
                                 onPressed: () {
                                   setState(() {
