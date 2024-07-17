@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:droppy/features/domain/entities/drop.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -11,6 +12,8 @@ import 'feed_state.dart';
 
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   late final WebSocketChannel _channel;
+
+  List<DropEntity> _lastDrops = [];
 
   FeedBloc() : super(WebSocketInitial()) {
     on <WebSocketConnect>(onWebSocketConnect);
@@ -35,14 +38,28 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
     on<WebSocketMessageReceived>((event, emit) {
       final data = jsonDecode(event.message);
-      List<DropModel> drops = [];
+
       if(data is List) {
-        drops = data.map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
+        _lastDrops = data.map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
+      } else if (data is Map<String, dynamic>) {
+        DropModel drop = DropModel.fromJson(data);
+
+        //check if the drop already exists in the list
+        if(_lastDrops!.any((element) => element!.id == drop.id)) {
+          if(_lastDrops.isNotEmpty) {
+            final index = _lastDrops!.indexWhere((element) => element!.id == drop.id);
+            if(index != -1) {
+              _lastDrops![index] = drop;
+            }
+          }
+        } else {
+          _lastDrops!.insert(0, drop);
+        }
+
       }
-      print(drops);
-      print('objectDDD');
-      emit(WebSocketMessageLoadingReceived(drops));
-      emit(WebSocketMessageState(drops));
+
+      emit(WebSocketMessageLoadingReceived(_lastDrops));
+      emit(WebSocketMessageState(_lastDrops));
     });
 
     on<WebSocketDisconnect>((event, emit) {
