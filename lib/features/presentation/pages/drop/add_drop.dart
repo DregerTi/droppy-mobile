@@ -1,16 +1,21 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
+import 'package:droppy/features/presentation/widgets/atoms/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../config/theme/color.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../../../injection_container.dart';
+import '../../../data/models/content.dart';
 import '../../../domain/entities/form_section_item.dart';
 import '../../../domain/entities/media_picker_item.dart';
-import '../../bloc/drop/drop_bloc.dart';
-import '../../bloc/drop/drop_event.dart';
-import '../../widgets/molecules/action_bar.dart';
+import '../../bloc/content/content_bloc.dart';
+import '../../bloc/group/goup_bloc.dart';
+import '../../widgets/atoms/cached_image_widget.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
-import '../../widgets/molecules/form_section.dart';
+import '../../widgets/molecules/content_sheet.dart';
 import '../../widgets/molecules/media_picker.dart';
 
 class AddDropView extends StatefulWidget {
@@ -25,26 +30,11 @@ class AddDropView extends StatefulWidget {
 
 class _AddDropViewState extends State<AddDropView> {
   String activeElement = 'main';
-  TextEditingController descriptionController = TextEditingController();
+  String? description;
   List<MediaPickerItemEntity> selectedMedias = [];
   Map<String, dynamic> address = {};
-  String? descriptionError;
-  String? addressError;
-
-
-  List<FormSectionItemEntity> formItems = [
-    const FormSectionItemEntity(
-      title: 'Adress',
-      icon: Icons.location_on_rounded,
-      index: 'address',
-      onTapRoutePath: 'address-picker',
-    ),
-    const FormSectionItemEntity(
-      title: 'Description',
-      icon: Icons.description_rounded,
-      index: 'description',
-    ),
-  ];
+  ContentModel? content;
+  bool isValide = false;
 
   @override
   void initState() {
@@ -53,28 +43,6 @@ class _AddDropViewState extends State<AddDropView> {
 
   @override
   Widget build(BuildContext context) {
-    addressValidation(value) {
-      if(value!.isEmpty){
-        setState(() {
-          addressError = 'Champ requis';
-        });
-      } else {
-        setState(() {
-          addressError = null;
-        });
-      }
-    };
-    descriptionValidation(value) {
-      if((value!.length < 5 || value.length > 600) && value.isNotEmpty){
-        setState(() {
-          descriptionError = 'La description doit être comprise entre 5 et 600 caractères ou vide';
-        });
-      } else {
-        setState(() {
-          descriptionError = null;
-        });
-      }
-    };
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -83,70 +51,6 @@ class _AddDropViewState extends State<AddDropView> {
         child: Stack(
           children: [
             _buildForm(),
-            Visibility(
-              visible: activeElement == 'main',
-              child: Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: const BoxDecoration(
-                    color: backgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                        spreadRadius: 10,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(26),
-                      topRight: Radius.circular(26),
-                    ),
-                  ),
-                  child: ActionBar(
-                    leadingText: 'Enregistrer',
-                    leadingOnPressed: () async {
-                      final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.originFile)!.path);
-
-                      context.read<DropsBloc>().add(PostDrop({
-                        'description': descriptionController.text,
-                        'address': address,
-                        'media': mainMedia,
-                      }));
-                    }
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: activeElement == 'description',
-              child: FormSection(
-                sectionTitle: 'Description',
-                title: 'Des informations supplémentaires à ajouter ?',
-                form: TextFormField(
-                  controller: descriptionController,
-                  maxLines: 10,
-                  decoration: const InputDecoration(
-                    hintText: 'Ajouter une description...',
-                  ),
-                ),
-                leadingOnPressed: () {
-                  setState(() {
-                    descriptionValidation(descriptionController.text);
-                    activeElement = 'main';
-                  });
-                },
-                mainActionIcon: const Icon(Icons.check_rounded),
-                mainActionOnPressed: () {
-                  setState(() {
-                    descriptionValidation(descriptionController.text);
-                    activeElement = 'main';
-                  });
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -154,115 +58,427 @@ class _AddDropViewState extends State<AddDropView> {
   }
 
   Widget _buildForm(){
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      child: Visibility(
-        visible: activeElement == 'main' || activeElement == 'medias',
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight + 40),
-          child: Column(
+
+    final FixedExtentScrollController fixedExtentScrollController = FixedExtentScrollController();
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GroupsBloc>(
+          create: (context) => sl(),
+        ),
+      ],
+      child: SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+          child: Stack(
             children: [
-              Visibility(
-                visible: activeElement == 'main',
-                child: AppBarWidget(
-                  leadingIcon: const Icon(Icons.arrow_back),
-                  leadingOnPressed: () {
-                    context.pop();
-                  },
-                  mainActionIcon: const Icon(Icons.check_rounded),
-                  title: 'Nouveau groupe',
+              Container(
+                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                decoration: BoxDecoration(
+                  color: (activeElement == 'main') ? onBackgroundColor : backgroundColor,
+                  borderRadius: BorderRadius.circular(46),
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: MediaPickerWidget(
+                        isPostDrop: true,
+                        maxMedias: 1,
+                        activeElement: activeElement,
+                        setActiveElement: (value) {
+                          setState(() {
+                            activeElement = value;
+                          });
+                        },
+                        setSelectedMedias: (value) {
+                          setState(() {
+                            selectedMedias = value;
+                          });
+                        },
+                        selectedMedias: [],
+                      ),
+                    ),
+                    if(activeElement == 'main') Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 26),
+                          decoration: BoxDecoration(
+                            color: onSurfaceColor,
+                            borderRadius: BorderRadius.circular(46),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final result = await context.pushNamed<Map<String, dynamic>>(
+                                                'address-picker',
+                                                extra: {
+                                                  'address': address,
+                                                },
+                                              );
+                                              if (result != null) {
+                                                setState(() {
+                                                  address = result;
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                              decoration: BoxDecoration(
+                                                color: surfaceColor,
+                                                borderRadius: BorderRadius.circular(16),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                      Icons.location_on,
+                                                      color: onPrimaryColor,
+                                                      size: 16
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    (address['city'] != null) ? '${address['city'] ?? ''}, ${address['country'] ?? ''}' : 'Localisation',
+                                                    style: textTheme.labelSmall?.copyWith(color: onPrimaryColor),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              _openDescriptionSheet(context, (value) {
+                                                setState(() {
+                                                  description = value;
+                                                });
+                                              }, description);
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                              decoration: BoxDecoration(
+                                                color: surfaceColor,
+                                                borderRadius: BorderRadius.circular(16),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                      Icons.text_fields_rounded,
+                                                      color: onPrimaryColor,
+                                                      size: 16
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    'Description',
+                                                    style: textTheme.labelSmall?.copyWith(color: onPrimaryColor),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context).size.width - 56,
+                                            child: Text(
+                                              description ?? '',
+                                              maxLines : 2,
+                                              overflow : TextOverflow.ellipsis,
+                                              style: textTheme.bodySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('open content sheet');
+                                      _openContentSheet(context, (value) {
+                                        setState(() {
+                                          content = value;
+                                        });
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width - 56,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          if(content?.picturePath != null) CachedImageWidget(
+                                            width: 56,
+                                            height: 56,
+                                            borderRadius: BorderRadius.circular(16),
+                                            imageUrl: content?.picturePath ?? '',
+                                          ) else Container(
+                                            width: 56,
+                                            height: 56,
+                                            decoration: BoxDecoration(
+                                              color: surfaceColor,
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            child: const Center(
+                                              child: Icon(
+                                                Icons.add_rounded,
+                                                color: onPrimaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Flexible(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  content?.title ?? 'Contenu',
+                                                  style: textTheme.titleMedium,
+                                                  maxLines : 2,
+                                                  overflow : TextOverflow.ellipsis,
+                                                ),
+                                                Text(
+                                                  content?.subtitle ?? 'Description du contenu',
+                                                  style: textTheme.bodySmall,
+                                                  maxLines : 2,
+                                                  overflow : TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              MediaPickerWidget(
-                maxMedias: 1,
-                activeElement: activeElement,
-                setActiveElement: (value) {
-                  setState(() {
-                    activeElement = value;
-                  });
-                },
-                setSelectedMedias: (value) {
-                  setState(() {
-                    selectedMedias = value;
-                  });
-                },
-                selectedMedias: [],
-              ),
-              Visibility(
-                visible: activeElement == 'main',
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(height: 12);
-                      },
-                      itemCount: formItems.length,
-                      itemBuilder: (context, index) {
-                        Widget? value;
-                        String? error;
-                        switch (formItems[index].index) {
-                          case 'description':
-                            error = descriptionError;
-                            value = descriptionController.text != '' ? Text(descriptionController.text) : null;
-                            break;
-                          case 'address':
-                            error = addressError;
-                            value = address.isNotEmpty ? Text(address['address']) : null;
-                            break;
-                        }
-
-                        return ListTile(
-                          tileColor: surfaceColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          onTap: () async {
-                            if(formItems[index].onTapRoutePath != null) {
-                              final result = await context.pushNamed<Map<String, dynamic>>(formItems[index].onTapRoutePath!);
-                              if (result != null) {
-                                setState(() {
-                                  address = result;
-                                });
-                              }
-                            }else{
-                              setState(() {
-                                activeElement = formItems[index].index;
-                              });
-                            }
-                          },
-                          horizontalTitleGap: 14,
-                          leading: Icon(
-                              formItems[index].icon, color: textColor),
-                          title: Text(
-                            formItems[index].title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: textTheme.bodyMedium,
-                          ),
-                          subtitle: error != null ?
-                            Text(
-                              error,
-                              style: textTheme.bodySmall!.copyWith(
-                                color: Colors.red,
-                              ),
-                            )
-                            : value,
-                        );
-                      },
+              if(activeElement == 'main') Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: backgroundColor.withOpacity(0.8),
+                      offset: const Offset(0, -15),
+                      spreadRadius: 30,
+                      blurRadius: 30,
                     ),
+                  ],
+                ),
+              ),
+              if(activeElement == 'main') Padding(
+                padding: const EdgeInsets.only(top: 24),
+                child: AppBarWidget(
+                  leadingIcon: const Icon(Icons.arrow_back_rounded),
+                  leadingOnPressed: () => {
+                    context.pop()
+                  },
+                  mainActionIcon: const Icon(Icons.arrow_forward_rounded),
+                  isMainActionActive: true,
+                  mainActionOnPressed: () async {
+                    if(description != null && (description!.length < 5 || description!.length > 120)){
+                      setState(() {
+                        isValide = false;
+                      });
+
+                      snackBarWidget(
+                        message: 'Description entre 5 et 120 caractères ou vide',
+                        context: context,
+                        type: 'error',
+                      );
+
+                      setState(() {
+                        isValide = false;
+                      });
+                    }
+
+                    if(content == null) {
+                      snackBarWidget(
+                        message: 'Veuillez sélectionner un contenu',
+                        context: context,
+                        type: 'error',
+                      );
+
+                      setState(() {
+                        isValide = false;
+                      });
+                    }
+
+                    if(selectedMedias.isEmpty){
+                      snackBarWidget(
+                        message: 'Veuillez sélectionner une image',
+                        context: context,
+                        type: 'error',
+                      );
+
+                      setState(() {
+                        isValide = false;
+                      });
+                    }
+
+                    if(isValide){
+
+                      Object picture = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file!)!.path);
+
+                      Map<String, dynamic> data = {
+                        'picture': picture,
+                        'contentPicturePath': content?.picturePath,
+                        'contentTitle': content?.title,
+                        'contentSubtitle': content?.subtitle,
+                        'content': content?.content,
+                      };
+
+                      if(description != null) data['description'] = description;
+
+                      if(address.isNotEmpty) {
+                        data['lat'] = address['lat'];
+                        data['lng'] = address['lng'];
+                        data['location'] = '${address['city']}, ${address['country']}';
+                      }
+
+                      context.pushNamed<Map<String, dynamic>>(
+                        'save-drop',
+                        extra: {
+                          'drop': data,
+                        },
+                      );
+                    }
+
+
+                    setState(() {
+                      isValide = true;
+                    });
+
+                  },
+                ),
+              ),
+              if(activeElement == 'main') Positioned(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 34),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 230,
+                        child: Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Poster un Drop',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ],
-          ),
+          )
         ),
       ),
+    );
+  }
+
+  void _openContentSheet(context, setContent){
+    print('open content sddheet');
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(46),
+          topRight: Radius.circular(46),
+        ),
+      ),
+      context: context,
+      //isScrollControlled: true,
+      builder: (context) => ContentSheet(setContent: setContent),
+    );
+  }
+
+  void _openDescriptionSheet(context, setDescription, description){
+    print('open description sheet');
+
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(46),
+          topRight: Radius.circular(46),
+        ),
+      ),
+      context: context,
+      //isScrollControlled: true,
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 26),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(46),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+                'Description',
+                style: textTheme.labelMedium
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: TextFormField(
+                onChanged: (value) {
+                  setDescription(value);
+                },
+                initialValue: description,
+                maxLines: 8,
+                decoration: InputDecoration(
+                  hintText: 'Description',
+                  hintStyle: textTheme.bodySmall,
+                  errorStyle: textTheme.bodySmall?.copyWith(color: errorColor),
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
