@@ -253,24 +253,22 @@ class _AddDropViewState extends State<AddDropView> {
                                             ),
                                           ),
                                           const SizedBox(width: 12),
-                                          Flexible(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  content?.title ?? AppLocalizations.of(context)!.content,
-                                                  style: textTheme.titleMedium,
-                                                  maxLines : 2,
-                                                  overflow : TextOverflow.ellipsis,
-                                                ),
-                                                Text(
-                                                  content?.subtitle ?? '',
-                                                  style: textTheme.bodySmall,
-                                                  maxLines : 2,
-                                                  overflow : TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                content?.title ?? AppLocalizations.of(context)!.content,
+                                                style: textTheme.titleMedium,
+                                                maxLines : 2,
+                                                overflow : TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                content?.subtitle ?? '',
+                                                style: textTheme.bodySmall,
+                                                maxLines : 2,
+                                                overflow : TextOverflow.ellipsis,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -394,18 +392,16 @@ class _AddDropViewState extends State<AddDropView> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 230,
-                        child: Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Poster un Drop',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.headlineMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Poster un Drop',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
                       ),
                     ],

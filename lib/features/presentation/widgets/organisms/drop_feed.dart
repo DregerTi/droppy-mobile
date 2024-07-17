@@ -68,25 +68,30 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                   );
                 }).toList()
               ),
-              if (feed.isEmpty) Center(
-                child: Column(
-                  children: [
-                    WarningCard(
-                      message: AppLocalizations.of(context)!.noDrops,
-                      icon: 'empty'
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.pushNamed('add-drop');
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.postADrop,
-                        style: textTheme.labelMedium?.copyWith(
-                          color: backgroundColor,
+              if (feed.isEmpty) Container(
+                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      WarningCard(
+                        message: AppLocalizations.of(context)!.noDrops,
+                        icon: 'empty'
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('add-drop');
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.postADrop,
+                          style: textTheme.labelMedium?.copyWith(
+                            color: backgroundColor,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Container(
