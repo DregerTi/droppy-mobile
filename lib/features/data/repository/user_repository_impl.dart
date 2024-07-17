@@ -126,7 +126,8 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final httpResponse = await _userApiService.getUserFollowers(id: params['id']);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      //if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (true){
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(
