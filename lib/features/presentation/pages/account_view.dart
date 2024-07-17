@@ -35,20 +35,19 @@ class _AccountViewState extends State<AccountView> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<UsersBloc>(context).add(
+      widget.userId != null ? GetUser({
+        'id':int.parse(widget.userId ?? '')
+      })
+      : GetMe({
+        'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
+      })
+    );
+
     return Scaffold(
       body: SafeArea(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<UsersBloc>(
-              create: (context) => sl()..add(
-                widget.userId != null ? GetUser({
-                  'id':int.parse(widget.userId ?? '')
-                })
-                : GetMe({
-                  'id': BlocProvider.of<AuthBloc>(context).state.auth?.id
-                })
-              ),
-            ),
             BlocProvider<FollowsBloc>(
               create: (context) => sl(),
             ),
