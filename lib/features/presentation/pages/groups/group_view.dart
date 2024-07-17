@@ -40,17 +40,17 @@ class _GroupViewState extends State<GroupView> {
 
   @override
   Widget build(BuildContext context) {
+
+    BlocProvider.of<GroupsBloc>(context).add(
+      GetGroup({
+        'id':int.parse(widget.groupId ?? '')
+      })
+    );
+
     return Scaffold(
       body: SafeArea(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<GroupsBloc>(
-              create: (context) => sl()..add(
-                GetGroup({
-                  'id':int.parse(widget.groupId ?? '')
-                })
-              ),
-            ),
             BlocProvider<GroupMembersBloc>(
               create: (context) => sl(),
             ),
@@ -118,7 +118,6 @@ class _GroupViewState extends State<GroupView> {
                                     type: 'error',
                                   );
                                 }
-
                               },
                               builder: (context, state) {
                                 return const SizedBox(height: 0,);
@@ -126,7 +125,9 @@ class _GroupViewState extends State<GroupView> {
                             ),
                             if(state.group?.isPrivate == false || state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty) Padding(
                               padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
-                              child: ListItemsWidget(
+                              child: ((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
+                                && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).first.role == 'manager')
+                                || state.group!.createdBy?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id) ? ListItemsWidget(
                                 title: 'Membres',
                                 children: [
                                   if((state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty
@@ -146,7 +147,8 @@ class _GroupViewState extends State<GroupView> {
                                       );
                                     },
                                   ),
-                                  if(state.group!.createdBy?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) TileItemWidget(
+                                  if(state.group!.createdBy?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id
+                                    && state.group!.groupMembers!.where((element) => element.member?.id == BlocProvider.of<AuthBloc>(context).state.auth?.id).isNotEmpty) TileItemWidget(
                                     title: 'Quitter le groupe',
                                     titleColor: errorColor,
                                     leadingIcon: const Icon(
@@ -161,6 +163,12 @@ class _GroupViewState extends State<GroupView> {
                                     },
                                   ),
                                 ],
+                              ) : Padding(
+                                padding: const EdgeInsets.only(top:28),
+                                child: Text(
+                                  'Membres',
+                                  style: textTheme.titleMedium
+                                ),
                               ),
                             ),
                             if (state.group?.groupMembers != null) ListView.builder(
