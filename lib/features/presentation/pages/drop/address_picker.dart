@@ -5,8 +5,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import '../../../../../injection_container.dart';
 import '../../../../config/theme/color.dart';
+import '../../../data/models/place_search_details.dart';
 import '../../bloc/place_search/place_search_bloc.dart';
 import '../../bloc/place_search/place_search_event.dart';
 import '../../bloc/place_search/place_search_state.dart';
@@ -16,7 +18,12 @@ import '../../widgets/organisms/search_results.dart';
 
 class AddressPicker extends StatefulWidget {
 
-  const AddressPicker({Key? key}) : super(key: key);
+  final Map<String, dynamic>? address;
+
+  const AddressPicker({
+    Key? key,
+    this.address,
+  }) : super(key: key);
 
   @override
   State<AddressPicker> createState() => _AddressPickerState();
@@ -26,14 +33,21 @@ class AddressPicker extends StatefulWidget {
 class _AddressPickerState extends State<AddressPicker> {
   late final MapController mapController;
   final DraggableScrollableController draggableScrollableController = DraggableScrollableController();
-  String? mapAddress;
-  String? pladeId;
+  PlaceSearchDetailsModel? mapAddress;
+  String? placeId;
 
   String activeElement = 'main';
   TextEditingController searchFieldController = TextEditingController();
   late AlignOnUpdate alignPositionOnUpdate;
   late final StreamController<double?> alignPositionStreamController;
   Timer? debounce;
+  LatLng? initialCenter;
+
+  void _checkInitPosition() async {
+    if(widget.address!.isNotEmpty) {
+      initialCenter = LatLng(widget.address!['lat'], widget.address!['lng']);
+    }
+  }
 
   @override
   void initState() {
@@ -41,6 +55,19 @@ class _AddressPickerState extends State<AddressPicker> {
     mapController = MapController();
     alignPositionOnUpdate = AlignOnUpdate.never;
     alignPositionStreamController = StreamController<double?>();
+    if(widget.address!.isNotEmpty){
+      searchFieldController.text = '${widget.address!['address']} ${widget.address!['city']} ${widget.address!['zipCode']} ${widget.address!['country']}';
+      _checkInitPosition();
+      mapAddress = PlaceSearchDetailsModel(
+        lat: widget.address!['lat'],
+        lng: widget.address!['lng'],
+        formattedAddress: widget.address!['address'],
+        country: widget.address!['country'],
+        zipCode: widget.address!['zipCode'],
+        city: widget.address!['city'],
+        placeId: '',
+      );
+    }
   }
 
   @override
@@ -70,6 +97,7 @@ class _AddressPickerState extends State<AddressPicker> {
     return Stack(
       children: [
         MapWidget(
+          initialCenter: initialCenter,
           mapController: mapController,
           userLocation: true,
           hasSearchBar: true,
@@ -106,9 +134,9 @@ class _AddressPickerState extends State<AddressPicker> {
           listener: (_,state){
             if(state is PlaceReverseGeocodingDone){
               setState(() {
-                pladeId = state.placeSearch!.placeId;
-                mapAddress = state.placeSearch!.formattedAddress;
-                _updateSearchField(mapAddress!);
+                placeId = state.placeSearch!.placeId;
+                mapAddress = state.placeSearch!;
+                _updateSearchField('${mapAddress?.formattedAddress} ${mapAddress?.city ?? ''} ${mapAddress?.zipCode ?? ''} ${mapAddress?.country ?? ''}');
               });
             }
           },
@@ -127,30 +155,27 @@ class _AddressPickerState extends State<AddressPicker> {
         ),
 
         Positioned(
-          bottom: 200,
+          bottom: 210,
           left: 0,
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: Stack(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FloatingActionButton(
-                        onPressed: () {
-                          setState(
-                                () => alignPositionOnUpdate = AlignOnUpdate.always,
-                          );
-                          alignPositionStreamController.add(18);
-                        },
-                        child: const Icon(
-                          Icons.my_location,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                FloatingActionButton(
+                  backgroundColor: onBackgroundColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  onPressed: () {
+                    setState(
+                          () => alignPositionOnUpdate = AlignOnUpdate.always,
+                    );
+                    alignPositionStreamController.add(18);
+                  },
+                  child: const Icon(
+                    Icons.my_location,
+                    color: onSurfaceColor,
                   ),
                 ),
               ],
@@ -167,8 +192,8 @@ class _AddressPickerState extends State<AddressPicker> {
             height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
             padding: devicePadding,
             child:DraggableScrollableSheet(
-              minChildSize: 0.22,
-              initialChildSize: 0.22,
+              minChildSize: 0.30,
+              initialChildSize: 0.30,
               snapAnimationDuration: const Duration(milliseconds: 9000),
               controller: draggableScrollableController,
               builder: (context, scrollController) => Container(
@@ -177,13 +202,13 @@ class _AddressPickerState extends State<AddressPicker> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
-                      blurRadius: 10,
-                      spreadRadius: 10,
+                      blurRadius: 20,
+                      spreadRadius: 1,
                     ),
                   ],
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(26),
-                    topRight: Radius.circular(26),
+                    topLeft: Radius.circular(46),
+                    topRight: Radius.circular(46),
                   ),
                 ),
                 child: CustomScrollView(
@@ -198,8 +223,8 @@ class _AddressPickerState extends State<AddressPicker> {
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(26),
-                          topRight: Radius.circular(26),
+                          topLeft: Radius.circular(46),
+                          topRight: Radius.circular(46),
                         ),
                       ),
                       floating: false,
@@ -273,7 +298,14 @@ class _AddressPickerState extends State<AddressPicker> {
                     textInputAction: TextInputAction.search,
                     onTap: () {
                       setState(() {
-                        activeElement = 'searchSection';
+                        draggableScrollableController.animateTo(
+                            1,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease
+                        );
+                        setState(() {
+                          activeElement = 'searchSection';
+                        });
                       });
                     },
                     onChanged: (input) {
@@ -304,8 +336,12 @@ class _AddressPickerState extends State<AddressPicker> {
                   onPressed: () => {
                     context.pop(
                       {
-                        'address': mapAddress,
-                        'latlng': mapController.camera.center,
+                        'address': mapAddress?.formattedAddress ?? '',
+                        'city': mapAddress?.city ?? '',
+                        'country': mapAddress?.country ?? '',
+                        'zipCode': mapAddress?.zipCode ?? '',
+                        'lat': mapController.camera.center.latitude,
+                        'lng': mapController.camera.center.longitude,
                       }
                     ),
                   },

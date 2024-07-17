@@ -9,6 +9,7 @@ import 'package:flutter_map_cache/flutter_map_cache.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../../../core/constants/constants.dart';
 import '../../bloc/place_search/place_search_bloc.dart';
 import '../../bloc/place_search/place_search_state.dart';
 
@@ -21,6 +22,7 @@ class MapWidget extends StatelessWidget {
   final Stream<double?>? alignPositionStreamController;
   final AlignOnUpdate? alignPositionOnUpdate;
   final Function(MapCamera, bool)? onPositionChanged;
+  final LatLng? initialCenter;
 
   MapWidget({
     Key ? key,
@@ -32,6 +34,7 @@ class MapWidget extends StatelessWidget {
     this.alignPositionStreamController,
     this.alignPositionOnUpdate,
     this.onPositionChanged,
+    this.initialCenter
   }): super(key: key);
 
   final dio = Dio();
@@ -52,7 +55,7 @@ class MapWidget extends StatelessWidget {
               child: FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  initialCenter: const LatLng(48.867633949382075, 2.3405098044043435),
+                  initialCenter: initialCenter ?? const LatLng(48.867633949382075, 2.3405098044043435),
                   initialZoom: initialZoom,
                   maxZoom: 25,
                   minZoom: 2,
@@ -74,7 +77,7 @@ class MapWidget extends StatelessWidget {
                   TileLayer(
                     urlTemplate: 'https://api.mapbox.com/styles/v1/dregert/clsme7060002801qq9dqph3ub/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
                     additionalOptions: const {
-                      'accessToken': 'pk.eyJ1IjoiZHJlZ2VydCIsImEiOiJjbGRqeXV6dDUwaWR1M29uemg0MnlwaWh5In0.OOmby3d29Ahfgl4xqbUi5A',
+                      'accessToken': mapBoxAccessToken,
                     },
                     userAgentPackageName: 'dev.fleaflet.flutter_map.example',
                     maxZoom: 20,

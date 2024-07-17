@@ -67,7 +67,7 @@ class SearchResults extends StatelessWidget {
                       return LocationListTile(
                         press: () {
                           BlocProvider.of<PlaceSearchBloc>(context).add(GetPlaceDetails({
-                            'fields': 'geometry,formatted_address',
+                            'fields': 'geometry,formatted_address,place_id,address_components',
                             'placeId': state.placeSearchs![index].placeId
                           }));
                           setAddress(state.placeSearchs![index].description ?? '');

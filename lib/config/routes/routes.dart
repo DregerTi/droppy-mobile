@@ -19,6 +19,7 @@ import '../../features/presentation/pages/auth/sign_up_view.dart';
 import '../../features/presentation/pages/auth/update_account_view.dart';
 import '../../features/presentation/pages/drop/add_drop.dart';
 import '../../features/presentation/pages/drop/address_picker.dart';
+import '../../features/presentation/pages/drop/save_drop.dart';
 import '../../features/presentation/pages/groups/add_group.dart';
 import '../../features/presentation/pages/groups/group_feed.dart';
 import '../../features/presentation/pages/groups/group_members.dart';
@@ -110,7 +111,20 @@ class AppRoutes{
                   GoRoute(
                     path: 'address-picker',
                     name: 'address-picker',
-                    builder: (context, state) => const AddressPicker(),
+                    builder: (context, state) {
+                      final Map<String, dynamic>? extras = state.extra as Map<String, dynamic>?;
+                      final Map<String, dynamic>? address = extras?['address'];
+                      return AddressPicker(address: address);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'save-drop',
+                    name: 'save-drop',
+                    builder: (context, state) {
+                      final Map<String, dynamic>? extras = state.extra as Map<String, dynamic>?;
+                      final Map<String, dynamic>? drop = extras?['drop'];
+                      return SaveDrop(drop: drop);
+                    },
                   ),
                 ]
               ),

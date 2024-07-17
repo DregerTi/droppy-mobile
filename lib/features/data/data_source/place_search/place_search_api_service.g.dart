@@ -13,7 +13,7 @@ class _PlaceSearchApiService implements PlaceSearchApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://maps.googleapis.com/maps/api';
+    baseUrl ??= placeApiBaseUrl;
   }
 
   final Dio _dio;

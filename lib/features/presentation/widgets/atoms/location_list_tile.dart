@@ -24,7 +24,7 @@ class LocationListTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: textTheme.bodyMedium?.copyWith(
-              color: onSurfaceColor,
+              color: textColor,
             ),
           ),
         ),

@@ -6,13 +6,19 @@ class PlaceSearchDetailsEntity extends Equatable {
   final String formattedAddress;
   final String? name;
   final String placeId;
+  final String? country;
+  final String? zipCode;
+  final String? city;
 
   const PlaceSearchDetailsEntity({
     required this.lat,
     required this.lng,
     required this.formattedAddress,
     this.name,
-    required this.placeId
+    required this.placeId,
+    this.country,
+    this.zipCode,
+    this.city,
   });
 
   @override
@@ -22,7 +28,10 @@ class PlaceSearchDetailsEntity extends Equatable {
       lng,
       formattedAddress,
       name,
-      placeId
+      placeId,
+      country,
+      zipCode,
+      city,
     ];
   }
 }
