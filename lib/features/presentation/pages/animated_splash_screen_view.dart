@@ -20,9 +20,9 @@ class _AnimatedSplashScreenViewState extends State<AnimatedSplashScreenView> {
     Future.delayed(const Duration(seconds: 3), () {
       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: backgroundColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.light,
         systemNavigationBarDividerColor: Colors.transparent,
       ));
     });
@@ -46,7 +46,7 @@ class _AnimatedSplashScreenViewState extends State<AnimatedSplashScreenView> {
       body: Lottie.asset(
         'lib/assets/images/splash-screen.json',
         frameRate: FrameRate.max,
-        fit: BoxFit.fill,
+        fit: BoxFit.fitWidth,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         alignment: Alignment.center,
