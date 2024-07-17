@@ -57,7 +57,7 @@ class FollowRepositoryImpl implements FollowRepository {
   Future<DataState<FollowModel>> acceptFollow(Map<String, dynamic> params) async {
     try {
       final httpResponse = await _followApiService.acceptFollow(id: params['id']);
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(
@@ -78,7 +78,7 @@ class FollowRepositoryImpl implements FollowRepository {
   Future<DataState<Map<String, dynamic>>> refuseFollow(Map<String, dynamic> params) async {
     try {
       final httpResponse = await _followApiService.refuseFollow(id: params['id']);
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse.data);
       } else {
         return DataFailed(
