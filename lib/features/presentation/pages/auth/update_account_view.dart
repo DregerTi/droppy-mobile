@@ -6,6 +6,7 @@ import '../../../../config/theme/widgets/button.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../../../data/models/user.dart';
 import '../../../domain/entities/media_picker_item.dart';
+import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_event.dart';
 import '../../bloc/user/user_state.dart';
@@ -86,9 +87,12 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                           }
                           if(state is PatchUserDone) {
                             snackBarWidget(
-                              message: 'Group mis à jour',
+                              message: 'User mis à jour',
                               context: context,
                             );
+                            BlocProvider.of<UsersBloc>(context).add(GetMe({
+                              'id': BlocProvider.of<AuthBloc>(context).state.auth!.id,
+                            }));
                             context.pop(true);
                           }
                         },
@@ -123,11 +127,6 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
                                   final mainMedia = await MultipartFile.fromFile((await selectedMedias[0].assetEntity!.file)!.path);
                                   data['picture'] = mainMedia;
                                 }
-
-                                print({
-                                  'id': widget.user.id,
-                                  'user': data,
-                                });
 
                                 context.read<UsersBloc>().add(PatchUser({
                                   'id': widget.user.id,
