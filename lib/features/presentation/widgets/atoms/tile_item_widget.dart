@@ -38,10 +38,10 @@ class TileItemWidget extends StatelessWidget {
               imageUrl: leadingImageUrl!,
               width: 26,
               height: 26,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(10),
             ),
             if (leadingImageUrl == null && avatar == true) ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(10),
               child: SvgPicture.asset(
                 'lib/assets/images/avatar.svg',
                 height: 26,

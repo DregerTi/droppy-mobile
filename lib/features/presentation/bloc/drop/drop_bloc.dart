@@ -166,7 +166,6 @@ class DropsBloc extends Bloc<DropsEvent, DropsState> {
 
     channel.stream.listen((message) {
       final data = jsonDecode(message);
-      print([data]);
       final List<DropModel> drops = [data].map<DropModel>((dynamic i) => DropModel.fromJson(i as Map<String, dynamic>)).toList();
 
       if (!emit.isDone) {

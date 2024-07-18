@@ -34,98 +34,101 @@ class PreferencesView extends StatelessWidget {
         children: [
           AppBarWidget(
             leadingIcon: const Icon(Icons.arrow_back),
+            leadingOnPressed: () {
+              context.pop();
+            },
             title: AppLocalizations.of(context)!.settings,
           ),
           Expanded(
             child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<UsersBloc , UsersState>(
-                        builder: (context, state) {
-                          return ListItemsWidget(
-                            title: AppLocalizations.of(context)!.preferences,
-                            children: [
-                              TileItemWidget(
-                                title: AppLocalizations.of(context)!.myAccount,
-                                leadingImageUrl: user.avatar,
-                                avatar: true,
-                                onTap: () {
-                                  context.pushNamed(
-                                      'my-account',
-                                      extra: {
-                                        'user': user
-                                      }
-                                  );
-                                },
-                              ),
-                              TileItemWidget(
-                                title: AppLocalizations.of(context)!.preferredLanguages,
-                                leadingIcon: const Icon(
-                                  Icons.language_rounded,
-                                  color: textColor
-                                ),
-                                onTap: () {
-                                  context.pushNamed(
-                                      'language',
-                                      extra: {
-                                        'user': user
-                                      }
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      ListItemsWidget(
-                        title: AppLocalizations.of(context)!.about,
-                        children: [
-                          TileItemWidget(
-                            title: 'CGU',
-                            leadingIcon: const Icon(
-                              Icons.document_scanner,
-                              color: textColor,
-                            ),
-                            onTap: () {
-                              context.pushNamed(
-                                  'cgu',
+              physics: const ClampingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BlocBuilder<UsersBloc , UsersState>(
+                      builder: (context, state) {
+                        return ListItemsWidget(
+                          title: AppLocalizations.of(context)!.preferences,
+                          children: [
+                            TileItemWidget(
+                              title: AppLocalizations.of(context)!.myAccount,
+                              leadingImageUrl: user.avatar,
+                              avatar: true,
+                              onTap: () {
+                                context.pushNamed(
+                                  'my-account',
                                   extra: {
                                     'user': user
                                   }
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 28),
-                      GestureDetector(
-                        onTap: () => _signOut(context),
-                        child: Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: surfaceColor,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.logout,
-                                style: textTheme.bodyMedium?.copyWith(
-                                    color: errorColor
-                                ),
+                                );
+                              },
+                            ),
+                            TileItemWidget(
+                              title: AppLocalizations.of(context)!.preferredLanguages,
+                              leadingIcon: const Icon(
+                                Icons.language_rounded,
+                                color: textColor
                               ),
-                            ],
+                              onTap: () {
+                                context.pushNamed(
+                                  'language',
+                                  extra: {
+                                    'user': user
+                                  }
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    ListItemsWidget(
+                      title: AppLocalizations.of(context)!.about,
+                      children: [
+                        TileItemWidget(
+                          title: 'CGU',
+                          leadingIcon: const Icon(
+                            Icons.document_scanner,
+                            color: textColor,
                           ),
+                          onTap: () {
+                            context.pushNamed(
+                              'cgu',
+                              extra: {
+                                'user': user
+                              }
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 28),
+                    GestureDetector(
+                      onTap: () => _signOut(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: surfaceColor,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.logout,
+                              style: textTheme.bodyMedium?.copyWith(
+                                  color: errorColor
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                )
+                    ),
+                  ],
+                ),
+              )
             ),
           ),
         ],
