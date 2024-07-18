@@ -27,6 +27,7 @@ class SearchGroups extends StatefulWidget {
 class _SearchGroupsState extends State<SearchGroups> {
   TextEditingController searchFieldController = TextEditingController();
   Timer? debounce;
+  bool showMyGroups = true;
 
   @override
   void initState() {
@@ -56,16 +57,23 @@ class _SearchGroupsState extends State<SearchGroups> {
                   onChanged: (input) {
                     if (debounce?.isActive ?? false) debounce?.cancel();
                     if (input.isNotEmpty) {
+                      setState(() {
+                        showMyGroups = false;
+                      });
                       debounce = Timer(const Duration(milliseconds: 1000), () {
                         BlocProvider.of<GroupsBloc>(context).add(GetGroups({
                           'search': input,
                         }));
                       });
+                    } else {
+                      setState(() {
+                        showMyGroups = true;
+                      });
                     }
                   },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)!.joinGroup,
-                    suffixIcon: Icon(Icons.search, color: onSurfaceColor, size: 20),
+                    suffixIcon: const Icon(Icons.search, color: onSurfaceColor, size: 20),
                   )
                 ),
               )
@@ -76,61 +84,61 @@ class _SearchGroupsState extends State<SearchGroups> {
           child: BlocConsumer<GroupsBloc, GroupsState>(
             listener: (BuildContext context, GroupsState state) {  },
             builder: (_,state) {
-              if(searchFieldController.text.isEmpty) {
+              if(showMyGroups) {
                 if(BlocProvider.of<UsersBloc>(context).state.me!.groups!.isNotEmpty) {
                   return SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 8),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: BlocProvider.of<UsersBloc>(context).state.me!.groups!.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {
-                              if (widget.onTap != null) {
-                                widget.onTap!(BlocProvider.of<UsersBloc>(context).state.me!.groups![index]);
-                              } else {
-                                context.pushNamed(
-                                  'user-profile',
-                                  pathParameters: {
-                                    'userId': BlocProvider.of<UsersBloc>(context).state.me!.groups![index].id
-                                        .toString() ?? '',
-                                  },
-                                );
-                              }
-                            },
-                            leading: BlocProvider.of<UsersBloc>(context).state.me!.groups![index].picturePath != null
-                                ? CachedImageWidget(
-                              borderRadius: BorderRadius.circular(16),
-                              imageUrl: BlocProvider.of<UsersBloc>(context).state.me!.groups![index].picturePath ??
-                                  '',
+                    physics: const ClampingScrollPhysics(),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 8),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: BlocProvider.of<UsersBloc>(context).state.me!.groups!.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            if (widget.onTap != null) {
+                              widget.onTap!(BlocProvider.of<UsersBloc>(context).state.me!.groups![index]);
+                            } else {
+                              context.pushNamed(
+                                'user-profile',
+                                pathParameters: {
+                                  'userId': BlocProvider.of<UsersBloc>(context).state.me!.groups![index].id
+                                      .toString() ?? '',
+                                },
+                              );
+                            }
+                          },
+                          leading: BlocProvider.of<UsersBloc>(context).state.me!.groups![index].picturePath != null
+                              ? CachedImageWidget(
+                            borderRadius: BorderRadius.circular(16),
+                            imageUrl: BlocProvider.of<UsersBloc>(context).state.me!.groups![index].picturePath ??
+                                '',
+                            height: 50,
+                            width: 50,
+                          )
+                              : ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: SvgPicture.asset(
+                              'lib/assets/images/avatar.svg',
                               height: 50,
                               width: 50,
-                            )
-                                : ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: SvgPicture.asset(
-                                'lib/assets/images/avatar.svg',
-                                height: 50,
-                                width: 50,
-                              ),
                             ),
-                            title: Text(
-                                BlocProvider.of<UsersBloc>(context).state.me!.groups![index].name ?? '',
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .titleMedium
-                            ),
-                            subtitle: Text(
-                              BlocProvider.of<UsersBloc>(context).state.me!.groups![index].description ?? '',
-                              maxLines: 1,
-                            ),
-                          );
-                        },
-                      )
+                          ),
+                          title: Text(
+                              BlocProvider.of<UsersBloc>(context).state.me!.groups![index].name ?? '',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium
+                          ),
+                          subtitle: Text(
+                            BlocProvider.of<UsersBloc>(context).state.me!.groups![index].description ?? '',
+                            maxLines: 1,
+                          ),
+                        );
+                      },
+                    )
                   );
                 } else {
                   return WarningCard(
