@@ -117,9 +117,6 @@ class _CommentSheetState extends State<CommentSheet> {
                         listener: (context, state) {
                           if(state is PostCommentDone || state is PostCommentResponseDone){
                             commentController.clear();
-                            BlocProvider.of<DropsBloc>(context).add(GetDrop({
-                              'id': widget.dropId
-                            }));
                             snackBarWidget(
                               message: AppLocalizations.of(context)!.commentSent,
                               context: context
