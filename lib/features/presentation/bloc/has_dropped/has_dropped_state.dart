@@ -9,6 +9,8 @@ abstract class HasDroppedState extends Equatable {
   List<Object> get props => [];
 }
 
+class HasDroppedWebSocketReconnecting extends HasDroppedState {}
+
 class HasDroppedWebSocketInitial extends HasDroppedState {}
 
 class HasDroppedWebSocketMessageState extends HasDroppedState {

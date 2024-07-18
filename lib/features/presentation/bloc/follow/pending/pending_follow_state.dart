@@ -10,6 +10,8 @@ abstract class PendingFollowState extends Equatable {
   List<Object> get props => [];
 }
 
+class PendingFollowWebSocketReconnecting extends PendingFollowState {}
+
 class PendingFollowWebSocketInitial extends PendingFollowState {}
 
 class PendingFollowWebSocketMessageState extends PendingFollowState {

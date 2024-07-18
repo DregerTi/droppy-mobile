@@ -1,3 +1,7 @@
+import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
+import 'package:droppy/features/presentation/bloc/feed/feed_event.dart';
+import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
+import 'package:droppy/features/presentation/bloc/has_dropped/has_dropped_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +10,8 @@ import '../../../../config/theme/widgets/text.dart';
 import '../../../data/models/user.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
+import '../../bloc/follow/pending/pending_follow_event.dart';
+import '../../bloc/has_dropped/has_dropped_event.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_state.dart';
 import '../../widgets/atoms/list_items_widget.dart';
@@ -130,5 +136,8 @@ class PreferencesView extends StatelessWidget {
 
 void _signOut(BuildContext context) {
   BlocProvider.of<AuthBloc>(context).add(const SignOut());
-  context.go('/');
+  BlocProvider.of<FeedBloc>(context).add(WebSocketDisconnect());
+  BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketDisconnect());
+  BlocProvider.of<PendingFollowBloc>(context).add(PendingFollowWebSocketDisconnect());
+  context.go('/sign-in');
 }

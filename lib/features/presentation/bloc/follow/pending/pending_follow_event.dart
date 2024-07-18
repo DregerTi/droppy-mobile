@@ -7,6 +7,8 @@ abstract class PendingFollowEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class PendingFollowWebSocketReconnect extends PendingFollowEvent {}
+
 class PendingFollowWebSocketConnect extends PendingFollowEvent {}
 
 class PendingFollowWebSocketSendMessage extends PendingFollowEvent {

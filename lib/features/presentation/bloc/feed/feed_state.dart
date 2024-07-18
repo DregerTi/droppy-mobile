@@ -11,6 +11,8 @@ abstract class FeedState extends Equatable {
   List<Object> get props => [];
 }
 
+class WebSocketReconnecting extends FeedState {}
+
 class WebSocketInitial extends FeedState {}
 
 class WebSocketMessageState extends FeedState {

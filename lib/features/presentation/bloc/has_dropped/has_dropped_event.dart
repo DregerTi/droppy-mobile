@@ -7,6 +7,8 @@ abstract class HasDroppedEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class HasDroppedWebSocketReconnect extends HasDroppedEvent {}
+
 class HasDroppedWebSocketConnect extends HasDroppedEvent {}
 
 class HasDroppedWebSocketSendMessage extends HasDroppedEvent {
