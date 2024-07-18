@@ -89,8 +89,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   void onWebSocketDisconnect(WebSocketDisconnect event, Emitter<FeedState> emit) {
     retry = false;
     _channel.sink.close();
-    print('feedClose');
-    print(_channel.closeReason);
     emit(WebSocketDisconnected());
   }
 

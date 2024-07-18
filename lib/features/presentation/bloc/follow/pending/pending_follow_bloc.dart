@@ -78,8 +78,6 @@ class PendingFollowBloc extends Bloc<PendingFollowEvent, PendingFollowState> {
   void onPendingFollowWebSocketDisconnect(PendingFollowWebSocketDisconnect event, Emitter<PendingFollowState> emit) {
     retry = false;
     _channel.sink.close();
-    print('pendingFollowClose');
-    print(_channel.closeReason);
     emit(PendingFollowWebSocketDisconnected());
   }
 

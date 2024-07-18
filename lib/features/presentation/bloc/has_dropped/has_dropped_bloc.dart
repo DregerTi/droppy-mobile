@@ -71,8 +71,6 @@ class HasDroppedBloc extends Bloc<HasDroppedEvent, HasDroppedState> {
   void onHasDroppedWebSocketDisconnect(HasDroppedWebSocketDisconnect event, Emitter<HasDroppedState> emit) {
     retry = false;
     _channel.sink.close();
-    print('hasDropedClose');
-    print(_channel.closeReason);
     emit(HasDroppedWebSocketDisconnected());
   }
 
