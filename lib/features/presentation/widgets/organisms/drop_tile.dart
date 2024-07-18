@@ -159,7 +159,8 @@ class DropTileWidget extends StatelessWidget {
                                 } else {
                                   snackBarWidget(
                                     message: 'Could not launch link',
-                                    context: context
+                                    context: context,
+                                    type: 'error',
                                   );
                                 }
                               },
