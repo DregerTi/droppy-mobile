@@ -199,7 +199,7 @@ class _AddDropViewState extends State<AddDropView> {
                                       const SizedBox(height: 16),
                                       Row(
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             width: MediaQuery.of(context).size.width - 56,
                                             child: Text(
                                               description ?? '',
@@ -221,33 +221,33 @@ class _AddDropViewState extends State<AddDropView> {
                                         });
                                       });
                                     },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width - 56,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          if(content?.picturePath != null) CachedImageWidget(
-                                            width: 56,
-                                            height: 56,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        if(content?.picturePath != null) CachedImageWidget(
+                                          width: 56,
+                                          height: 56,
+                                          borderRadius: BorderRadius.circular(16),
+                                          imageUrl: content?.picturePath ?? '',
+                                        ) else Container(
+                                          width: 56,
+                                          height: 56,
+                                          decoration: BoxDecoration(
+                                            color: surfaceColor,
                                             borderRadius: BorderRadius.circular(16),
-                                            imageUrl: content?.picturePath ?? '',
-                                          ) else Container(
-                                            width: 56,
-                                            height: 56,
-                                            decoration: BoxDecoration(
-                                              color: surfaceColor,
-                                              borderRadius: BorderRadius.circular(16),
-                                            ),
-                                            child: const Center(
-                                              child: Icon(
-                                                Icons.add_rounded,
-                                                color: onPrimaryColor,
-                                              ),
+                                          ),
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.add_rounded,
+                                              color: onPrimaryColor,
                                             ),
                                           ),
-                                          const SizedBox(width: 12),
-                                          Column(
+                                        ),
+                                        const SizedBox(width: 12),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width - 56 - 12 - 26 - 26,
+                                          child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
@@ -257,15 +257,15 @@ class _AddDropViewState extends State<AddDropView> {
                                                 overflow : TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                content?.subtitle ?? '',
+                                                content?.subtitle ?? ' dshjk fjghkshfhkj dhkjfhdjhfjhkdfkjhdkhjfkhdjfkjhdkjhfkhjd hkfj kjhd khfjkhjdk hfjdkhjf khdhkf khdkhfhdkhjfh djkfjdhjkfjkd fhdjk hfjkd jkfhdkfjhdfh k',
                                                 style: textTheme.bodySmall,
                                                 maxLines : 2,
                                                 overflow : TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ],
