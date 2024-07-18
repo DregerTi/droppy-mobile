@@ -24,7 +24,7 @@ abstract class FollowApiService {
     @Path("id") required int id,
   });
 
-  @DELETE("/follows/refuse/{id}")
+  @POST("/follows/reject/{id}")
   Future<HttpResponse<Map<String, dynamic>>> refuseFollow({
     @Path("id") required int id,
   });

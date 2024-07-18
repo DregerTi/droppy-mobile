@@ -116,13 +116,13 @@ class _FollowApiService implements FollowApiService {
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<Map<String, dynamic>>>(Options(
-      method: 'DELETE',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/follows/refuse/${id}',
+              '/follows/reject/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
