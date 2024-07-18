@@ -257,7 +257,7 @@ class _AddDropViewState extends State<AddDropView> {
                                                 overflow : TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                content?.subtitle ?? ' dshjk fjghkshfhkj dhkjfhdjhfjhkdfkjhdkhjfkhdjfkjhdkjhfkhjd hkfj kjhd khfjkhjdk hfjdkhjf khdhkf khdkhfhdkhjfh djkfjdhjkfjkd fhdjk hfjkd jkfhdkfjhdfh k',
+                                                content?.subtitle ?? '',
                                                 style: textTheme.bodySmall,
                                                 maxLines : 2,
                                                 overflow : TextOverflow.ellipsis,
@@ -309,6 +309,18 @@ class _AddDropViewState extends State<AddDropView> {
 
                       snackBarWidget(
                         message: AppLocalizations.of(context)!.descriptionBetween5And120CharactersOrEmpty,
+                        context: context,
+                        type: 'error',
+                      );
+
+                      setState(() {
+                        isValide = false;
+                      });
+                    }
+
+                    if(address.isEmpty){
+                      snackBarWidget(
+                        message: 'Veuillez sélectionner une localisation',
                         context: context,
                         type: 'error',
                       );
