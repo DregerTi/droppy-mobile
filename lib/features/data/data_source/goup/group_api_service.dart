@@ -8,7 +8,7 @@ import '../../models/group_member.dart';
 
 part 'group_api_service.g.dart';
 
-@RestApi(baseUrl:apiBaseUrl)
+@RestApi(baseUrl: apiBaseUrl)
 abstract class GroupApiService {
   factory GroupApiService(Dio dio) = _GroupApiService;
 
@@ -53,5 +53,17 @@ abstract class GroupApiService {
   @GET("/groups/{id}/feed")
   Future<HttpResponse<GroupModel?>> getGroupFeed({
     @Path("id") required int id,
+  });
+
+  @PATCH("/groups/members/{groupId}/{memberId}")
+  Future<HttpResponse<GroupMemberModel>> setManager({
+    @Path("groupId") required int groupId,
+    @Path("memberId") required int memberId,
+  });
+
+  @PATCH("/groups/members/{groupId}/{memberId}")
+  Future<HttpResponse<GroupMemberModel>> removeManager({
+    @Path("groupId") required int groupId,
+    @Path("memberId") required int memberId,
   });
 }

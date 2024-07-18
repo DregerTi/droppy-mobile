@@ -13,9 +13,11 @@ class GroupRepositoryImpl implements GroupRepository {
   GroupRepositoryImpl(this._groupApiService);
 
   @override
-  Future<DataState<List<GroupModel?>?>> getGroups(Map<String, dynamic> params) async {
+  Future<DataState<List<GroupModel?>?>> getGroups(
+      Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.getGroups(search: params['search']);
+      final httpResponse =
+          await _groupApiService.getGroups(search: params['search']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
@@ -51,7 +53,6 @@ class GroupRepositoryImpl implements GroupRepository {
         );
       }
     } on DioException catch (e) {
-
       return DataFailed(e);
     }
   }
@@ -59,7 +60,8 @@ class GroupRepositoryImpl implements GroupRepository {
   @override
   Future<DataState<GroupModel>> patchGroup(Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.patchGroup(id: params['id'], group: params['group']);
+      final httpResponse = await _groupApiService.patchGroup(
+          id: params['id'], group: params['group']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
@@ -79,9 +81,11 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<DataState<GroupMemberEntity>> postGroupJoin(Map<String, dynamic> params) async {
+  Future<DataState<GroupMemberEntity>> postGroupJoin(
+      Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.postGroupJoin(id: params['id']);
+      final httpResponse =
+          await _groupApiService.postGroupJoin(id: params['id']);
 
       if (httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse.data);
@@ -101,9 +105,11 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<DataState<Map<String, dynamic>>> leaveGroup(Map<String, dynamic> params) async {
+  Future<DataState<Map<String, dynamic>>> leaveGroup(
+      Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.leaveGroup(id: params['id'], memberId: params['memberId']);
+      final httpResponse = await _groupApiService.leaveGroup(
+          id: params['id'], memberId: params['memberId']);
 
       if (httpResponse.response.statusCode == HttpStatus.noContent) {
         return DataSuccess(httpResponse.data);
@@ -123,9 +129,11 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<DataState<GroupMemberEntity>> postGroupMember(Map<String, dynamic> params) async {
+  Future<DataState<GroupMemberEntity>> postGroupMember(
+      Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.postGroupMember(id: params['id'], memberId: params['memberId']);
+      final httpResponse = await _groupApiService.postGroupMember(
+          id: params['id'], memberId: params['memberId']);
 
       if (httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse.data);
@@ -167,9 +175,59 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<DataState<GroupModel?>> getGroupFeed(Map<String, dynamic> params) async {
+  Future<DataState<GroupModel?>> getGroupFeed(
+      Map<String, dynamic> params) async {
     try {
-      final httpResponse = await _groupApiService.getGroupFeed(id: params['id']);
+      final httpResponse =
+          await _groupApiService.getGroupFeed(id: params['id']);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupMemberEntity>> setManager(
+      Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.setManager(
+          groupId: params['groupId'], memberId: params['memberId']);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<GroupMemberEntity>> removeManager(
+      Map<String, dynamic> params) async {
+    try {
+      final httpResponse = await _groupApiService.removeManager(
+          groupId: params['groupId'], memberId: params['memberId']);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
