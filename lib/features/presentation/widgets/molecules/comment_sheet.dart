@@ -84,6 +84,7 @@ class _CommentSheetState extends State<CommentSheet> {
                             commentId: widget.comments![index].id,
                             commentResponses: widget.comments![index].commentResponses,
                             dropId: widget.dropId,
+                            createdAt: widget.comments![index].createdAt,
                           );
                         }),
                       ),

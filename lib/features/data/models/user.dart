@@ -21,7 +21,8 @@ class UserModel extends UserEntity {
     List<GroupModel> ? groups,
     int? totalDrops,
     FollowModel ? currentFollow,
-    bool ? isPrivate
+    bool ? isPrivate,
+    String ? createdAt
   }) : super(
     id: id,
     email: email,
@@ -39,7 +40,8 @@ class UserModel extends UserEntity {
     groups: groups,
     totalDrops: totalDrops,
     currentFollow: currentFollow,
-    isPrivate: isPrivate
+    isPrivate: isPrivate,
+    createdAt: createdAt
   );
   
   factory UserModel.fromJson(Map<String, dynamic >map) {
@@ -60,7 +62,8 @@ class UserModel extends UserEntity {
       groups: map['Groups'] != null ? (map['Groups'] as List).map((e) => GroupModel.fromJson(e)).toList() : [],
       totalDrops: map['TotalDrops'] ?? 0,
       currentFollow: map['CurrentFollow'] != null ? FollowModel.fromJson(map['CurrentFollow']) : null,
-      isPrivate: map['IsPrivate'] ?? false
+      isPrivate: map['IsPrivate'] ?? false,
+      createdAt: map['CreatedAt'] ?? "18/07/2021"
     );
   }
 
@@ -82,7 +85,8 @@ class UserModel extends UserEntity {
       groups: entity.groups,
       totalDrops: entity.totalDrops,
       currentFollow: entity.currentFollow,
-      isPrivate: entity.isPrivate
+      isPrivate: entity.isPrivate,
+      createdAt: entity.createdAt
     );
   }
 }

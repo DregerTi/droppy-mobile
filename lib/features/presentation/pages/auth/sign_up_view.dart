@@ -74,16 +74,6 @@ Widget _buildBody(context) {
                             );
                           },
                         ),
-                        const SizedBox(width: 16),
-                        IconButton(
-                          padding: const EdgeInsets.all(12),
-                          icon: SvgPicture.asset(
-                            'lib/assets/images/apple.svg',
-                            width: 34,
-                            height: 34,
-                          ),
-                          onPressed: () {},
-                        ),
                       ],
                     ),
                   )

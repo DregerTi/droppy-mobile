@@ -22,6 +22,7 @@ class UserEntity extends Equatable {
   final int ? totalDrops;
   final FollowModel ? currentFollow;
   final bool ? isPrivate;
+  final String ? createdAt;
 
   const UserEntity({
     this.id,
@@ -40,7 +41,8 @@ class UserEntity extends Equatable {
     this.groups,
     this.totalDrops,
     this.currentFollow,
-    this.isPrivate
+    this.isPrivate,
+    this.createdAt
   });
 
   @override
@@ -62,7 +64,8 @@ class UserEntity extends Equatable {
       groups,
       totalDrops,
       currentFollow,
-      isPrivate
+      isPrivate,
+      createdAt
     ];
   }
 }
