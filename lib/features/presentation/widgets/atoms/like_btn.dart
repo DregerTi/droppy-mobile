@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../config/theme/color.dart';
 import '../../../../injection_container.dart';
+import '../../bloc/drop/drop_bloc.dart';
+import '../../bloc/drop/drop_event.dart';
 import '../../bloc/like/like_bloc.dart';
 import '../../bloc/like/like_event.dart';
 import '../../bloc/like/like_state.dart';
@@ -26,7 +28,8 @@ class _LikeBtnState extends State<LikeBtn> {
     return BlocProvider<LikesBloc>(
       create: (context) => sl(),
       child: BlocConsumer<LikesBloc, LikesState>(
-        listener: (context, state){},
+        listener: (context, state){
+        },
         builder: (context, state) {
           bool isLiked = widget.isLiked;
 

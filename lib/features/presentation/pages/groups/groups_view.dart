@@ -74,25 +74,12 @@ class _GroupsViewState extends State<GroupsView> {
                   leadingOnPressed: () {
                     context.pushNamed('add-group');
                   },
+                  title: AppLocalizations.of(context)!.groups,
                   mainActionIcon: const Icon(Icons.notifications_rounded),
                   isMainActionActive: true,
                   mainActionOnPressed: () {
                     context.pushNamed('notification');
                   },
-                ),
-                Positioned(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 38),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.groups,
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),

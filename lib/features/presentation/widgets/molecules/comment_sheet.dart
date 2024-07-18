@@ -9,6 +9,8 @@ import '../../../../../config/theme/color.dart';
 import '../../../../injection_container.dart';
 import '../../../data/models/comment.dart';
 import '../../bloc/comment/comment_event.dart';
+import '../../bloc/drop/drop_bloc.dart';
+import '../../bloc/drop/drop_event.dart';
 import '../atoms/comment.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -61,8 +63,6 @@ class _CommentSheetState extends State<CommentSheet> {
                       physics: const ClampingScrollPhysics(),
                       child: Column(
                         children: List.generate(widget.comments!.length, (index) {
-                          print(widget.comments![index]);
-                          print('jkjjjjkjkkj');
                           return Comment(
                             onTap: () {
                               context.pushNamed(
@@ -117,6 +117,9 @@ class _CommentSheetState extends State<CommentSheet> {
                         listener: (context, state) {
                           if(state is PostCommentDone || state is PostCommentResponseDone){
                             commentController.clear();
+                            BlocProvider.of<DropsBloc>(context).add(GetDrop({
+                              'id': widget.dropId
+                            }));
                             snackBarWidget(
                               message: AppLocalizations.of(context)!.commentSent,
                               context: context

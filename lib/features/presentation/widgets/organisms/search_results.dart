@@ -44,10 +44,10 @@ class SearchResults extends StatelessWidget {
                 Icons.my_location,
                 color: onSurfaceColor,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 AppLocalizations.of(context)!.useCurrentLocation,
-                style: TextStyle(
+                style: const TextStyle(
                   color: onSurfaceColor,
                 ),
               ),

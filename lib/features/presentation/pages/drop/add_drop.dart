@@ -215,7 +215,6 @@ class _AddDropViewState extends State<AddDropView> {
                                   const SizedBox(height: 20),
                                   GestureDetector(
                                     onTap: () {
-                                      print('open content sheet');
                                       _openContentSheet(context, (value) {
                                         setState(() {
                                           content = value;
@@ -411,7 +410,6 @@ class _AddDropViewState extends State<AddDropView> {
   }
 
   void _openContentSheet(context, setContent){
-    print('open content sddheet');
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       barrierColor: Colors.transparent,
@@ -428,7 +426,6 @@ class _AddDropViewState extends State<AddDropView> {
   }
 
   void _openDescriptionSheet(context, setDescription, description){
-    print('open description sheet');
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
