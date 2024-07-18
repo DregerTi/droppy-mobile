@@ -30,19 +30,20 @@ class DropTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial){
       BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketConnect());
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height - 76,
+      height: MediaQuery.of(context).size.height,
       child: Stack(
         children: [
           CachedImageWidget(
             borderRadius: BorderRadius.circular(46),
             imageUrl: drop!.picturePath ?? "https://i.pinimg.com/originals/48/5f/4f/485f4f34c6074ad220612c1c908d8523.jpg",
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 76,
+            height: MediaQuery.of(context).size.height,
           ),
           Positioned(
             bottom: 0,
@@ -162,7 +163,7 @@ class DropTileWidget extends StatelessWidget {
                                   );
                                 }
                               },
-                              child: Container(
+                              child: SizedBox(
                                 width: MediaQuery.of(context).size.width - 126,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,14 +220,11 @@ class DropTileWidget extends StatelessWidget {
                                     },
                                   ),
                                 },
-                                child: (drop!.user!.avatar != null) ? GestureDetector(
-                                  onTap: () => {},
-                                  child: CachedImageWidget(
-                                    imageUrl: drop!.user!.avatar ?? '',
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: BorderRadius.circular(12),
-                                  )
+                                child: (drop!.user!.avatar != null) ? CachedImageWidget(
+                                  imageUrl: drop!.user!.avatar ?? '',
+                                  width: 30,
+                                  height: 30,
+                                  borderRadius: BorderRadius.circular(12),
                                 ) : ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: SvgPicture.asset(
