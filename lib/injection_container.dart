@@ -10,6 +10,8 @@ import 'package:droppy/features/domain/usecases/drop/patch_drop.dart';
 import 'package:droppy/features/domain/usecases/group/get_group_feed.dart';
 import 'package:droppy/features/domain/usecases/group/get_groups.dart';
 import 'package:droppy/features/domain/usecases/group_member/leave_group.dart';
+import 'package:droppy/features/domain/usecases/group_member/remove_manager.dart';
+import 'package:droppy/features/domain/usecases/group_member/set_manager.dart';
 import 'package:droppy/features/presentation/bloc/content/content_bloc.dart';
 import 'package:droppy/features/presentation/bloc/feed/feed_bloc.dart';
 import 'package:droppy/features/presentation/bloc/follow/pending/pending_follow_bloc.dart';
@@ -93,13 +95,12 @@ import 'features/presentation/bloc/user/user_bloc.dart';
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
-
   final localHttpOverrides = LocalHttpOverrides();
   final dio = await localHttpOverrides.withAuthInterceptor();
   sl.registerSingleton<Dio>(dio);
 
   sl.registerFactory<LangBloc>(
-        () => LangBloc(),
+    () => LangBloc(),
   );
 
   sl.registerSingleton<DropApiService>(DropApiService(sl()));
@@ -130,14 +131,18 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<LeaveGroupUseCase>(LeaveGroupUseCase(sl()));
   sl.registerSingleton<PostGroupJoinUseCase>(PostGroupJoinUseCase(sl()));
   sl.registerSingleton<PostGroupMemberUseCase>(PostGroupMemberUseCase(sl()));
+  sl.registerSingleton<SetManagerUseCase>(SetManagerUseCase(sl()));
+  sl.registerSingleton<RemoveManagerUseCase>(RemoveManagerUseCase(sl()));
   sl.registerFactory<GroupMembersBloc>(
-    () => GroupMembersBloc(sl(), sl(), sl()),
+    () => GroupMembersBloc(sl(), sl(), sl(), sl(), sl()),
   );
 
-
-  sl.registerSingleton<CommentResponseApiService>(CommentResponseApiService(sl()));
-  sl.registerSingleton<CommentResponseRepository>(CommentResponseRepositoryImpl(sl()));
-  sl.registerSingleton<PostCommentResponseUseCase>(PostCommentResponseUseCase(sl()));
+  sl.registerSingleton<CommentResponseApiService>(
+      CommentResponseApiService(sl()));
+  sl.registerSingleton<CommentResponseRepository>(
+      CommentResponseRepositoryImpl(sl()));
+  sl.registerSingleton<PostCommentResponseUseCase>(
+      PostCommentResponseUseCase(sl()));
 
   sl.registerSingleton<CommentApiService>(CommentApiService(sl()));
   sl.registerSingleton<CommentRepository>(CommentRepositoryImpl(sl()));
@@ -150,7 +155,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<ReportRepository>(ReportRepositoryImpl(sl()));
   sl.registerSingleton<PostReportUseCase>(PostReportUseCase(sl()));
   sl.registerFactory<ReportsBloc>(
-        () => ReportsBloc(sl()),
+    () => ReportsBloc(sl()),
   );
 
   sl.registerSingleton<LikeApiService>(LikeApiService(sl()));
@@ -182,23 +187,19 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AuthenticateUseCase>(AuthenticateUseCase(sl()));
   sl.registerSingleton<SignOutUseCase>(SignOutUseCase(sl()));
   sl.registerSingleton<RefreshTokenUseCase>(RefreshTokenUseCase(sl()));
-  sl.registerFactory<AuthBloc>(
-    () => AuthBloc(sl(), sl(), sl())
-  );
+  sl.registerFactory<AuthBloc>(() => AuthBloc(sl(), sl(), sl()));
 
   sl.registerSingleton<AuthOAuthTokenUseCase>(AuthOAuthTokenUseCase(sl()));
-  sl.registerFactory<OAuthBloc>(
-    () => OAuthBloc(sl())
-  );
+  sl.registerFactory<OAuthBloc>(() => OAuthBloc(sl()));
 
   sl.registerSingleton<PlaceSearchApiService>(PlaceSearchApiService(sl()));
   sl.registerSingleton<PlaceSearchRepository>(PlaceSearchRepositoryImpl(sl()));
-  sl.registerSingleton<GetPlaceAutocompleteUseCase>(GetPlaceAutocompleteUseCase(sl()));
+  sl.registerSingleton<GetPlaceAutocompleteUseCase>(
+      GetPlaceAutocompleteUseCase(sl()));
   sl.registerSingleton<GetPlaceDetailsUseCase>(GetPlaceDetailsUseCase(sl()));
-  sl.registerSingleton<GetPlaceReverseGeocodingUseCase>(GetPlaceReverseGeocodingUseCase(sl()));
-  sl.registerFactory<PlaceSearchBloc>(
-    () => PlaceSearchBloc(sl(), sl(), sl())
-  );
+  sl.registerSingleton<GetPlaceReverseGeocodingUseCase>(
+      GetPlaceReverseGeocodingUseCase(sl()));
+  sl.registerFactory<PlaceSearchBloc>(() => PlaceSearchBloc(sl(), sl(), sl()));
 
   sl.registerSingleton<FollowApiService>(FollowApiService(sl()));
   sl.registerSingleton<FollowRepository>(FollowRepositoryImpl(sl()));
@@ -206,32 +207,19 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<DeleteFollowUseCase>(DeleteFollowUseCase(sl()));
   sl.registerSingleton<AcceptFollowUseCase>(AcceptFollowUseCase(sl()));
   sl.registerSingleton<RefuseFollowUseCase>(RefuseFollowUseCase(sl()));
-  sl.registerFactory<FollowsBloc>(
-    () => FollowsBloc(sl(), sl(), sl(), sl())
-  );
+  sl.registerFactory<FollowsBloc>(() => FollowsBloc(sl(), sl(), sl(), sl()));
 
   sl.registerSingleton<ContentApiService>(ContentApiService(sl()));
   sl.registerSingleton<ContentRepository>(ContentRepositoryImpl(sl()));
   sl.registerSingleton<SearchContentUseCase>(SearchContentUseCase(sl()));
-  sl.registerFactory<ContentBloc>(
-    () => ContentBloc(sl())
-  );
+  sl.registerFactory<ContentBloc>(() => ContentBloc(sl()));
 
   sl.registerSingleton<GetGroupFeedUseCase>(GetGroupFeedUseCase(sl()));
-  sl.registerFactory<GroupFeedBloc>(
-    () => GroupFeedBloc(sl())
-  );
+  sl.registerFactory<GroupFeedBloc>(() => GroupFeedBloc(sl()));
 
-  sl.registerFactory<FeedBloc>(
-    () => FeedBloc()
-  );
+  sl.registerFactory<FeedBloc>(() => FeedBloc());
 
-  sl.registerFactory<PendingFollowBloc>(
-    () => PendingFollowBloc()
-  );
+  sl.registerFactory<PendingFollowBloc>(() => PendingFollowBloc());
 
-  sl.registerFactory<HasDroppedBloc>(
-    () => HasDroppedBloc()
-  );
+  sl.registerFactory<HasDroppedBloc>(() => HasDroppedBloc());
 }
-
