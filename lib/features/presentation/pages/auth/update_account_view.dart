@@ -67,7 +67,7 @@ class _UpdateAccountViewState extends State<UpdateAccountView> {
           SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

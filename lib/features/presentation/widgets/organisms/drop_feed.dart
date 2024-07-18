@@ -51,14 +51,14 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+          height: MediaQuery.of(context).size.height - 76,
           child: Stack(
             children: [
               if (feed.isNotEmpty) ListWheelScrollView(
                 controller: fixedExtentScrollController,
                 physics: const FixedExtentScrollPhysics(),
                 overAndUnderCenterOpacity: 0,
-                itemExtent: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50,
+                itemExtent: MediaQuery.of(context).size.height - 76,
                 children: feed.map((drop) {
                   return DropTileWidget(
                     drop: drop,
@@ -69,7 +69,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                 }).toList()
               ),
               if (feed.isEmpty) Container(
-                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+                height: MediaQuery.of(context).size.height - 76,
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,7 +144,7 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                                 onTap: () {
                                   if (widget.group != null) {
                                     context.pushNamed(
-                                      AppLocalizations.of(context)!.groups,
+                                      'group',
                                       pathParameters: {
                                         'groupId': widget.group!.id.toString()
                                       }

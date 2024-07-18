@@ -105,14 +105,6 @@ class _AddressPickerState extends State<AddressPicker> {
           alignPositionStreamController: alignPositionStreamController.stream,
           alignPositionOnUpdate: alignPositionOnUpdate,
           onMapReady: (evt){
-            draggableScrollableController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.ease
-            );
-            setState(() {
-              activeElement = 'main';
-            });
             if (evt is MapEventMoveEnd) {
               BlocProvider.of<PlaceSearchBloc>(context).add(GetPlaceReverseGeocoding({
                 'latlng': '${evt.camera.center.latitude},${evt.camera.center.longitude}',
@@ -156,7 +148,7 @@ class _AddressPickerState extends State<AddressPicker> {
         ),
 
         Positioned(
-          bottom: 210,
+          bottom: 200,
           left: 0,
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -190,11 +182,11 @@ class _AddressPickerState extends State<AddressPicker> {
           left: 0,
           right: 0,
           child: Container(
-            height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
+            height: MediaQuery.of(context).size.height,
             padding: devicePadding,
             child:DraggableScrollableSheet(
-              minChildSize: 0.30,
-              initialChildSize: 0.30,
+              minChildSize: 0.36,
+              initialChildSize: 0.36,
               snapAnimationDuration: const Duration(milliseconds: 9000),
               controller: draggableScrollableController,
               builder: (context, scrollController) => Container(
@@ -230,7 +222,7 @@ class _AddressPickerState extends State<AddressPicker> {
                       ),
                       floating: false,
                       pinned: true,
-                      expandedHeight: activeElement == 'main' ? 122 : 0,
+                      expandedHeight: activeElement == 'main' ? 200 : 100,
                       flexibleSpace: LayoutBuilder(
                         builder: (BuildContext context, BoxConstraints constraints) {
                           return _searchHeader(context, debounce, searchFieldController);

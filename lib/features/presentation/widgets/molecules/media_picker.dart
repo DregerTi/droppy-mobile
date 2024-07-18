@@ -138,19 +138,16 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      children: [
-        Visibility(
-          visible: activeElement == 'main',
-          child: _openImagePickerButton(),
-        ),
-        Visibility(
-          visible: activeElement == 'medias',
-          child: _imagePicker(),
-        ),
-      ]
+    return SizedBox(
+      child:(activeElement == 'main')
+        ? Visibility(
+        visible: activeElement == 'main',
+        child: _openImagePickerButton(),
+      ) : Visibility(
+        visible: activeElement == 'medias',
+        child: _imagePicker(),
+      ),
     );
-
   }
 
   Widget _openImagePickerButton() {
@@ -160,7 +157,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
         Container(
           padding: EdgeInsets.only(top: !widget.lite ? 0 : 0),
           width: !widget.lite ? MediaQuery.of(context).size.width : 56,
-          height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
+          height: !widget.lite ? MediaQuery.of(context).size.height - 50 : 56,
           child: ListView.builder(
             shrinkWrap: true,
             controller: previwScrollController,
@@ -181,7 +178,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                           widget.setActiveElement('medias');
                         },
                         child: Container(
-                          height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
+                          height: !widget.lite ? MediaQuery.of(context).size.height - 50 : 56,
                           width: !widget.lite ? MediaQuery.of(context).size.width : 56,
                           decoration: BoxDecoration(
                             color: (widget.isPostDrop != null && widget.isPostDrop! == true) ? onBackgroundColor : surfaceColor,
@@ -215,7 +212,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                     Positioned(
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: !widget.lite ? 0 : 0,),
-                        height: !widget.lite ? MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 50 : 56,
+                        height: !widget.lite ? MediaQuery.of(context).size.height - 50 : 56,
                         width: !widget.lite ? MediaQuery.of(context).size.width : 56,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular((widget.isPostDrop != null && widget.isPostDrop! == true) ? 46 : 16),

@@ -153,7 +153,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                             children: [
                               SizedBox(
                                 width: activeElement == 'main' ? 56 : MediaQuery.of(context).size.width,
-                                height: activeElement == 'main' ? 56 : MediaQuery.of(context).size.height,
+                                height: activeElement == 'main' ? 56 : MediaQuery.of(context).size.height - kBottomNavigationBarHeight,
                                 child: MediaPickerWidget(
                                   lite: true,
                                   maxMedias: 1,

@@ -48,20 +48,15 @@ class _AddDropViewState extends State<AddDropView> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            _buildForm(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          _buildForm(),
+        ],
       ),
     );
   }
 
   Widget _buildForm(){
-
-    final FixedExtentScrollController fixedExtentScrollController = FixedExtentScrollController();
 
     return MultiBlocProvider(
       providers: [
@@ -71,11 +66,11 @@ class _AddDropViewState extends State<AddDropView> {
       ],
       child: SafeArea(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+          height: MediaQuery.of(context).size.height - 76,
           child: Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+                height: MediaQuery.of(context).size.height - 76,
                 decoration: BoxDecoration(
                   color: (activeElement == 'main') ? onBackgroundColor : backgroundColor,
                   borderRadius: BorderRadius.circular(46),
@@ -83,7 +78,7 @@ class _AddDropViewState extends State<AddDropView> {
                 child: Stack(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+                      height: MediaQuery.of(context).size.height - 76,
                       width: MediaQuery.of(context).size.width,
                       child: MediaPickerWidget(
                         isPostDrop: true,

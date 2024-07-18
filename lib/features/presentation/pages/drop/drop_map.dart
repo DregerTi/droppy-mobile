@@ -70,7 +70,7 @@ class _DropMapState extends State<DropMap> {
 
   Widget _buildBody(BuildContext context){
     return SizedBox(
-      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+      height: MediaQuery.of(context).size.height - 50,
       child: Stack(
         children: [
           MapWidget(

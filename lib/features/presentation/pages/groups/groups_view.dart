@@ -82,7 +82,7 @@ class _GroupsViewState extends State<GroupsView> {
                 ),
                 Positioned(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 70),
+                    padding: const EdgeInsets.only(top: 38),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

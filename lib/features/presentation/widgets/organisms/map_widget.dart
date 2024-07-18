@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
+import 'package:droppy/config/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -106,7 +107,9 @@ class MapWidget extends StatelessWidget {
                     alignPositionStream: alignPositionStreamController,
                     alignPositionOnUpdate: alignPositionOnUpdate,
                     style: const LocationMarkerStyle(
+                      headingSectorColor: secondaryColor,
                       marker: DefaultLocationMarker(
+                        color: primaryColor,
                         child: Icon(
                           Icons.navigation,
                           color: Colors.white,

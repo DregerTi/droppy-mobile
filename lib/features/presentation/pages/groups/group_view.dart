@@ -69,7 +69,7 @@ class _GroupViewState extends State<GroupView> {
                       );
                     }
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 10,
+                      height: MediaQuery.of(context).size.height - 50,
                       child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
