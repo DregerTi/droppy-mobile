@@ -4,8 +4,11 @@ import 'package:droppy/features/domain/entities/group.dart';
 import 'package:droppy/features/presentation/widgets/atoms/warning_card.dart';
 import 'package:droppy/features/presentation/widgets/molecules/app_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../bloc/has_dropped/has_dropped_bloc.dart';
+import '../../bloc/has_dropped/has_dropped_state.dart';
 import 'drop_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -81,16 +84,27 @@ class _DropFeedWidgetState extends State<DropFeedWidget> {
                       message: AppLocalizations.of(context)!.noDrops,
                       icon: 'empty'
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.pushNamed('add-drop');
+                    BlocConsumer<HasDroppedBloc, HasDroppedState>(
+                      listener: (context, hasDroppedState) {},
+                      builder: (context, hasDroppedState) {
+                        if(hasDroppedState is HasDroppedWebSocketMessageLoadingReceived
+                            || hasDroppedState is HasDroppedWebSocketMessageState
+                                && (hasDroppedState.hasDropped != null
+                                    && hasDroppedState.hasDropped! == false)) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              context.pushNamed('add-drop');
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.postADrop,
+                              style: textTheme.labelMedium?.copyWith(
+                                color: backgroundColor,
+                              ),
+                            ),
+                          );
+                        }
+                        return const SizedBox();
                       },
-                      child: Text(
-                        AppLocalizations.of(context)!.postADrop,
-                        style: textTheme.labelMedium?.copyWith(
-                          color: backgroundColor,
-                        ),
-                      ),
                     ),
                   ],
                 ),
