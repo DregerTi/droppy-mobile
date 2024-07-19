@@ -60,6 +60,7 @@ dependencies:
     git:
       url: https://github.com/DregerTi/flutter_map_marker_cluster.git
       ref: master
+  flutter_local_notifications: ^17.2.1+2
 
 dev_dependencies:
   flutter_test:
