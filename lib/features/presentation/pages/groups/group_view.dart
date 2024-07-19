@@ -135,6 +135,7 @@ class _GroupViewState extends State<GroupView> {
                                   );
 
                                   context.pop();
+                                  context.pop();
                                 }
 
                                 if (state is LeaveGroupError) {
