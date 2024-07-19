@@ -76,6 +76,19 @@ class _GroupViewState extends State<GroupView> {
                 BlocBuilder<GroupsBloc, GroupsState>(
                   builder: (context, state) {
                     if (state is GroupDone) {
+                      final currentUser =
+                          BlocProvider.of<AuthBloc>(context).state.auth?.id;
+                      final groupMembers = state.group?.groupMembers ?? [];
+                      final isManager =
+                          state.group?.createdBy?.id == currentUser ||
+                              groupMembers.any((member) =>
+                                  member.member?.id == currentUser &&
+                                  member.role == 'manager');
+                      final isOwner = state.group?.createdBy?.id == currentUser;
+                      final currentUserManager = groupMembers.any((member) =>
+                          member.member?.id == currentUser &&
+                          member.role == 'manager');
+
                       return SingleChildScrollView(
                         physics: const ClampingScrollPhysics(),
                         child: Column(
@@ -140,76 +153,17 @@ class _GroupViewState extends State<GroupView> {
                               },
                             ),
                             if (state.group?.isPrivate == false ||
-                                state.group!.groupMembers!
-                                    .where((element) =>
-                                        element.member?.id ==
-                                        BlocProvider.of<AuthBloc>(context)
-                                            .state
-                                            .auth
-                                            ?.id)
-                                    .isNotEmpty)
+                                groupMembers.any((element) =>
+                                    element.member?.id == currentUser))
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 24, right: 24, top: 10, bottom: 10),
-                                child: ((state.group!.groupMembers!
-                                                .where((element) =>
-                                                    element.member?.id ==
-                                                    BlocProvider.of<AuthBloc>(
-                                                            context)
-                                                        .state
-                                                        .auth
-                                                        ?.id)
-                                                .isNotEmpty &&
-                                            state.group!.groupMembers!
-                                                    .where((element) =>
-                                                        element.member?.id ==
-                                                        BlocProvider.of<
-                                                                    AuthBloc>(
-                                                                context)
-                                                            .state
-                                                            .auth
-                                                            ?.id)
-                                                    .first
-                                                    .role ==
-                                                'manager') ||
-                                        state.group!.createdBy?.id ==
-                                            BlocProvider.of<AuthBloc>(context)
-                                                .state
-                                                .auth
-                                                ?.id)
+                                child: (isManager || isOwner)
                                     ? ListItemsWidget(
                                         title: AppLocalizations.of(context)!
                                             .members,
                                         children: [
-                                          if ((state.group!.groupMembers!
-                                                      .where((element) =>
-                                                          element.member?.id ==
-                                                          BlocProvider.of<
-                                                                      AuthBloc>(
-                                                                  context)
-                                                              .state
-                                                              .auth
-                                                              ?.id)
-                                                      .isNotEmpty &&
-                                                  state.group!.groupMembers!
-                                                          .where((element) =>
-                                                              element
-                                                                  .member?.id ==
-                                                              BlocProvider.of<
-                                                                          AuthBloc>(
-                                                                      context)
-                                                                  .state
-                                                                  .auth
-                                                                  ?.id)
-                                                          .first
-                                                          .role ==
-                                                      'manager') ||
-                                              state.group!.createdBy?.id ==
-                                                  BlocProvider.of<AuthBloc>(
-                                                          context)
-                                                      .state
-                                                      .auth
-                                                      ?.id)
+                                          if (isManager || isOwner)
                                             TileItemWidget(
                                               title:
                                                   AppLocalizations.of(context)!
@@ -228,21 +182,10 @@ class _GroupViewState extends State<GroupView> {
                                                 );
                                               },
                                             ),
-                                          if (state.group!.createdBy?.id !=
-                                                  BlocProvider.of<AuthBloc>(
-                                                          context)
-                                                      .state
-                                                      .auth
-                                                      ?.id &&
-                                              state.group!.groupMembers!
-                                                  .where((element) =>
-                                                      element.member?.id ==
-                                                      BlocProvider.of<AuthBloc>(
-                                                              context)
-                                                          .state
-                                                          .auth
-                                                          ?.id)
-                                                  .isNotEmpty)
+                                          if (!isOwner &&
+                                              groupMembers.any((element) =>
+                                                  element.member?.id ==
+                                                  currentUser))
                                             TileItemWidget(
                                               title:
                                                   AppLocalizations.of(context)!
@@ -258,13 +201,7 @@ class _GroupViewState extends State<GroupView> {
                                                     .add(LeaveGroup({
                                                   'id': int.parse(
                                                       widget.groupId ?? '0'),
-                                                  'memberId':
-                                                      BlocProvider.of<AuthBloc>(
-                                                                  context)
-                                                              .state
-                                                              .auth
-                                                              ?.id ??
-                                                          0
+                                                  'memberId': currentUser ?? 0
                                                 }));
                                               },
                                             ),
@@ -284,36 +221,20 @@ class _GroupViewState extends State<GroupView> {
                                     vertical: 6, horizontal: 8),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: state.group?.groupMembers?.length,
+                                itemCount: groupMembers.length,
                                 itemBuilder: (context, index) {
-                                  final member =
-                                      state.group!.groupMembers![index];
+                                  final member = groupMembers[index];
                                   final isUserManager =
                                       member.role == 'manager';
-                                  final isCurrentUser = member.member?.id ==
-                                      BlocProvider.of<AuthBloc>(context)
-                                          .state
-                                          .auth
-                                          ?.id;
-                                  final isCurrentUserManager = state
-                                          .group!.groupMembers!
-                                          .where((element) =>
-                                              element.member?.id ==
-                                              BlocProvider.of<AuthBloc>(context)
-                                                  .state
-                                                  .auth
-                                                  ?.id)
-                                          .first
-                                          .role ==
-                                      'manager';
+                                  final isCurrentUser =
+                                      member.member?.id == currentUser;
 
                                   // check that the id element is not the creator of the group
                                   final isNotOwner =
                                       state.group!.createdBy?.id !=
-                                          state.group?.groupMembers?[index]
-                                              .member?.id;
+                                          member.member?.id;
 
-                                  return isCurrentUserManager
+                                  return currentUserManager
                                       ? Slidable(
                                           key: ValueKey(member.member?.id),
                                           endActionPane: ActionPane(

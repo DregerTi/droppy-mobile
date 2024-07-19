@@ -18,6 +18,9 @@ class MyAccountView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var createdAtDate = DateTime.parse(
+        BlocProvider.of<UsersBloc>(context).state.me!.createdAt!);
+
     return Scaffold(
       body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -46,13 +49,8 @@ class MyAccountView extends StatelessWidget {
                         ),
                         TileItemWidget(
                             title: AppLocalizations.of(context)!.memberSince,
-                            subtitle: DateTime.parse(
-                                    BlocProvider.of<UsersBloc>(context)
-                                        .state
-                                        .me!
-                                        .createdAt!)
-                                .toLocal()
-                                .toString()),
+                            subtitle:
+                                '${createdAtDate.day}/${createdAtDate.month}/${createdAtDate.year}'),
                       ],
                     ),
                     if (user.origin!.contains('Google') ||

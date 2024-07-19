@@ -3,10 +3,10 @@ import '../../data/models/comment.dart';
 import '../../data/models/user.dart';
 
 class CommentResponseEntity extends Equatable {
-  final int ? id;
-  final String ? content;
-  final UserModel ? user;
-  final CommentModel ? comment;
+  final int? id;
+  final String? content;
+  final UserModel? user;
+  final CommentModel? comment;
 
   const CommentResponseEntity({
     this.id,
