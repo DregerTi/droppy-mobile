@@ -18,8 +18,7 @@ class MyAccountView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var createdAtDate = DateTime.parse(
-        BlocProvider.of<UsersBloc>(context).state.me!.createdAt!);
+    var createdAtDate = DateTime.parse(user.createdAt!);
 
     return Scaffold(
       body: SingleChildScrollView(
