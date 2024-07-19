@@ -25,15 +25,15 @@ class Feed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(BlocProvider.of<FeedBloc>(context).state is WebSocketInitial){
+    if(BlocProvider.of<FeedBloc>(context).state is WebSocketInitial || BlocProvider.of<FeedBloc>(context).state is WebSocketDisconnected){
       BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
     }
 
-    if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial){
+    if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial || BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketDisconnected){
       BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketConnect());
     }
 
-    if(BlocProvider.of<PendingFollowBloc>(context).state is PendingFollowWebSocketInitial){
+    if(BlocProvider.of<PendingFollowBloc>(context).state is PendingFollowWebSocketInitial || BlocProvider.of<PendingFollowBloc>(context).state is PendingFollowWebSocketDisconnected){
       BlocProvider.of<PendingFollowBloc>(context).add(PendingFollowWebSocketConnect());
     }
 
@@ -57,24 +57,12 @@ class Feed extends StatelessWidget {
         }
 
         if(state is WebSocketDisconnected) {
-          return Center(
-            child: Column(
+          return SizedBox(
+            height: MediaQuery.of(context).size.height - 50,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                WarningCard(
-                  message: AppLocalizations.of(context)!.noDrops,
-                  icon: 'empty'
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    context.pushNamed('add-drop');
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.postADrop,
-                    style: textTheme.labelMedium?.copyWith(
-                      color: backgroundColor,
-                    ),
-                  ),
-                ),
+                Center(child: CircularProgressIndicator()),
               ],
             ),
           );
