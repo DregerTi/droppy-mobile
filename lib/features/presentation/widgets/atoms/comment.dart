@@ -40,34 +40,36 @@ class Comment extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(avatar != null) GestureDetector(
-            onTap: () {
-              if(onTap != null){
-                onTap!();
-              }
-            },
-            child: GestureDetector(
+          if (avatar != null)
+            GestureDetector(
               onTap: () {
-                if(onTap != null){
+                if (onTap != null) {
                   onTap!();
                 }
               },
-              child: CachedImageWidget(
-                  imageUrl: avatar ?? '',
-                  width: 30,
-                  height: 30,
-                  borderRadius: BorderRadius.circular(12),
-                  fit: BoxFit.fitWidth
+              child: GestureDetector(
+                onTap: () {
+                  if (onTap != null) {
+                    onTap!();
+                  }
+                },
+                child: CachedImageWidget(
+                    imageUrl: avatar ?? '',
+                    width: 30,
+                    height: 30,
+                    borderRadius: BorderRadius.circular(12),
+                    fit: BoxFit.fitWidth),
+              ),
+            )
+          else
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SvgPicture.asset(
+                'lib/assets/images/avatar.svg',
+                width: 30,
+                height: 30,
               ),
             ),
-          ) else ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: SvgPicture.asset(
-              'lib/assets/images/avatar.svg',
-              width: 30,
-              height: 30,
-            ),
-          ),
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {},
@@ -80,7 +82,7 @@ class Comment extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        if(onTap != null){
+                        if (onTap != null) {
                           onTap!();
                         }
                       },
@@ -93,7 +95,9 @@ class Comment extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '• ${createdAt?.difference(DateTime.now()).inMinutes} min',
+                      createdAt != null
+                          ? '${createdAt!.day}/${createdAt!.month}/${createdAt!.year}'
+                          : '',
                       style: textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                       ),
@@ -101,10 +105,11 @@ class Comment extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 2),
-                if(message != null) Text(
-                  message!,
-                  style: textTheme.bodyMedium,
-                ),
+                if (message != null)
+                  Text(
+                    message!,
+                    style: textTheme.bodyMedium,
+                  ),
                 const SizedBox(height: 2),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 80,
@@ -114,12 +119,10 @@ class Comment extends StatelessWidget {
                       Row(
                         children: [
                           GestureDetector(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             child: GestureDetector(
                               onTap: () {
-                                if(setIsCommentResponse != null){
+                                if (setIsCommentResponse != null) {
                                   setIsCommentResponse!(true, commentId);
                                 } else {
                                   setIsCommentResponse!(false, commentId);
@@ -133,23 +136,24 @@ class Comment extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if(commentResponses != null && commentResponses!.isNotEmpty) const SizedBox(width: 14),
-                          if(commentResponses != null && commentResponses!.isNotEmpty) Text(
-                            'Voir réponses ${commentResponses!.length}',
-                            style: textTheme.labelSmall?.copyWith(
-                              fontSize: 11,
+                          if (commentResponses != null &&
+                              commentResponses!.isNotEmpty)
+                            const SizedBox(width: 14),
+                          if (commentResponses != null &&
+                              commentResponses!.isNotEmpty)
+                            Text(
+                              'Voir réponses ${commentResponses!.length}',
+                              style: textTheme.labelSmall?.copyWith(
+                                fontSize: 11,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.pushNamed(
-                              'report',
-                              extra: {
-                                'commentId': commentId.toString(),
-                              }
-                          );
+                          context.pushNamed('report', extra: {
+                            'commentId': commentId.toString(),
+                          });
                         },
                         child: const Icon(
                           Icons.flag_rounded,
@@ -160,17 +164,19 @@ class Comment extends StatelessWidget {
                     ],
                   ),
                 ),
-                if(commentResponses != null && commentResponses!.isNotEmpty) const SizedBox(height: 18),
-                if(commentResponses != null && commentResponses!.isNotEmpty) Column(
-                  children: List.generate(commentResponses!.length, (index) {
-                    return CommentResponse(
-                      avatar: commentResponses![index].user!.avatar,
-                      message: commentResponses![index].content,
-                      username: commentResponses![index].user!.username,
-                      commentResponseId: commentResponses![index].id,
-                    );
-                  }),
-                ),
+                if (commentResponses != null && commentResponses!.isNotEmpty)
+                  const SizedBox(height: 18),
+                if (commentResponses != null && commentResponses!.isNotEmpty)
+                  Column(
+                    children: List.generate(commentResponses!.length, (index) {
+                      return CommentResponse(
+                        avatar: commentResponses![index].user!.avatar,
+                        message: commentResponses![index].content,
+                        username: commentResponses![index].user!.username,
+                        commentResponseId: commentResponses![index].id,
+                      );
+                    }),
+                  ),
               ],
             ),
           ),
