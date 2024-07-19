@@ -55,9 +55,6 @@ class _DropMapState extends State<DropMap> {
 
   @override
   Widget build(BuildContext context) {
-    if(BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageState || BlocProvider.of<FeedBloc>(context).state is! WebSocketMessageReceived){
-      BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
-    }
     
     return SafeArea(
       child: Scaffold(
