@@ -11,7 +11,6 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/widgets/text.dart';
 import '../../bloc/has_dropped/has_dropped_bloc.dart';
-import '../../bloc/has_dropped/has_dropped_event.dart';
 import '../../bloc/has_dropped/has_dropped_state.dart';
 import '../atoms/cached_image_widget.dart';
 import '../atoms/like_btn.dart';
@@ -30,10 +29,6 @@ class DropTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial){
-      BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketConnect());
-    }
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,

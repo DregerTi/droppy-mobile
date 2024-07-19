@@ -13,6 +13,10 @@ import '../../bloc/follow/pending/pending_follow_event.dart';
 import '../../bloc/follow/pending/pending_follow_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../bloc/has_dropped/has_dropped_bloc.dart';
+import '../../bloc/has_dropped/has_dropped_event.dart';
+import '../../bloc/has_dropped/has_dropped_state.dart';
+
 class Feed extends StatelessWidget {
 
   const Feed({
@@ -23,6 +27,10 @@ class Feed extends StatelessWidget {
   Widget build(BuildContext context) {
     if(BlocProvider.of<FeedBloc>(context).state is WebSocketInitial){
       BlocProvider.of<FeedBloc>(context).add(WebSocketConnect());
+    }
+
+    if(BlocProvider.of<HasDroppedBloc>(context).state is HasDroppedWebSocketInitial){
+      BlocProvider.of<HasDroppedBloc>(context).add(HasDroppedWebSocketConnect());
     }
 
     if(BlocProvider.of<PendingFollowBloc>(context).state is PendingFollowWebSocketInitial){
