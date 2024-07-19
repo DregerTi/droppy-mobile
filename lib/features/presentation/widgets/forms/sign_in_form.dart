@@ -66,7 +66,9 @@ class _SignInFormState extends State<SignInForm> {
                         }),
                       ),
                     },
-                    child: (state is AuthLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : const Text('Connexion'),
+                    child: (state is AuthLoading) ? Image.asset('lib/assets/images/loading.gif', width: 30) : Text(
+                      AppLocalizations.of(context)!.signIn,
+                    ),
                   )
                 ),
               ],
