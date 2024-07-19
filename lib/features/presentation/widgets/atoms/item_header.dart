@@ -115,108 +115,107 @@ class ItemHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    user?.username ?? '',
-                    style: textTheme.headlineSmall?.copyWith(color: backgroundColor),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 159,
-                    child: Text(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      user?.username ?? '',
+                      style: textTheme.headlineSmall?.copyWith(color: backgroundColor),
+                    ),
+                    Text(
                       user?.bio ?? '',
                       style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
                       softWrap: true,
                       overflow: TextOverflow.visible,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  if(user?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) BlocConsumer<FollowsBloc, FollowsState>(
-                    listener: (context, state) {
-                      if(state is PostFollowDone) {
-                        snackBarWidget(
-                          message: AppLocalizations.of(context)!.followSuccessful,
-                          context: context,
-                        );
+                    const SizedBox(height: 10),
+                    if(user?.id != BlocProvider.of<AuthBloc>(context).state.auth?.id) BlocConsumer<FollowsBloc, FollowsState>(
+                      listener: (context, state) {
+                        if(state is PostFollowDone) {
+                          snackBarWidget(
+                            message: AppLocalizations.of(context)!.followSuccessful,
+                            context: context,
+                          );
 
-                        BlocProvider.of<UsersBloc>(context).add(GetUser({
-                          'id': user?.id ?? 0
-                        }));
-                      }
+                          BlocProvider.of<UsersBloc>(context).add(GetUser({
+                            'id': user?.id ?? 0
+                          }));
+                        }
 
-                      if(state is DeleteFollowDone) {
-                        snackBarWidget(
-                          message: AppLocalizations.of(context)!.unfollowSuccessful,
-                          context: context,
-                        );
+                        if(state is DeleteFollowDone) {
+                          snackBarWidget(
+                            message: AppLocalizations.of(context)!.unfollowSuccessful,
+                            context: context,
+                          );
 
-                        BlocProvider.of<UsersBloc>(context).add(GetUser({
-                          'id': user?.id ?? 0
-                        }));
-                      }
+                          BlocProvider.of<UsersBloc>(context).add(GetUser({
+                            'id': user?.id ?? 0
+                          }));
+                        }
 
-                      if(state is PostFollowError || state is DeleteFollowError) {
-                        snackBarWidget(
-                          message: AppLocalizations.of(context)!.errorPerformingAction,
-                          context: context,
-                          type: 'error',
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if(user?.currentFollow == null) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<FollowsBloc>(context).add(PostFollow({
-                              'userId': user?.id ?? 0,
-                            }));
-                          },
-                          style: elevatedButtonThemeData.style?.copyWith(
-                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
-                          ),
-                          child: Text(
-                            'Follow',
-                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                          ),
-                        );
-                      }
+                        if(state is PostFollowError || state is DeleteFollowError) {
+                          snackBarWidget(
+                            message: AppLocalizations.of(context)!.errorPerformingAction,
+                            context: context,
+                            type: 'error',
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if(user?.currentFollow == null) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<FollowsBloc>(context).add(PostFollow({
+                                'userId': user?.id ?? 0,
+                              }));
+                            },
+                            style: elevatedButtonThemeData.style?.copyWith(
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                            ),
+                            child: Text(
+                              'Follow',
+                              style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                            ),
+                          );
+                        }
 
-                      if (user?.currentFollow != null && user?.currentFollow?.status == 1) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<FollowsBloc>(context).add(DeleteFollow({
-                              'id': user?.currentFollow?.id ?? 0,
-                            }));
-                          },
-                          style: elevatedButtonThemeData.style?.copyWith(
-                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
-                          ),
-                          child: Text(
-                            'Unfollow',
-                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                          ),
-                        );
-                      }
+                        if (user?.currentFollow != null && user?.currentFollow?.status == 1) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<FollowsBloc>(context).add(DeleteFollow({
+                                'id': user?.currentFollow?.id ?? 0,
+                              }));
+                            },
+                            style: elevatedButtonThemeData.style?.copyWith(
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                            ),
+                            child: Text(
+                              'Unfollow',
+                              style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                            ),
+                          );
+                        }
 
-                      if(user?.currentFollow != null && user?.currentFollow?.status == 0) {
-                        return ElevatedButton(
-                          onPressed: () {},
-                          style: elevatedButtonThemeData.style?.copyWith(
-                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.pendingRequest,
-                            style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
-                          ),
-                        );
-                      }
+                        if(user?.currentFollow != null && user?.currentFollow?.status == 0) {
+                          return ElevatedButton(
+                            onPressed: () {},
+                            style: elevatedButtonThemeData.style?.copyWith(
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context)!.pendingRequest,
+                              style: textTheme.labelSmall?.copyWith(color: onBackgroundColor),
+                            ),
+                          );
+                        }
 
-                      return const SizedBox(height: 0);
-                    },
-                  ),
-                ],
+                        return const SizedBox(height: 0);
+                      },
+                    ),
+                  ],
+                ),
               )
             ]
           ),
