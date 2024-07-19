@@ -241,9 +241,13 @@ class _AccountViewState extends State<AccountView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
-                                                  user?.pinnedDrops?[index - 1].contentTitle ?? '',
-                                                  style: textTheme.titleSmall,
+                                                Expanded(
+                                                  child: Text(
+                                                    user?.pinnedDrops?[index - 1].contentTitle ?? '',
+                                                    style: textTheme.titleSmall,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 4,
+                                                  ),
                                                 ),
                                                 const SizedBox(height: 8),
                                                 CachedImageWidget(
