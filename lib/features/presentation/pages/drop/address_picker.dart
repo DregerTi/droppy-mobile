@@ -12,6 +12,7 @@ import '../../../data/models/place_search_details.dart';
 import '../../bloc/place_search/place_search_bloc.dart';
 import '../../bloc/place_search/place_search_event.dart';
 import '../../bloc/place_search/place_search_state.dart';
+import '../../widgets/atoms/snack_bar.dart';
 import '../../widgets/molecules/app_bar_widget.dart';
 import '../../widgets/organisms/map_widget.dart';
 import '../../widgets/organisms/search_results.dart';
@@ -185,8 +186,8 @@ class _AddressPickerState extends State<AddressPicker> {
             height: MediaQuery.of(context).size.height,
             padding: devicePadding,
             child:DraggableScrollableSheet(
-              minChildSize: 0.36,
-              initialChildSize: 0.36,
+              minChildSize: 0.26,
+              initialChildSize: 0.26,
               snapAnimationDuration: const Duration(milliseconds: 9000),
               controller: draggableScrollableController,
               builder: (context, scrollController) => Container(
@@ -327,16 +328,24 @@ class _AddressPickerState extends State<AddressPicker> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => {
-                    context.pop(
-                      {
-                        'address': mapAddress?.formattedAddress ?? '',
-                        'city': mapAddress?.city ?? '',
-                        'country': mapAddress?.country ?? '',
-                        'zipCode': mapAddress?.zipCode ?? '',
-                        'lat': mapController.camera.center.latitude,
-                        'lng': mapController.camera.center.longitude,
-                      }
-                    ),
+                    if(mapAddress != null) {
+                      context.pop(
+                          {
+                            'address': mapAddress?.formattedAddress ?? '',
+                            'city': mapAddress?.city ?? '',
+                            'country': mapAddress?.country ?? '',
+                            'zipCode': mapAddress?.zipCode ?? '',
+                            'lat': mapController.camera.center.latitude,
+                            'lng': mapController.camera.center.longitude,
+                          }
+                      ),
+                    } else {
+                      snackBarWidget(
+                        message: 'Veuillez sélectionner une adresse valide',
+                        context: context,
+                        type: 'error',
+                      )
+                    }
                   },
                   child: Text(AppLocalizations.of(context)!.confirmAddress)
                 )
