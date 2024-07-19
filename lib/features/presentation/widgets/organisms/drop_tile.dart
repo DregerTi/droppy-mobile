@@ -150,7 +150,7 @@ class DropTileWidget extends StatelessWidget {
                                 url = Uri.parse(drop!.content ?? '');
 
                                 if (await canLaunchUrl(url)) {
-                                  await launchUrl(url);
+                                  await launchUrl(url, mode: LaunchMode.inAppBrowserView);
                                 } else {
                                   snackBarWidget(
                                     message: 'Could not launch link',
