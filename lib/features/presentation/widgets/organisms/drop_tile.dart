@@ -10,6 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/widgets/text.dart';
+import '../../bloc/drop/drop_bloc.dart';
+import '../../bloc/drop/drop_event.dart';
 import '../../bloc/has_dropped/has_dropped_bloc.dart';
 import '../../bloc/has_dropped/has_dropped_state.dart';
 import '../atoms/cached_image_widget.dart';
@@ -339,8 +341,8 @@ class DropTileWidget extends StatelessWidget {
     );
   }
 
-  void _openCommentSheet(context, dropId, comments, totalComments) {
-    showModalBottomSheet(
+  void _openCommentSheet(context, dropId, comments, totalComments) async {
+    final result = await showModalBottomSheet(
       backgroundColor: Colors.transparent,
       barrierColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
@@ -356,6 +358,10 @@ class DropTileWidget extends StatelessWidget {
         totalComments: totalComments,
       )
     );
+
+    if (result == true) {
+      BlocProvider.of<DropsBloc>(context).add(GetDrop({'id': drop?.id}));
+    }
   }
 
   void _onTap() {

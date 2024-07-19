@@ -120,8 +120,7 @@ class _CommentSheetState extends State<CommentSheet> {
                             listener: (context, state) {
                               if (state is PostCommentDone || state is PostCommentResponseDone) {
                                 commentController.clear();
-                                context.pop();
-
+                                Navigator.pop(context, true);
                                 snackBarWidget(
                                   message: AppLocalizations.of(context)!.commentSent,
                                   context: context,
