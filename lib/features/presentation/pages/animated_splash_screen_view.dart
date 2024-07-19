@@ -33,27 +33,34 @@ class _AnimatedSplashScreenViewState extends State<AnimatedSplashScreenView> {
 
   @override
   Widget build(BuildContext context) {
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: primaryColor,
-        systemNavigationBarIconBrightness: Brightness.light,
-        systemNavigationBarDividerColor: Colors.transparent,
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-      ));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
 
     return Scaffold(
       backgroundColor: primaryColor,
-      body: Lottie.asset(
-        'lib/assets/images/splash-screen.json',
-        frameRate: FrameRate.max,
-        fit: BoxFit.fitWidth,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        alignment: Alignment.center,
-        filterQuality: FilterQuality.high,
-        options: LottieOptions(
-            enableApplyingOpacityToLayers: true
-        ),
+      body: Stack(
+        children: [
+          Positioned(
+            top: (MediaQuery.of(context).size.height - ((MediaQuery.of(context).size.width / 1200) * 2800))/ 2,
+            child: Lottie.asset(
+              'lib/assets/images/splash-screen.json',
+              frameRate: FrameRate.max,
+              fit: BoxFit.fitWidth,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              alignment: Alignment.center,
+              filterQuality: FilterQuality.high,
+              options: LottieOptions(
+                  enableApplyingOpacityToLayers: true
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
