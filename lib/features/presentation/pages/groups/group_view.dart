@@ -156,65 +156,53 @@ class _GroupViewState extends State<GroupView> {
                                 groupMembers.any((element) =>
                                     element.member?.id == currentUser))
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 10, bottom: 10),
-                                child: (isManager || isOwner)
-                                    ? ListItemsWidget(
-                                        title: AppLocalizations.of(context)!
-                                            .members,
-                                        children: [
-                                          if (isManager || isOwner)
-                                            TileItemWidget(
-                                              title:
-                                                  AppLocalizations.of(context)!
-                                                      .manageMembers,
-                                              leadingIcon: const Icon(
-                                                  Icons.person_add_rounded,
-                                                  color: textColor),
-                                              onTap: () {
-                                                context.pushNamed(
-                                                  'group-members-list',
-                                                  pathParameters: {
-                                                    'groupId': state.group?.id
-                                                            .toString() ??
-                                                        '',
-                                                  },
-                                                );
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, top: 10, bottom: 10),
+                                  child: ListItemsWidget(
+                                    title:
+                                        AppLocalizations.of(context)!.members,
+                                    children: [
+                                      if (isManager || isOwner)
+                                        TileItemWidget(
+                                          title: AppLocalizations.of(context)!
+                                              .manageMembers,
+                                          leadingIcon: const Icon(
+                                              Icons.person_add_rounded,
+                                              color: textColor),
+                                          onTap: () {
+                                            context.pushNamed(
+                                              'group-members-list',
+                                              pathParameters: {
+                                                'groupId': state.group?.id
+                                                        .toString() ??
+                                                    '',
                                               },
-                                            ),
-                                          if (!isOwner &&
-                                              groupMembers.any((element) =>
-                                                  element.member?.id ==
-                                                  currentUser))
-                                            TileItemWidget(
-                                              title:
-                                                  AppLocalizations.of(context)!
-                                                      .leaveGroup,
-                                              titleColor: errorColor,
-                                              leadingIcon: const Icon(
-                                                  Icons.logout_rounded,
-                                                  color: errorColor),
-                                              onTap: () {
-                                                BlocProvider.of<
-                                                            GroupMembersBloc>(
-                                                        context)
-                                                    .add(LeaveGroup({
-                                                  'id': int.parse(
-                                                      widget.groupId ?? '0'),
-                                                  'memberId': currentUser ?? 0
-                                                }));
-                                              },
-                                            ),
-                                        ],
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.only(top: 28),
-                                        child: Text(
-                                            AppLocalizations.of(context)!
-                                                .members,
-                                            style: textTheme.titleMedium),
-                                      ),
-                              ),
+                                            );
+                                          },
+                                        ),
+                                      if (!isOwner &&
+                                          groupMembers.any((element) =>
+                                              element.member?.id ==
+                                              currentUser))
+                                        TileItemWidget(
+                                          title: AppLocalizations.of(context)!
+                                              .leaveGroup,
+                                          titleColor: errorColor,
+                                          leadingIcon: const Icon(
+                                              Icons.logout_rounded,
+                                              color: errorColor),
+                                          onTap: () {
+                                            BlocProvider.of<GroupMembersBloc>(
+                                                    context)
+                                                .add(LeaveGroup({
+                                              'id': int.parse(
+                                                  widget.groupId ?? '0'),
+                                              'memberId': currentUser ?? 0
+                                            }));
+                                          },
+                                        ),
+                                    ],
+                                  )),
                             if (state.group?.groupMembers != null)
                               ListView.builder(
                                 padding: const EdgeInsets.symmetric(
