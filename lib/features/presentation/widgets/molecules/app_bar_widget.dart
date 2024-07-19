@@ -66,9 +66,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   ),
                 ),
                 const SizedBox(width: 20),
-                if (widget.title != null) Text(
-                    widget.title!,
-                    style: textTheme.headlineMedium,
+                if (widget.title != null) SizedBox(
+                  width: MediaQuery.of(context).size.width - 200,
+                  child: Text(
+                      widget.title!,
+                      style: textTheme.headlineMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
