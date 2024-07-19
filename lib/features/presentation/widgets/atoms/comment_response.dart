@@ -31,24 +31,26 @@ class CommentResponse extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(avatar != null) CachedImageWidget(
-              imageUrl: avatar ?? '',
-              width: 26,
-              height: 26,
+          if (avatar != null)
+            CachedImageWidget(
+                imageUrl: avatar ?? '',
+                width: 26,
+                height: 26,
+                borderRadius: BorderRadius.circular(10),
+                fit: BoxFit.fitWidth)
+          else
+            ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              fit: BoxFit.fitWidth
-          ) else ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: SvgPicture.asset(
-              'lib/assets/images/avatar.svg',
-              width: 26,
-              height: 26,
+              child: SvgPicture.asset(
+                'lib/assets/images/avatar.svg',
+                width: 26,
+                height: 26,
+              ),
             ),
-          ),
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
-              if(onTap != null){
+              if (onTap != null) {
                 onTap!();
               }
             },
@@ -75,10 +77,11 @@ class CommentResponse extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 2),
-                if(message != null) Text(
-                  message!,
-                  style: textTheme.bodyMedium,
-                ),
+                if (message != null)
+                  Text(
+                    message!,
+                    style: textTheme.bodyMedium,
+                  ),
                 const SizedBox(height: 2),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 116,
@@ -87,12 +90,9 @@ class CommentResponse extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          context.pushNamed(
-                              'report',
-                              extra: {
-                                'commentResponseId': commentResponseId.toString(),
-                              }
-                          );
+                          context.pushNamed('report', extra: {
+                            'commentResponseId': commentResponseId.toString(),
+                          });
                         },
                         child: const Icon(
                           Icons.flag_rounded,
