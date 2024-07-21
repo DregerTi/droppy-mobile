@@ -1,3 +1,3 @@
 # droppy
 
-A new Flutter project.
+Update /lib/core/constants/constants.dart
